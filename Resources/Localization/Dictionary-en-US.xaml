@@ -1,0 +1,9 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=System.Runtime">
+
+    <System:String x:Key="UserStr">User</System:String>
+    <System:String x:Key="PasswordStr">Password</System:String>
+    <System:String x:Key="AccessButtonStr">Log in</System:String>
+</ResourceDictionary>
