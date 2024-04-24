@@ -1,5 +1,5 @@
-﻿using TFG.Views.Pages;
-using TFGDesktopApp.ViewModels;
+﻿using TFG.ViewModels.Base;
+using TFG.Views.Pages;
 
 namespace TFG.ViewModels {
     public class MainWindowViewModel : BaseViewModel {

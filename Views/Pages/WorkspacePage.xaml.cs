@@ -1,16 +1,37 @@
-﻿using System.Windows;
+﻿using MongoDB.Bson;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using TFG.Services.DatabaseServices;
 using TFG.ViewModels;
 using TFGDesktopApp.Models;
+using Wpf.Ui.Controls;
+using TextBlock = Wpf.Ui.Controls.TextBlock;
 
 namespace TFG.Views.Pages {
     public partial class WorkSpacePage : Page {
         private readonly User _user;
+        private readonly DatabaseService _databaseService;
+        private readonly WorkSpaceViewModel _workspaceViewModel;
+        public ObservableCollection<string> NombresContenedores { get; set; }
 
         public WorkSpacePage(User user) {
             InitializeComponent();
             _user = user;
+            _databaseService = new DatabaseService();
+            _workspaceViewModel = new WorkSpaceViewModel(_user);
             DataContext = _user;
+
+            // Inicializar la colección de nombres de contenedores de forma asíncrona
+            _ = InitializeAsync();
+        }
+
+        private async Task InitializeAsync() {
+            NombresContenedores = await _workspaceViewModel.LoadContainersAsync();
+            foreach(var v in NombresContenedores) {
+                NavView.MenuItems.Add(new NavigationViewItem { Content = v});
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

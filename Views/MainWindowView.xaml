@@ -17,7 +17,7 @@
     </ui:FluentWindow.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -26,7 +26,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        -->
         <!--  NavigationView  -->
+        <!--
         <ui:NavigationView
             Grid.Row="1"
             Grid.Column="0"
@@ -57,7 +59,7 @@
                         Text="Pane Header" />
                 </Border>
             </ui:NavigationView.PaneHeader>
-        </ui:NavigationView>
+        </ui:NavigationView>-->
 
         <!--  Frame  -->
         <Frame

@@ -61,5 +61,7 @@ namespace TFG.Models {
             get { return _listaEstadosTareas; }
             set { _listaEstadosTareas = value; }
         }
+
+        public Container() { }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Windows.Input;
+using TFG.ViewModels.Base;
 using TFGDesktopApp.Services;
-using TFGDesktopApp.ViewModels;
-
 public class LocalizationViewModel : BaseViewModel {
     private LocalizationService _localizationService;
 

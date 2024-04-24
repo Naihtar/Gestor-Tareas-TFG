@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Espania.png" />
+    <None Remove="Resources\Images\Francia.png" />
+    <None Remove="Resources\Images\LogoTFG.png" />
+    <None Remove="Resources\Images\UK.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
     <PackageReference Include="WPF-UI" Version="3.0.4" />
@@ -16,6 +23,15 @@
 
   <ItemGroup>
     <Folder Include="Resources\Theme\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Espania.png" />
+    <Resource Include="Resources\Images\Francia.png" />
+    <Content Include="Resources\Images\LogoTFG.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Images\UK.png" />
   </ItemGroup>
 
 </Project>

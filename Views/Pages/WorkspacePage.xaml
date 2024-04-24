@@ -10,28 +10,72 @@
     d:DesignHeight="720"
     d:DesignWidth="1280"
     mc:Ignorable="d">
-    <Border Background="#323232" CornerRadius="16,0,0,0">
-        <Grid>
-            <!--  Información del usuario  -->
-            <StackPanel x:Name="UserInfoPanel" Margin="16">
-                <TextBlock
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  NavigationView  -->
+        <!--  Añadir el Localization.  -->
+        <ui:NavigationView
+            x:Name="NavView"
+            Grid.Row="1"
+            Grid.Column="0"
+            MinHeight="300"
+            Margin="0"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleVisible="True"
+            PaneDisplayMode="Left"
+            PaneTitle="Pane Title">
+            <ui:NavigationView.AutoSuggestBox>
+                <ui:AutoSuggestBox PlaceholderText="Search" />
+            </ui:NavigationView.AutoSuggestBox>
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="Dashboard" Icon="{ui:SymbolIcon Home24}" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Library24}" />
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" />
+            </ui:NavigationView.FooterMenuItems>
+        </ui:NavigationView>
+
+        <!--  Información del usuario  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="4,0,0,0"
+            Background="#323232"
+            CornerRadius="8,0,0,0">
+            <StackPanel x:Name="UserInfoPanel" Margin="32">
+                <ui:TextBlock
                     Margin="0,0,0,10"
                     FontSize="16"
+                    Foreground="White"
                     Text="{Binding NombreUsuario}" />
-                <TextBlock
+                <ui:TextBlock
                     Margin="0,0,0,10"
                     FontSize="16"
+                    Foreground="White"
                     Text="{Binding Apellido1Usuario}" />
-                <TextBlock
+
+                <ui:TextBlock
                     Margin="0,0,0,10"
                     FontSize="16"
+                    Foreground="White"
                     Text="{Binding Apellido2Usuario}" />
-                <TextBlock
+
+                <ui:TextBlock
                     Margin="0,0,0,10"
                     FontSize="16"
+                    Foreground="White"
                     Text="{Binding EmailUsuario}" />
-                <ui:ProgressRing IsIndeterminate="True" />
             </StackPanel>
-        </Grid>
-    </Border>
+        </Border>
+        <ui:TitleBar Grid.ColumnSpan="2" />
+    </Grid>
 </Page>
