@@ -11,9 +11,6 @@ namespace TFG.Services.DatabaseServices {
         }
 
         public async Task<IMongoCollection<T>> GetCollectionAsync<T>(string collectionName) {
-            // En lugar de simplemente devolver la colección, podrías envolverla en una tarea asíncrona.
-            // Aquí, como GetCollection no es asincrónico, simplemente lo envolvemos en Task.FromResult.
-            // Esto no hace que la operación sea realmente asincrónica, pero se adapta al modelo asíncrono.
             return await Task.FromResult(_connection.GetCollection<T>(collectionName));
         }
     }

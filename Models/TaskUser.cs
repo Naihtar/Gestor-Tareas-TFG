@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFG.Models {
-    class Task {
+    class TaskUser {
         private ObjectId _idTarea;
         [BsonId]
         public ObjectId IdTarea {

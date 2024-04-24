@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFGDesktopApp.Models {
-    class User {
+    public class User {
 
         private ObjectId _idUsuario;
         [BsonId]
@@ -55,5 +55,7 @@ namespace TFGDesktopApp.Models {
             get { return _listaContenedoresUsuario; }
             set { _listaContenedoresUsuario = value; }
         }
+
+        public User() { }
     } 
 }

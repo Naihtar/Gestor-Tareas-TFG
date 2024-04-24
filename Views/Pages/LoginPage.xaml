@@ -8,48 +8,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="LoginPage"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
     mc:Ignorable="d">
+    <Grid>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-        <ui:Image
-            Width="200"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top"
-            Source="C:\Users\sltrp\Documents\Workspace\TFG\Resources\Images\LogoTFG.png" />
+            <ui:Image
+                Width="200"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Source="C:\Users\sltrp\Documents\Workspace\TFG\Resources\Images\LogoTFG.png" />
 
-        <Border
-            Width="200"
-            BorderBrush="Black"
-            BorderThickness="0,0,0,2">
+
             <ui:TextBox
                 x:Name="LoginUser"
                 Width="200"
-                HorizontalAlignment="Left"
+                HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
                 PlaceholderText="Usuario" />
-        </Border>
-        <Border
-            Width="200"
-            BorderBrush="Black"
-            BorderThickness="0,0,0,2">
+            <Separator Margin="5" Opacity="0" />
             <ui:PasswordBox
                 x:Name="LoginPassword"
                 Width="200"
                 FontFamily="Fira Code"
-                FontSize="20"
                 PlaceholderText="Password" />
-        </Border>
-        <ui:Button
-            Width="180"
-            Margin="10"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="PaleVioletRed"
-            Click="Button_Click"
-            Content="Button" />
-    </StackPanel>
+            <Separator Margin="5" Opacity="0" />
+            <ui:Button
+                Width="200"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="#BDBDBD"
+                Click="Button_Click"
+                Content="Button"
+                Foreground="#282828" />
 
+        </StackPanel>
+    </Grid>
 </Page>

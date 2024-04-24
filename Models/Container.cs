@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFG.Models {
-    class Container {
+    public class Container {
 
         private ObjectId _idContenedor;
         [BsonId]

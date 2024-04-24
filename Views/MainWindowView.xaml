@@ -9,11 +9,67 @@
     Width="1280"
     Height="720"
     ResizeMode="NoResize"
+    WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </ui:FluentWindow.Resources>
 
     <Grid>
-        <ui:TitleBar Title="CodeMonke - Task Manager" Grid.Row="0" />
-        <Frame x:Name="MainFrame" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  NavigationView  -->
+        <ui:NavigationView
+            Grid.Row="1"
+            Grid.Column="0"
+            MinHeight="300"
+            Margin="0"
+            IsBackButtonVisible="Auto"
+            IsPaneToggleVisible="True"
+            PaneDisplayMode="Left"
+            PaneTitle="Pane Title"
+            Visibility="{Binding IsNavigationViewActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <ui:NavigationView.AutoSuggestBox>
+                <ui:AutoSuggestBox Margin="8,0,8,8" PlaceholderText="Search" />
+            </ui:NavigationView.AutoSuggestBox>
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="Dashboard" Icon="{ui:SymbolIcon Home24}" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Library24}" />
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" />
+            </ui:NavigationView.FooterMenuItems>
+            <ui:NavigationView.PaneHeader>
+                <Border Margin="0,0,0,8" CornerRadius="4">
+                    <TextBlock
+                        Margin="24"
+                        VerticalAlignment="Center"
+                        FontWeight="Medium"
+                        Foreground="{ui:ThemeResource TextFillColorSecondaryBrush}"
+                        Text="Pane Header" />
+                </Border>
+            </ui:NavigationView.PaneHeader>
+        </ui:NavigationView>
+
+        <!--  Frame  -->
+        <Frame
+            x:Name="MainFrame"
+            Grid.Row="1"
+            Grid.Column="1" />
+
+        <ui:TitleBar
+            Title="Taco"
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            FontSize="16" />
+
     </Grid>
 </ui:FluentWindow>

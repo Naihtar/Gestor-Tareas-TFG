@@ -15,6 +15,16 @@ namespace TFG.Services.AuthentificationServices {
             _databaseService = new DatabaseService();
         }
 
+        public async Task<User> GetUserByUsernameAsync(string username) {
+            // Obtén la colección de usuarios de forma asíncrona
+            var users = await _databaseService.GetCollectionAsync<User>("usuarios");
+
+            // Busca al usuario en la colección de forma asíncrona
+            var user = await users.Find(u => u.AliasUsuario == username).FirstOrDefaultAsync();
+
+            return user;
+        }
+
         public async Task<bool> AuthenticateUserAsync(string username, string password) {
             // Obtén la colección de usuarios de forma asíncrona
             var users = await _databaseService.GetCollectionAsync<User>("usuarios");
