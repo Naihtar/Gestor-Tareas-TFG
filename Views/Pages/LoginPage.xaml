@@ -1,5 +1,4 @@
-﻿<!--  LoginPage.xaml  -->
-<Page
+﻿<Page
     x:Class="TFG.Views.Pages.LoginPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,43 +6,72 @@
     xmlns:local="clr-namespace:TFG.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Title="LoginPage"
+    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     mc:Ignorable="d">
     <Grid>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+
+            <Separator Margin="4" Opacity="0" />
             <ui:Image
                 Width="200"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Source="C:\Users\sltrp\Documents\Workspace\TFG\Resources\Images\LogoTFG.png" />
-
-
+                Source="/Resources/Images/LogoTFG.png" />
             <ui:TextBox
-                x:Name="LoginUser"
+                x:Name="UsernameTextBox"
                 Width="200"
                 HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
-                PlaceholderText="Usuario" />
-            <Separator Margin="5" Opacity="0" />
+                PlaceholderText="Usuario"
+                Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+            <Separator Margin="4" Opacity="0" />
             <ui:PasswordBox
-                x:Name="LoginPassword"
+                x:Name="PasswordBox"
                 Width="200"
                 FontFamily="Fira Code"
+                Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 PlaceholderText="Password" />
-            <Separator Margin="5" Opacity="0" />
+            <Separator Margin="4" Opacity="0" />
             <ui:Button
+                Name="AccessButton"
                 Width="200"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                Background="#BDBDBD"
-                Click="Button_Click"
-                Content="Button"
-                Foreground="#282828" />
-
+                Command="{Binding LoginCommand}"
+                Content="Button" />
+            <Separator Margin="4" Opacity="0" />
         </StackPanel>
+        <Grid
+            Grid.Row="2"
+            Width="200"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <Label
+                Name="ErrorMessage"
+                Margin="4"
+                HorizontalContentAlignment="Center"
+                FontFamily="Fira Code"
+                FontSize="32"
+                Foreground="Red">
+                <TextBlock
+                    Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}"
+                    TextAlignment="Center"
+                    TextWrapping="WrapWithOverflow" />
+            </Label>
+        </Grid>
     </Grid>
 </Page>

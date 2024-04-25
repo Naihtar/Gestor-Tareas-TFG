@@ -1,23 +1,18 @@
-﻿using TFG.ViewModels.Base;
+﻿using System;
+using System.Windows.Controls;
+using System.Windows.Input;
+using TFG.Services.NavigationServices;
+using TFG.ViewModels.Base;
 using TFG.Views.Pages;
 
 namespace TFG.ViewModels {
     public class MainWindowViewModel : BaseViewModel {
-        private readonly LoginPage _loginPage;
-        private bool _isNavigationViewActive;
+        private readonly INavigationService _navigationService;
 
-        public bool IsNavigationViewActive {
-            get { return _isNavigationViewActive; }
-            set {
-                _isNavigationViewActive = value;
-                OnPropertyChanged(nameof(IsNavigationViewActive));
-            }
-        }
-
-        public MainWindowViewModel() {
-            _loginPage = new LoginPage();
-            IsNavigationViewActive = false;  // Asegúrate de que NavigationView no se muestre inicialmente
-            MainWindowView.MFrame.Navigate(_loginPage);
+        public MainWindowViewModel(INavigationService navigationService) {
+            _navigationService = navigationService;
+            // Navega a la página de inicio de sesión al iniciar
+            _navigationService.NavigateToLogin();
         }
     }
 }

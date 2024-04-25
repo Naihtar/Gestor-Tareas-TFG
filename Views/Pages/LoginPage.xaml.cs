@@ -1,30 +1,17 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using TFG.Services.NavigationServices;
 using TFG.ViewModels;
-using TFGDesktopApp.Models;
 
 namespace TFG.Views.Pages {
-    /// <summary>
-    /// Interaction logic for LoginPage.xaml
-    /// </summary>
     public partial class LoginPage : Page {
-        private readonly Frame _mainFrame;
         private readonly LoginViewModel _loginViewModel;
 
-        public LoginPage() {
+        public LoginPage(Frame mainFrame) {
             InitializeComponent();
-            _loginViewModel = new LoginViewModel();
-            _mainFrame = MainWindowView.MFrame;
+            INavigationService navigationService = new NavigationService(mainFrame);
+            _loginViewModel = new LoginViewModel(navigationService);
+            DataContext = _loginViewModel;
         }
-
-        private async void Button_Click(object sender, RoutedEventArgs e) {
-            User authenticatedUser = await _loginViewModel.AuthenticateUserAsync(LoginUser.Text, LoginPassword.Password);
-            if (authenticatedUser != null) {
-                ((MainWindowViewModel)Application.Current.MainWindow.DataContext).IsNavigationViewActive = true;
-                _mainFrame.Navigate(new WorkSpacePage(authenticatedUser));
-            }
-
-        }
-
     }
 }

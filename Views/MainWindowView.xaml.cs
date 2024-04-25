@@ -1,20 +1,15 @@
-﻿using System.Windows.Controls;
-using TFG.ViewModels;
-using TFG.Views;
+﻿using TFG.ViewModels;
+using System.Windows.Controls;
 using Wpf.Ui.Controls;
+using TFG.Services.NavigationServices;
+using System.Windows.Media.Imaging;
 
 namespace TFG {
     public partial class MainWindowView : FluentWindow {
-        public static Frame MFrame { get; private set; }
-
         public MainWindowView() {
             InitializeComponent();
-
-            // Asigna el MainFrame a la propiedad estática
-            MFrame = this.MainFrame;
-
-            // Crea una instancia del ViewModel y establece el contexto de datos
-            DataContext = new MainWindowViewModel();
+            var navigationService = new NavigationService(MainFrame);
+            DataContext = new MainWindowViewModel(navigationService);
         }
     }
 }
