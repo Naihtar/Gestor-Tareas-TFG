@@ -36,7 +36,6 @@ namespace TFG.Services.AuthentificationServices {
             if (user == null) {
                 return false;
             }
-
             // Verifica si la contraseña introducida coincide con la del usuario (usando bcrypt)
             return BCrypt.Net.BCrypt.Verify(password, user.PasswordUsuario);
         }
