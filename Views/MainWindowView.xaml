@@ -6,8 +6,11 @@
     xmlns:local="clr-namespace:TFG"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Width="1280"
     Height="720"
+    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
+    Icon="/Resources/Images/LogoTFG.png"
     ResizeMode="NoResize"
     WindowCornerPreference="Round"
     WindowStartupLocation="CenterScreen"
@@ -17,16 +20,71 @@
     </ui:FluentWindow.Resources>
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <!--  Frame  -->
         <Frame
             x:Name="MainFrame"
             Grid.Row="1"
             Grid.Column="1" />
+        <!--  NavigationView  -->
+        <ui:NavigationView
+            x:Name="NavView"
+            Grid.Row="1"
+            Grid.Column="0"
+            MinHeight="300"
+            Margin="4,0,0,0"
+            IsBackButtonVisible="Collapsed"
+            IsPaneToggleVisible="True"
+            PaneDisplayMode="Left"
+            PaneTitle="Pane Title"
+            Visibility="{Binding NavigationViewVisibility}">
+            <ui:NavigationView.AutoSuggestBox>
+                <ui:AutoSuggestBox PlaceholderText="Search" />
+            </ui:NavigationView.AutoSuggestBox>
+            <!--  Revisar con Kato y Adrí que elemento colocar  -->
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem Content="Profile" Icon="{ui:SymbolIcon Person20, Filled=True}" />
 
-        <ui:TitleBar
-            Title="CodeMonke - Task Manager"
-            Grid.ColumnSpan="2"
-            FontFamily="Fira Code"
-            FontSize="16" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
+                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
+                <Separator />
+            </ui:NavigationView.MenuItems>
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" />
+            </ui:NavigationView.FooterMenuItems>
+        </ui:NavigationView>
+        <Grid Grid.ColumnSpan="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ui:ImageIcon
+                Grid.Column="0"
+                Width="32"
+                Height="32"
+                Margin="16,0,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Source="/Resources/Images/LogoTFG.png" />
+
+            <ui:TitleBar
+                Title="CodeMonke - Task Manager"
+                Grid.Row="0"
+                Grid.Column="1"
+                FontFamily="Fira Code"
+                FontSize="16" />
+        </Grid>
     </Grid>
 </ui:FluentWindow>

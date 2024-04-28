@@ -1,32 +1,28 @@
-﻿using MongoDB.Bson;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using TFG.Services.DatabaseServices;
+﻿using System.Collections.ObjectModel;
 using TFG.ViewModels.Base;
 using TFGDesktopApp.Models;
 
 namespace TFG.ViewModels {
-    internal class WorkSpaceViewModel : BaseViewModel {
+    public class WorkSpaceViewModel : BaseViewModel {
+        private User _user;
+        private MainWindowViewModel _mainWindowViewModel;
 
-        private readonly User _user;
-        private readonly DatabaseService _databaseService;
+        public ObservableCollection<string> NombreContenedores { get; }
 
-        public WorkSpaceViewModel(User user) {
+
+        public CommandViewModel MyCommand { get; }
+
+        public WorkSpaceViewModel(User user, MainWindowViewModel mainWindowViewModel) {
+
+            NombreContenedores = new ObservableCollection<string>();
             _user = user;
-            _databaseService = new DatabaseService();
+            _mainWindowViewModel = mainWindowViewModel;
+            MyCommand = new CommandViewModel(ExecuteMyCommand);
         }
 
-        public async Task<ObservableCollection<string>> LoadContainersAsync() {
-            ObservableCollection<string> nombresContenedores = new ObservableCollection<string>();
-
-            foreach (ObjectId containerId in _user.ListaContenedoresUsuario) {
-                var container = await _databaseService.GetContainerByIdAsync(containerId);
-                if (container != null) {
-                    nombresContenedores.Add(container.NombreContenedor);
-                }
-            }
-
-            return nombresContenedores;
+        private void ExecuteMyCommand(object parameter) {
+            // Cambia IsValueTrue a true cuando se ejecuta el comando.
+            _mainWindowViewModel.IsValueTrue = true;
         }
     }
 }

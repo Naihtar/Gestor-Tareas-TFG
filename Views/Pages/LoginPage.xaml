@@ -36,6 +36,8 @@
                 Width="200"
                 HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
+                Icon="{ui:SymbolIcon Person20,
+                                     Filled=True}"
                 PlaceholderText="Usuario"
                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
             <Separator Margin="4" Opacity="0" />
@@ -43,6 +45,8 @@
                 x:Name="PasswordBox"
                 Width="200"
                 FontFamily="Fira Code"
+                Icon="{ui:SymbolIcon PersonKey20,
+                                     Filled=True}"
                 Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 PlaceholderText="Password" />
             <Separator Margin="4" Opacity="0" />

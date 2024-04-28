@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using TFG.ViewModels;
 using TFG.Views.Pages;
 using TFGDesktopApp.Models;
 
@@ -10,12 +11,13 @@ namespace TFG.Services.NavigationServices {
             _frame = frame;
         }
 
-        public void NavigateToLogin() {
-            _frame.Navigate(new LoginPage(_frame));
+        public void NavigateToLogin(MainWindowViewModel mainWindowViewModel) {
+            _frame.Navigate(new LoginPage(_frame, mainWindowViewModel));
         }
 
-        public void NavigateToWorkSpace(User user) {
-            _frame.Navigate(new WorkSpacePage(user));
+
+        public void NavigateToWorkSpace(User user, MainWindowViewModel mainWindowViewModel) {
+            _frame.Navigate(new WorkSpacePage(user, mainWindowViewModel));
         }
     }
 }
