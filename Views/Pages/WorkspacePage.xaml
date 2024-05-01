@@ -17,113 +17,69 @@
         CornerRadius="16">
         <StackPanel>
             <!--  Top Bar  -->
-            <Grid Margin="16,0,16,0">
+
+            <Grid Margin="20,0,20,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <!--  Workspaces y Add  -->
-                <Grid
-                    Grid.Column="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                <Grid Grid.Column="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!--  Profile Button  -->
+                    <ui:AutoSuggestBox
+                        Grid.Column="1"
+                        Height="32"
+                        MinWidth="480"
+                        HorizontalAlignment="Center"
+                        FontFamily="Fira Code"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Icon="{ui:SymbolIcon Search24}"
+                        PlaceholderText="Search" />
 
-                    <ui:Button
+                    <Menu
                         Grid.Column="0"
-                        Width="40 "
-                        Height="32"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Command="{Binding UserProfileCommand}"
-                        Icon="{ui:SymbolIcon Person20,
-                                             Filled=True}" />
-
-                    <Menu Grid.Column="1" HorizontalAlignment="Center">
-                        <ui:DropDownButton
-                            Width="160"
-                            Height="32"
-                            Content="Workspaces"
-                            FontFamily="Fira Code"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Icon="{ui:SymbolIcon FolderAdd48,
-                                                 Filled=True}">
-                            <ui:DropDownButton.Flyout>
-                                <ContextMenu>
-                                    <MenuItem Header="Workspace 1" />
-                                    <MenuItem Header="Workspace 2" />
-                                    <MenuItem Header="Workspace 3" />
-                                    <MenuItem Header="Workspace 4" />
-                                </ContextMenu>
-                            </ui:DropDownButton.Flyout>
-                        </ui:DropDownButton>
+                        HorizontalAlignment="Left"
+                        FontFamily="Fira Code"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="White">
+                        <ui:MenuItem Header="File">
+                            <ui:MenuItem Header="Add Workspace" Icon="{ui:SymbolIcon Add12, Filled=True}" />
+                            <ui:MenuItem Header="Edit Workspace" Icon="{ui:SymbolIcon Edit16, Filled=True}" />
+                            <ui:MenuItem Header="Delete Workspace" Icon="{ui:SymbolIcon Delete16, Filled=True}" />
+                        </ui:MenuItem>
+                        <ui:MenuItem Header="Workspaces">
+                            <MenuItem Header="Workspace 1" />
+                            <MenuItem Header="Workspace 2" />
+                            <MenuItem Header="Workspace 3" />
+                            <MenuItem Header="Workspace 4" />
+                        </ui:MenuItem>
                     </Menu>
-
-
-                    <!--  Add Button  -->
-
-                    <ui:Button
-                        Grid.Column="2"
-                        Width="40"
-                        Height="32"
-                        Margin="0,0,8,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Appearance="Secondary"
-                        Icon="{ui:SymbolIcon Add12,
-                                             Filled=True}" />
-
-                    <!--  Edit Button  -->
-
-                    <ui:Button
-                        Grid.Column="3"
-                        Width="40"
-                        Height="32"
-                        Margin="0,0,8,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Appearance="Secondary"
-                        Icon="{ui:SymbolIcon Edit16,
-                                             Filled=True}" />
-
-                    <!--  Delete Button  -->
-
-                    <ui:Button
-                        Grid.Column="4"
-                        Width="40"
-                        Height="32"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Appearance="Secondary"
-                        Icon="{ui:SymbolIcon Delete20,
-                                             Filled=True}" />
                 </Grid>
 
-                <!--  Buscador  -->
-                <ui:AutoSuggestBox
+                <Menu
                     Grid.Column="1"
-                    Height="32"
-                    Margin="8,0,0,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
                     FontFamily="Fira Code"
-                    FontSize="16"
+                    FontSize="20"
                     FontWeight="Bold"
-                    Icon="{ui:SymbolIcon Search24}"
-                    PlaceholderText="Search" />
-
-
+                    Foreground="White">
+                    <ui:MenuItem
+                        Command="{Binding UserProfileCommand}"
+                        Header="Profile"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}" />
+                </Menu>
             </Grid>
+
+
+            <!--  Buscador  -->
+
             <!--  Cards  -->
             <Grid Margin="16,0,16,0">
                 <Grid.ColumnDefinitions>

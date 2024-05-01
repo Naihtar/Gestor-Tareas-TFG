@@ -18,24 +18,16 @@
         Background="#323232"
         CornerRadius="16">
         <StackPanel Margin="16">
-            <ui:Button
-                Width="40 "
-                Height="32"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Appearance="Dark"
-                Command="{Binding WorkspaceCommand}"
-                Icon="{ui:SymbolIcon ArrowLeft20,
-                                     Filled=False}"
-                IsEnabled="True" />
+
 
             <ui:Card
                 Grid.RowSpan="3"
                 Grid.ColumnSpan="3"
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Aqua">
-                <Grid x:Name="UserProfileData" HorizontalAlignment="Center">
+                VerticalAlignment="Stretch">
+
+                <Grid x:Name="UserProfileData">
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -45,8 +37,17 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-
-
+                    <ui:Button
+                        Grid.Row="0"
+                        Width="40 "
+                        Height="32"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Appearance="Dark"
+                        Command="{Binding WorkspaceCommand}"
+                        Icon="{ui:SymbolIcon ArrowLeft20,
+                                             Filled=False}"
+                        IsEnabled="True" />
                     <ItemsControl ItemsSource="{Binding UserProfileProperties}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
