@@ -20,51 +20,15 @@
     </ui:FluentWindow.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!--  Frame  -->
-        <Frame
-            x:Name="MainFrame"
-            Grid.Row="1"
-            Grid.Column="1" />
-        <!--  NavigationView  -->
-        <ui:NavigationView
-            x:Name="NavView"
-            Grid.Row="1"
-            Grid.Column="0"
-            MinHeight="300"
-            Margin="4,0,0,0"
-            IsBackButtonVisible="Collapsed"
-            IsPaneToggleVisible="True"
-            PaneDisplayMode="Left"
-            PaneTitle="Pane Title"
-            Visibility="{Binding NavigationViewVisibility}">
-            <ui:NavigationView.AutoSuggestBox>
-                <ui:AutoSuggestBox PlaceholderText="Search" />
-            </ui:NavigationView.AutoSuggestBox>
-            <!--  Revisar con Kato y Adrí que elemento colocar  -->
-            <ui:NavigationView.MenuItems>
-                <ui:NavigationViewItem Content="Profile" Icon="{ui:SymbolIcon Person20, Filled=True}" />
+        <Frame x:Name="MainFrame" Grid.Row="1" />
 
-                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
-                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
-                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
-                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
-                <ui:NavigationViewItem Content="Items" Icon="{ui:SymbolIcon Add12}" />
-                <Separator />
-            </ui:NavigationView.MenuItems>
-            <ui:NavigationView.FooterMenuItems>
-                <ui:NavigationViewItem Content="Settings" Icon="{ui:SymbolIcon Settings24}" />
-            </ui:NavigationView.FooterMenuItems>
-        </ui:NavigationView>
-        <Grid Grid.ColumnSpan="2">
-
+        <!--  Title Bar e Icon  -->
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />

@@ -6,6 +6,8 @@
     xmlns:local="clr-namespace:TFG.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewmodels="clr-namespace:TFG.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:WorkSpaceViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     mc:Ignorable="d">
@@ -19,14 +21,35 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-
         <Border
             Grid.Row="1"
             Grid.Column="1"
-            Background="#323232"
-            CornerRadius="8,0,0,0">
+            Margin="8"
+            CornerRadius="8">
 
-            <StackPanel x:Name="UserInfoPanel" Margin="32">
+            <StackPanel x:Name="UserInfoPanel" Margin="8">
+
+                <TabControl ItemsSource="{Binding NombreContenedores}">
+                    <TabControl.ItemTemplate>
+                        <!--  Este es el encabezado de la pestaña  -->
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <!--  Este es el contenido de la pestaña  -->
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
+                <ui:Card Width="200" Content="Taco" />
+                <ui:AutoSuggestBox
+                    Icon="w"
+                    Margin="0,0,0,4"
+                    Background="BlueViolet"
+                    Foreground="Aqua"
+                    PlaceholderText="Search" />
                 <ui:TextBlock
                     Margin="0,0,0,10"
                     FontSize="16"
