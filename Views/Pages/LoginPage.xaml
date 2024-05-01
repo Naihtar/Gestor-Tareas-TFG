@@ -13,7 +13,11 @@
     d:DesignWidth="1280"
     mc:Ignorable="d">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -22,15 +26,17 @@
 
         <StackPanel
             Grid.Row="1"
+            Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
 
-            <Separator Margin="4" Opacity="0" />
             <ui:Image
-                Width="200"
+                Width="300"
+                Margin="0,4,0,4"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Source="/Resources/Images/LogoTFG.png" />
+
             <ui:TextBox
                 x:Name="UsernameTextBox"
                 Width="200"
@@ -40,7 +46,10 @@
                                      Filled=True}"
                 PlaceholderText="Usuario"
                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
-            <Separator Margin="4" Opacity="0" />
+            <Separator
+                Width="200"
+                Margin="0,4,0,4"
+                Opacity="0" />
             <ui:PasswordBox
                 x:Name="PasswordBox"
                 Width="200"
@@ -49,7 +58,10 @@
                                      Filled=True}"
                 Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 PlaceholderText="Password" />
-            <Separator Margin="4" Opacity="0" />
+            <Separator
+                Width="200"
+                Margin="0,4,0,4"
+                Opacity="0" />
             <ui:Button
                 Name="AccessButton"
                 Width="200"
@@ -57,10 +69,14 @@
                 VerticalAlignment="Center"
                 Command="{Binding LoginCommand}"
                 Content="Button" />
-            <Separator Margin="4" Opacity="0" />
+            <Separator
+                Width="200"
+                Margin="0,4,0,4"
+                Opacity="0" />
         </StackPanel>
         <Grid
             Grid.Row="2"
+            Grid.Column="1"
             Width="200"
             HorizontalAlignment="Center"
             VerticalAlignment="Top">
