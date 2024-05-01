@@ -11,77 +11,271 @@
     d:DesignHeight="720"
     d:DesignWidth="1280"
     mc:Ignorable="d">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Border
+        Margin="8"
+        Background="#323232"
+        CornerRadius="16">
+        <StackPanel>
+            <!--  Top Bar  -->
+            <Grid Margin="16,0,16,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-        <Border
-            Grid.Row="1"
-            Grid.Column="1"
-            Margin="8"
-            CornerRadius="8">
+                <!--  Workspaces y Add  -->
+                <Grid
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
 
-            <StackPanel x:Name="UserInfoPanel" Margin="8">
+                    <!--  Profile Button  -->
 
-                <TabControl ItemsSource="{Binding NombreContenedores}">
-                    <TabControl.ItemTemplate>
-                        <!--  Este es el encabezado de la pestaña  -->
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" />
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                    <TabControl.ContentTemplate>
-                        <!--  Este es el contenido de la pestaña  -->
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" />
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-                <ui:Card Width="200" Content="Taco" />
+                    <ui:Button
+                        Grid.Column="0"
+                        Width="40 "
+                        Height="32"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Command="{Binding UserProfileCommand}"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}" />
+
+                    <Menu Grid.Column="1" HorizontalAlignment="Center">
+                        <ui:DropDownButton
+                            Width="160"
+                            Height="32"
+                            Content="Workspaces"
+                            FontFamily="Fira Code"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Icon="{ui:SymbolIcon FolderAdd48,
+                                                 Filled=True}">
+                            <ui:DropDownButton.Flyout>
+                                <ContextMenu>
+                                    <MenuItem Header="Workspace 1" />
+                                    <MenuItem Header="Workspace 2" />
+                                    <MenuItem Header="Workspace 3" />
+                                    <MenuItem Header="Workspace 4" />
+                                </ContextMenu>
+                            </ui:DropDownButton.Flyout>
+                        </ui:DropDownButton>
+                    </Menu>
+
+
+                    <!--  Add Button  -->
+
+                    <ui:Button
+                        Grid.Column="2"
+                        Width="40"
+                        Height="32"
+                        Margin="0,0,8,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Appearance="Secondary"
+                        Icon="{ui:SymbolIcon Add12,
+                                             Filled=True}" />
+
+                    <!--  Edit Button  -->
+
+                    <ui:Button
+                        Grid.Column="3"
+                        Width="40"
+                        Height="32"
+                        Margin="0,0,8,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Appearance="Secondary"
+                        Icon="{ui:SymbolIcon Edit16,
+                                             Filled=True}" />
+
+                    <!--  Delete Button  -->
+
+                    <ui:Button
+                        Grid.Column="4"
+                        Width="40"
+                        Height="32"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Appearance="Secondary"
+                        Icon="{ui:SymbolIcon Delete20,
+                                             Filled=True}" />
+                </Grid>
+
+                <!--  Buscador  -->
                 <ui:AutoSuggestBox
-                    Icon="w"
-                    Margin="0,0,0,4"
-                    Background="BlueViolet"
-                    Foreground="Aqua"
+                    Grid.Column="1"
+                    Height="32"
+                    Margin="8,0,0,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Icon="{ui:SymbolIcon Search24}"
                     PlaceholderText="Search" />
-                <ui:TextBlock
-                    Margin="0,0,0,10"
-                    FontSize="16"
-                    Foreground="White"
-                    Text="Taco" />
-                <ui:TextBlock
-                    Margin="0,0,0,10"
-                    FontSize="16"
-                    Foreground="White"
-                    Text="Taco" />
-                <ui:TextBlock
-                    Margin="0,0,0,10"
-                    FontSize="16"
-                    Foreground="White"
-                    Text="Taco" />
-                <ui:TextBlock
-                    Margin="0,0,0,10"
-                    FontSize="16"
-                    Foreground="White"
-                    Text="Taco" />
-                <ui:TextBlock
-                    Margin="0,0,0,10"
-                    FontSize="16"
-                    Foreground="White"
-                    Text="Taco" />
-                <!--  Botón que activa MyCommand  -->
-                <Button
-                    Margin="0,10,0,0"
-                    Command="{Binding MyCommand}"
-                    Content="Cambiar IsValueTrue" />
-            </StackPanel>
-        </Border>
 
-    </Grid>
+
+            </Grid>
+            <!--  Cards  -->
+            <Grid Margin="16,0,16,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ui:Card
+                    Grid.Column="0"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Top">
+                    <StackPanel>
+                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
+                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            Margin="8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="lorem ipsum"
+                            IsEnabled="False" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Add Task"
+                            Icon="{ui:SymbolIcon Add12,
+                                                 Filled=True}" />
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card
+                    Grid.Column="1"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Top">
+                    <StackPanel>
+                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
+                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            Margin="8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="lorem ipsum"
+                            IsEnabled="False" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Add Task"
+                            Icon="{ui:SymbolIcon Add12,
+                                                 Filled=True}" />
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card
+                    Grid.Column="2"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Top">
+                    <StackPanel>
+                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
+                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            Margin="8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="lorem ipsum"
+                            IsEnabled="False" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Add Task"
+                            Icon="{ui:SymbolIcon Add12,
+                                                 Filled=True}" />
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card
+                    Grid.Column="3"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Top">
+                    <StackPanel>
+                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
+                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            Margin="8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Task"
+                            IsEnabled="False" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Add Task"
+                            Icon="{ui:SymbolIcon Add12,
+                                                 Filled=True}" />
+                    </StackPanel>
+                </ui:Card>
+                <ui:Card
+                    Grid.Column="4"
+                    Margin="0,0,4,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Top">
+                    <StackPanel>
+                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
+                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            Margin="8"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="lorem ipsum"
+                            IsEnabled="False" />
+                        <ui:Button
+                            Grid.Column="0"
+                            Width="196"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="Add Task"
+                            Icon="{ui:SymbolIcon Add12,
+                                                 Filled=True}" />
+                    </StackPanel>
+                </ui:Card>
+
+            </Grid>
+        </StackPanel>
+    </Border>
 </Page>

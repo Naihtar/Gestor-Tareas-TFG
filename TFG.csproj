@@ -22,16 +22,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resources\Theme\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Resources\Images\Espania.png" />
     <Resource Include="Resources\Images\Francia.png" />
     <Content Include="Resources\Images\LogoTFG.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\Images\UK.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Styles\" />
+    <Folder Include="Resources\Theme\" />
   </ItemGroup>
 
 </Project>

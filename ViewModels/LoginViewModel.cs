@@ -12,7 +12,7 @@ namespace TFG.ViewModels {
         private MainWindowViewModel _mainWindowViewModel;
         private User? _user;
 
-        public CommandViewModel LoginCommand { get; }
+        public CommandViewModel LoginCommand { get; private set; }
         public string Username { get; set; }
         public string Password { get; set; }
         private string? _errorMessage;
@@ -29,12 +29,16 @@ namespace TFG.ViewModels {
             _navigationService = navigationService;
             _authenticationService = new AuthenticationService();
             _mainWindowViewModel = mainWindowViewModel;
-            _mainWindowViewModel.NavigationViewVisibility = Visibility.Collapsed;
             Username = string.Empty;
             Password = string.Empty;
 
-            LoginCommand = new CommandViewModel(async (object obj) => await LoginAsync(), CanLogin);
+            LoginCommand = new CommandViewModel(LoginAsyncWrapper, CanLogin);
         }
+
+        private async void LoginAsyncWrapper(object obj) {
+            await LoginAsync();
+        }
+
 
         // Metodo activar "AcessButton".
         private bool CanLogin(object obj) {
@@ -52,9 +56,7 @@ namespace TFG.ViewModels {
                 return;
             }
             _user = await _authenticationService.GetUserByUsernameAsync(username);
-            _mainWindowViewModel.NavigationViewVisibility = Visibility.Visible;
-            _navigationService.NavigateToWorkSpace(_user, _mainWindowViewModel);
+            _navigationService.NavigateTo("Workspace",_user, _mainWindowViewModel, (NavigationService)_navigationService);
         }
     }
-
 }

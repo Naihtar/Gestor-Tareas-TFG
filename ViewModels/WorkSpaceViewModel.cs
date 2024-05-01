@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using TFG.Services.DatabaseServices;
+using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
 using TFGDesktopApp.Models;
 
@@ -7,34 +8,28 @@ namespace TFG.ViewModels {
     public class WorkSpaceViewModel : BaseViewModel {
         private User _user;
         private MainWindowViewModel _mainWindowViewModel;
+        private readonly INavigationService _navigationService;
+
         private readonly DatabaseService _databaseService;
 
-        public ObservableCollection<string> NombreContenedores { get; }
+        public CommandViewModel UserProfileCommand { get; private set; }
 
 
-        public CommandViewModel MyCommand { get; }
+        public WorkSpaceViewModel(User user, MainWindowViewModel mainWindowViewModel, NavigationService nav) {
 
-        public WorkSpaceViewModel(User user, MainWindowViewModel mainWindowViewModel) {
-
-            NombreContenedores = new ObservableCollection<string>();
             _user = user;
             _mainWindowViewModel = mainWindowViewModel;
             _databaseService = new DatabaseService();
-            MyCommand = new CommandViewModel(ExecuteMyCommand);
-            _ = FillContainerNames();
-
+            _navigationService = nav;
+            UserProfileCommand = new CommandViewModel(UserProfileAccess);
         }
 
-        private void ExecuteMyCommand(object parameter) {
-            // Cambia IsValueTrue a true cuando se ejecuta el comando.
-            _mainWindowViewModel.IsValueTrue = true;
+
+        private void UserProfileAccess(object obj) {
+            _navigationService.NavigateTo("Profile", _user, _mainWindowViewModel,_navigationService);
         }
 
-        public async Task FillContainerNames() {
-            foreach (var containerId in _user.ListaContenedoresUsuario) {
-                var containerName = await _databaseService.GetContainerByIdAsync(containerId);
-                NombreContenedores.Add(containerName.NombreContenedor);
-            }
-        }
+        //TODO -> REVISAR COMO PARAMETRIZAR LOS NAVIGATION SERVICES SIN USAR CASTING.
+        //TODO -> DISEÑAR LA VISTA DE EL USUARIO.
     }
 }

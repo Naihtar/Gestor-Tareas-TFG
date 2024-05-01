@@ -16,9 +16,24 @@ namespace TFG.Services.NavigationServices {
         }
 
 
-        public void NavigateToWorkSpace(User user, MainWindowViewModel mainWindowViewModel) {
-            _frame.Navigate(new WorkSpacePage(user, mainWindowViewModel));
+        public void NavigateTo(string route,User user, MainWindowViewModel mainWindowViewModel, INavigationService nav) {
+
+            switch (route) {
+
+                case "Workspace":
+                    _frame.Navigate(new WorkSpacePage(user, mainWindowViewModel, this));
+                    break;
+                case "Profile":
+                    _frame.Navigate(new UserProfilePage(user, mainWindowViewModel, this));
+                    break;
+            }
         }
+        public void GoBack() {
+            if (_frame.CanGoBack) {
+                _frame.GoBack();
+            }
+        }
+
     }
 }
 
