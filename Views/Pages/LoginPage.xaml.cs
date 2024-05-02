@@ -6,10 +6,10 @@ using TFG.ViewModels;
 namespace TFG.Views.Pages {
     public partial class LoginPage : Page {
 
-        public LoginPage(Frame mainFrame, MainWindowViewModel mainWindowViewModel) {
+        public LoginPage(Frame mainFrame) {
             InitializeComponent();
             INavigationService navigationService = new NavigationService(mainFrame);
-            DataContext = new LoginViewModel(navigationService, mainWindowViewModel);
+            DataContext = new LoginViewModel(navigationService);
         }
     }
 }

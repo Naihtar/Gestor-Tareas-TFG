@@ -5,9 +5,9 @@ using TFGDesktopApp.Models;
 
 namespace TFG.Views.Pages {
     public partial class WorkSpacePage : Page {
-        public WorkSpacePage(User user, MainWindowViewModel mainWindowViewModel, NavigationService nav) {
+        public WorkSpacePage(User user, NavigationService nav) {
             InitializeComponent();
-            DataContext = new WorkSpaceViewModel(user, mainWindowViewModel, nav);
+            DataContext = new WorkSpaceViewModel(user, nav);
         }
     }
 }

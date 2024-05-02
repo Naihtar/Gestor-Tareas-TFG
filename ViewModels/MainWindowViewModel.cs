@@ -8,8 +8,7 @@ namespace TFG.ViewModels {
         private readonly INavigationService _navigationService;
         public MainWindowViewModel(INavigationService navigationService) {
             _navigationService = navigationService;
-            // Navega a la página de inicio de sesión al iniciar
-            _navigationService.NavigateToLogin(this);
+            _navigationService.NavigateToLogin();
         }
     }
 

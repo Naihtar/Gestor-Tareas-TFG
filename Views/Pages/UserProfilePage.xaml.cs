@@ -22,9 +22,9 @@ namespace TFG.Views.Pages
     /// </summary>
     public partial class UserProfilePage : Page
     {
-        public UserProfilePage(User user, MainWindowViewModel mainWindowViewModel, NavigationService nav) {
+        public UserProfilePage(User user, NavigationService nav) {
             InitializeComponent();
-            DataContext = new UserProfileViewModel(user, mainWindowViewModel, nav);
+            DataContext = new UserProfileViewModel(user, nav);
         }
     }
 }

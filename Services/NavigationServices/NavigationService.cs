@@ -11,20 +11,20 @@ namespace TFG.Services.NavigationServices {
             _frame = frame;
         }
 
-        public void NavigateToLogin(MainWindowViewModel mainWindowViewModel) {
-            _frame.Navigate(new LoginPage(_frame, mainWindowViewModel));
+        public void NavigateToLogin() {
+            _frame.Navigate(new LoginPage(_frame));
         }
 
 
-        public void NavigateTo(string route,User user, MainWindowViewModel mainWindowViewModel, INavigationService nav) {
+        public void NavigateTo(string route,User user, INavigationService nav) {
 
             switch (route) {
 
                 case "Workspace":
-                    _frame.Navigate(new WorkSpacePage(user, mainWindowViewModel, this));
+                    _frame.Navigate(new WorkSpacePage(user, this));
                     break;
                 case "Profile":
-                    _frame.Navigate(new UserProfilePage(user, mainWindowViewModel, this));
+                    _frame.Navigate(new UserProfilePage(user, this));
                     break;
             }
         }

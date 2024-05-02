@@ -9,7 +9,6 @@ namespace TFG.ViewModels {
         //Atributos
         private readonly AuthenticationService _authenticationService;
         private readonly INavigationService _navigationService;
-        private MainWindowViewModel _mainWindowViewModel;
         private User? _user;
 
         public CommandViewModel LoginCommand { get; private set; }
@@ -25,10 +24,9 @@ namespace TFG.ViewModels {
             }
         }
 
-        public LoginViewModel(INavigationService navigationService, MainWindowViewModel mainWindowViewModel) {
+        public LoginViewModel(INavigationService navigationService) {
             _navigationService = navigationService;
             _authenticationService = new AuthenticationService();
-            _mainWindowViewModel = mainWindowViewModel;
             Username = string.Empty;
             Password = string.Empty;
 
@@ -56,7 +54,7 @@ namespace TFG.ViewModels {
                 return;
             }
             _user = await _authenticationService.GetUserByUsernameAsync(username);
-            _navigationService.NavigateTo("Workspace",_user, _mainWindowViewModel, (NavigationService)_navigationService);
+            _navigationService.NavigateTo("Workspace",_user, (NavigationService)_navigationService);
         }
     }
 }
