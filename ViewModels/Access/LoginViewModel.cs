@@ -9,8 +9,9 @@ namespace TFG.ViewModels {
         //Atributos
         private readonly AuthenticationService _authenticationService;
         private readonly INavigationService _navigationService;
-        private User? _user;
+        private AppUser? _user;
 
+        //TODO - CreateAccountCommand.
         public CommandViewModel LoginCommand { get; private set; }
         public string Username { get; set; }
         public string Password { get; set; }

@@ -34,5 +34,9 @@ namespace TFG.ViewModels.Base {
             _executeAction(parameter);
 
         }
+
+        public void RaiseCanExecuteChanged() {
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 }

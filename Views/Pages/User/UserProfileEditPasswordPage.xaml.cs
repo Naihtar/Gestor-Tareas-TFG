@@ -10,21 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using TFG.Services.NavigationServices;
-using TFG.ViewModels;
-using TFGDesktopApp.Models;
 
-namespace TFG.Views.Pages
+namespace TFG.Views.Pages.User
 {
     /// <summary>
-    /// Interaction logic for UserProfilePage.xaml
+    /// Interaction logic for UserProfileEditPasswordPage.xaml
     /// </summary>
-    public partial class UserProfilePage : Page
+    public partial class UserProfileEditPasswordPage : Page
     {
-        public UserProfilePage(User user, NavigationService nav) {
-            InitializeComponent();
-            DataContext = new UserProfileViewModel(user, nav);
+        public UserProfileEditPasswordPage()
+        {
+            //InitializeComponent();
+
+            //DataContext = new UserProfileEditPasswordPage();
         }
     }
 }

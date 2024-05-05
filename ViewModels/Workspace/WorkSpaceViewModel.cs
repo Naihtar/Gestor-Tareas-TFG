@@ -6,7 +6,7 @@ using TFGDesktopApp.Models;
 
 namespace TFG.ViewModels {
     public class WorkSpaceViewModel : BaseViewModel {
-        private User _user;
+        private AppUser _user;
         private readonly INavigationService _navigationService;
 
         private readonly DatabaseService _databaseService;
@@ -14,7 +14,7 @@ namespace TFG.ViewModels {
         public CommandViewModel UserProfileCommand { get; private set; }
 
 
-        public WorkSpaceViewModel(User user, NavigationService nav) {
+        public WorkSpaceViewModel(AppUser user, NavigationService nav) {
 
             _user = user;
             _databaseService = new DatabaseService();

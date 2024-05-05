@@ -16,7 +16,7 @@ namespace TFG.Services.NavigationServices {
         }
 
 
-        public void NavigateTo(string route,User user, INavigationService nav) {
+        public void NavigateTo(string route, AppUser user, INavigationService nav) {
 
             switch (route) {
 
@@ -25,6 +25,9 @@ namespace TFG.Services.NavigationServices {
                     break;
                 case "Profile":
                     _frame.Navigate(new UserProfilePage(user, this));
+                    break;
+                case "ProfileEdit":
+                    _frame.Navigate(new UserProfileEditPage(user, this));
                     break;
             }
         }

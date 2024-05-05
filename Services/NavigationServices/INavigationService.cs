@@ -5,7 +5,7 @@ namespace TFG.Services.NavigationServices {
 
     public interface INavigationService {
         void NavigateToLogin();
-        void NavigateTo(string route, User user, INavigationService nav);
+        void NavigateTo(string route, AppUser user, INavigationService nav);
         void GoBack();
     }
 

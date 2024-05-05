@@ -23,14 +23,37 @@ namespace TFG.Services.DatabaseServices {
             return await collection.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(ObjectId id) {
+        public async Task<AppUser> GetUserByIdAsync(ObjectId id) {
             // Obtén la colección de usuarios de forma asíncrona
-            var users = await GetCollectionAsync<User>("usuarios");
+            var users = await GetCollectionAsync<AppUser>("usuarios");
 
             // Busca al usuario en la colección de forma asíncrona
             var user = await users.Find(u => u.IdUsuario == id).FirstOrDefaultAsync();
 
             return user;
+        }
+
+        public async Task UpdateUserAsync(AppUser user) {
+            // Obtén la colección de usuarios de forma asíncrona
+            var users = await GetCollectionAsync<AppUser>("usuarios");
+
+            // Crea un filtro para encontrar al usuario por su ID
+            var filter = Builders<AppUser>.Filter.Eq(u => u.IdUsuario, user.IdUsuario);
+
+            // Actualiza el usuario en la colección de forma asíncrona
+            await users.ReplaceOneAsync(filter, user);
+        }
+
+        public async Task<bool> ExistNicknameDB(string aliasUsuario) {
+            var collection = await GetCollectionAsync<AppUser>("usuarios");
+            var filterAlias = Builders<AppUser>.Filter.Eq(u => u.AliasUsuario, aliasUsuario);
+            return await collection.Find(filterAlias).AnyAsync(); ;
+        }
+        public async Task<bool> ExistEmailDB(string emailUsuario) {
+            var collection = await GetCollectionAsync<AppUser>("usuarios");
+            var filterEmail = Builders<AppUser>.Filter.Eq(u => u.EmailUsuario, emailUsuario);
+            return await collection.Find(filterEmail).AnyAsync();
+
         }
     }
 }

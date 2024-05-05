@@ -2,7 +2,8 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFGDesktopApp.Models {
-    public class User : IDisposable {
+    public class AppUser : IDisposable {
+        public AppUser() { }
 
         private ObjectId _idUsuario;
         [BsonId]
@@ -55,19 +56,6 @@ namespace TFGDesktopApp.Models {
             get { return _listaContenedoresUsuario; }
             set { _listaContenedoresUsuario = value; }
         }
-
-        public User() { }
-    //    ~User()  // destructor
-    //{
-    //        _idUsuario = default(ObjectId);
-    //        _aliasUsuario = string.Empty;
-    //        _emailUsuario = string.Empty;
-    //        _passwordUsuario = string.Empty;
-    //        _nombreUsuario = string.Empty;
-    //        _apellido1Usuario = string.Empty;
-    //        _apellido2Usuario = string.Empty;
-    //        _listaContenedoresUsuario = null;
-    //    }
 
         public void Dispose() {
             _idUsuario = default(ObjectId);
