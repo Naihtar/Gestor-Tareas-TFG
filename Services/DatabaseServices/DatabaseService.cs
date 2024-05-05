@@ -44,11 +44,6 @@ namespace TFG.Services.DatabaseServices {
             await users.ReplaceOneAsync(filter, user);
         }
 
-        public async Task<bool> ExistNicknameDB(string aliasUsuario) {
-            var collection = await GetCollectionAsync<AppUser>("usuarios");
-            var filterAlias = Builders<AppUser>.Filter.Eq(u => u.AliasUsuario, aliasUsuario);
-            return await collection.Find(filterAlias).AnyAsync(); ;
-        }
         public async Task<bool> ExistEmailDB(string emailUsuario) {
             var collection = await GetCollectionAsync<AppUser>("usuarios");
             var filterEmail = Builders<AppUser>.Filter.Eq(u => u.EmailUsuario, emailUsuario);

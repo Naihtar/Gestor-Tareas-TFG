@@ -11,5 +11,6 @@ namespace TFG.Views.Pages {
             INavigationService navigationService = new NavigationService(mainFrame);
             DataContext = new LoginViewModel(navigationService);
         }
+
     }
 }

@@ -15,22 +15,22 @@ namespace TFG.Services.AuthentificationServices {
             _databaseService = new DatabaseService();
         }
 
-        public async Task<AppUser> GetUserByUsernameAsync(string username) {
+        public async Task<AppUser> GetUserByEmailAsync(string email) {
             // Obtén la colección de usuarios de forma asíncrona
             var users = await _databaseService.GetCollectionAsync<AppUser>("usuarios");
 
             // Busca al usuario en la colección de forma asíncrona
-            var user = await users.Find(u => u.AliasUsuario == username).FirstOrDefaultAsync();
+            var user = await users.Find(u => u.EmailUsuario == email).FirstOrDefaultAsync();
 
             return user;
         }
 
-        public async Task<bool> AuthenticateUserAsync(string username, string password) {
+        public async Task<bool> AuthenticateUserAsync(string email, string password) {
             // Obtén la colección de usuarios de forma asíncrona
             var users = await _databaseService.GetCollectionAsync<AppUser>("usuarios");
 
             // Busca al usuario en la colección de forma asíncrona
-            var user = await users.Find(u => u.AliasUsuario == username).FirstOrDefaultAsync();
+            var user = await users.Find(u => u.EmailUsuario == email).FirstOrDefaultAsync();
 
             // Si el usuario no existe, devuelve false
             if (user == null) {

@@ -13,7 +13,7 @@ namespace TFG.ViewModels {
 
         //TODO - CreateAccountCommand.
         public CommandViewModel LoginCommand { get; private set; }
-        public string Username { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
         private string? _errorMessage;
 
@@ -28,7 +28,7 @@ namespace TFG.ViewModels {
         public LoginViewModel(INavigationService navigationService) {
             _navigationService = navigationService;
             _authenticationService = new AuthenticationService();
-            Username = string.Empty;
+            Email = string.Empty;
             Password = string.Empty;
 
             LoginCommand = new CommandViewModel(LoginAsyncWrapper, CanLogin);
@@ -41,20 +41,20 @@ namespace TFG.ViewModels {
 
         // Metodo activar "AcessButton".
         private bool CanLogin(object obj) {
-            return !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
+            return !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password);
         }
 
         // Método para autenticar al usuario
         private async Task LoginAsync() {
-            string username = Username;
+            string email = Email;
             string password = Password;
 
-            bool isAuthenticated = await _authenticationService.AuthenticateUserAsync(username, password);
+            bool isAuthenticated = await _authenticationService.AuthenticateUserAsync(email, password);
             if (!isAuthenticated) {
-                ErrorMessage = "Usuario o contraseña incorrecto/a.";
+                ErrorMessage = "Email o contraseña incorrecto/a.";
                 return;
             }
-            _user = await _authenticationService.GetUserByUsernameAsync(username);
+            _user = await _authenticationService.GetUserByEmailAsync(email);
             _navigationService.NavigateTo("Workspace",_user, (NavigationService)_navigationService);
         }
     }
