@@ -1,30 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows.Controls;
+using TFG.Services.NavigationServices;
+using TFG.ViewModels;
+using TFGDesktopApp.Models;
 
-namespace TFG.Views.Pages.User
-{
+namespace TFG.Views.Pages {
     /// <summary>
     /// Interaction logic for UserProfileEditPasswordPage.xaml
     /// </summary>
     public partial class UserProfileEditPasswordPage : Page
     {
-        public UserProfileEditPasswordPage()
+        public UserProfileEditPasswordPage(AppUser user, NavigationService nav)
         {
-            //InitializeComponent();
+            InitializeComponent();
 
-            //DataContext = new UserProfileEditPasswordPage();
+            DataContext = new UserProfileEditPasswordViewModel(user, nav);
         }
     }
 }

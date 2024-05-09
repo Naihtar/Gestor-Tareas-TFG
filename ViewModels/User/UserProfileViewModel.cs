@@ -12,14 +12,16 @@ namespace TFG.ViewModels {
             LogOutCommand = new CommandViewModel(LogOut);
             EditCommand = new CommandViewModel(EditProfile);
         }
-
-        
         private void LogOut(object obj) {
             _user?.Dispose();
             _navigationService.NavigateToLogin();
         }
         private void EditProfile(object obj) {
             _navigationService.NavigateTo("ProfileEdit", _user, _navigationService);
+        }
+
+        protected override Task SaveChangesAsyncWrapper() {
+            throw new NotImplementedException();
         }
     }
 }

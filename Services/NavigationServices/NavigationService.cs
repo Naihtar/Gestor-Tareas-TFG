@@ -29,6 +29,9 @@ namespace TFG.Services.NavigationServices {
                 case "ProfileEdit":
                     _frame.Navigate(new UserProfileEditPage(user, this));
                     break;
+                case "ProfilePassword":
+                    _frame.Navigate(new UserProfileEditPasswordPage(user, this));
+                    break;
             }
         }
         public void GoBack() {

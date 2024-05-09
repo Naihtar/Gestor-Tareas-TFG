@@ -9,8 +9,8 @@
     xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Title="UserProfilePage"
     d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileBaseViewModel}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
     Foreground="White"
     mc:Ignorable="d">
     <!--
@@ -55,7 +55,7 @@
                 FontWeight="Bold">
                 <ui:MenuItem
                     Command="{Binding WorkspaceCommand}"
-                    Icon="{ui:SymbolIcon Translate24,
+                    Icon="{ui:SymbolIcon Settings20,
                                          Filled=True}"
                     ToolTip="Settings" />
             </Menu>

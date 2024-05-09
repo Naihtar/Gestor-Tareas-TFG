@@ -8,8 +8,8 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Title="UserProfileEditPage"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
     Foreground="White"
     mc:Ignorable="d">
     <!--
@@ -136,62 +136,73 @@
                         Text="Second Surname:" />
 
                     <!--  TextBoxes  -->
-                    <TextBox
+                    <ui:TextBox
                         Grid.Row="0"
                         Grid.Column="1"
-                        Width="auto"
+                        Width="320"
                         Height="36"
                         MinWidth="160"
                         FontFamily="Fira Code"
                         FontSize="14"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}"
                         Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}" />
-                    <TextBox
+                    <ui:TextBox
                         Grid.Row="1"
                         Grid.Column="1"
-                        Width="auto"
+                        Width="320"
                         Height="36"
                         MinWidth="160"
                         FontFamily="Fira Code"
                         FontSize="14"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}"
                         Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}" />
-                    <TextBox
+                    <ui:TextBox
                         Grid.Row="2"
                         Grid.Column="1"
-                        Width="auto"
+                        Width="320"
                         Height="36"
                         MinWidth="160"
                         FontFamily="Fira Code"
                         FontSize="14"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}"
                         Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}" />
-                    <TextBox
+                    <ui:TextBox
                         Grid.Row="3"
                         Grid.Column="1"
-                        Width="auto"
+                        Width="320"
                         Height="36"
                         MinWidth="160"
                         FontFamily="Fira Code"
                         FontSize="14"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}"
                         Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}" />
-                    <TextBox
+                    <ui:TextBox
                         Grid.Row="4"
                         Grid.Column="1"
-                        Width="auto"
+                        Width="320"
                         Height="36"
                         MinWidth="160"
                         FontFamily="Fira Code"
                         FontSize="14"
+                        Icon="{ui:SymbolIcon Person20,
+                                             Filled=True}"
                         Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}" />
+
                     <ui:Button
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
-                        Width="200 "
+                        Width="320 "
                         Height="32"
                         Margin="0,16,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Appearance="Secondary"
-                        Command="{Binding SaveCommand}"
+                        Command="{Binding PasswordEditCommand}"
                         Content="Change Password"
                         FontFamily="Fira Code"
                         FontSize="16"
@@ -202,7 +213,7 @@
                 </Grid>
 
                 <ui:Button
-                    Width="200 "
+                    Width="320 "
                     Height="32"
                     Margin="0,16,0,0"
                     HorizontalAlignment="Center"
@@ -216,6 +227,17 @@
                                          Filled=True}"
                     IsEnabled="True"
                     ToolTip="Save Profile" />
+                <!--  Error Message  -->
+                <ui:TextBlock
+                    Width="auto"
+                    Height="32"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    Foreground="Red"
+                    Text="{Binding ErrorMessage}" />
             </StackPanel>
         </Grid>
 

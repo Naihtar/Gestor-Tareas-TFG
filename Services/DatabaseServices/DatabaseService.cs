@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using TFG.Database;
 using TFG.Models;
@@ -11,6 +10,7 @@ namespace TFG.Services.DatabaseServices {
 
         public DatabaseService() {
             _connection = new DatabaseConnection();
+
         }
 
         public async Task<IMongoCollection<T>> GetCollectionAsync<T>(string collectionName) {
@@ -23,12 +23,12 @@ namespace TFG.Services.DatabaseServices {
             return await collection.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<AppUser> GetUserByIdAsync(ObjectId id) {
+        public async Task<AppUser> GetUserByIdAsync(ObjectId userId) {
             // Obtén la colección de usuarios de forma asíncrona
             var users = await GetCollectionAsync<AppUser>("usuarios");
 
             // Busca al usuario en la colección de forma asíncrona
-            var user = await users.Find(u => u.IdUsuario == id).FirstOrDefaultAsync();
+            var user = await users.Find(u => u.IdUsuario == userId).FirstOrDefaultAsync();
 
             return user;
         }
@@ -44,11 +44,44 @@ namespace TFG.Services.DatabaseServices {
             await users.ReplaceOneAsync(filter, user);
         }
 
-        public async Task<bool> ExistEmailDB(string emailUsuario) {
+        public async Task<bool> ExistEmailDB(ObjectId userId, string emailUsuario) {
+            var users = await GetCollectionAsync<AppUser>("usuarios");
+
+            // Crea un filtro para buscar un usuario con el mismo email pero diferente al usuario actual
+            var filter = Builders<AppUser>.Filter.And(
+                Builders<AppUser>.Filter.Eq("email", emailUsuario),
+                Builders<AppUser>.Filter.Ne("_id", userId)
+            );
+
+            // Verifica si existe algún usuario que coincida con el filtro
+            return await users.Find(filter).AnyAsync();
+        }public async Task<bool> ExistAliasDB(ObjectId userId, string aliasUsuario) {
             var collection = await GetCollectionAsync<AppUser>("usuarios");
-            var filterEmail = Builders<AppUser>.Filter.Eq(u => u.EmailUsuario, emailUsuario);
-            return await collection.Find(filterEmail).AnyAsync();
+
+            // Crea un filtro para buscar un usuario con el mismo email pero diferente al usuario actual
+            var filter = Builders<AppUser>.Filter.And(
+                Builders<AppUser>.Filter.Eq("aliasUsuario", aliasUsuario),
+                Builders<AppUser>.Filter.Ne("_id", userId)
+            );
+
+            // Verifica si existe algún usuario que coincida con el filtro
+            return await collection.Find(filter).AnyAsync();
+        }
+
+        public async Task<bool> VerifyPasswordAsync(ObjectId userId, string password) {
+
+            var users = await GetCollectionAsync<AppUser>("usuarios");
+
+            var user = await users.Find(u => u.IdUsuario == userId).FirstOrDefaultAsync();
+
+            if (BCrypt.Net.BCrypt.Verify(password, user.PasswordUsuario)) {
+                return true;
+            }
+
+            return false;
 
         }
+
+
     }
 }

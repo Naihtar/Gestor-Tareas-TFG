@@ -13,7 +13,7 @@ namespace TFG.ViewModels {
 
         //TODO - CreateAccountCommand.
         public CommandViewModel LoginCommand { get; private set; }
-        public string Email { get; set; }
+        public string Data { get; set; }
         public string Password { get; set; }
         private string? _errorMessage;
 
@@ -28,33 +28,29 @@ namespace TFG.ViewModels {
         public LoginViewModel(INavigationService navigationService) {
             _navigationService = navigationService;
             _authenticationService = new AuthenticationService();
-            Email = string.Empty;
+            Data = string.Empty;
             Password = string.Empty;
 
-            LoginCommand = new CommandViewModel(LoginAsyncWrapper, CanLogin);
-        }
-
-        private async void LoginAsyncWrapper(object obj) {
-            await LoginAsync();
+            LoginCommand = new CommandViewModel(async (obj) => await LoginAsync(), CanLogin);
         }
 
 
         // Metodo activar "AcessButton".
         private bool CanLogin(object obj) {
-            return !string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password);
+            return !string.IsNullOrEmpty(Data) && !string.IsNullOrEmpty(Password);
         }
 
         // Método para autenticar al usuario
         private async Task LoginAsync() {
-            string email = Email;
+            string input = Data;
             string password = Password;
 
-            bool isAuthenticated = await _authenticationService.AuthenticateUserAsync(email, password);
+            bool isAuthenticated = await _authenticationService.AuthenticateUserAsync(input, password);
             if (!isAuthenticated) {
                 ErrorMessage = "Email o contraseña incorrecto/a.";
                 return;
             }
-            _user = await _authenticationService.GetUserByEmailAsync(email);
+            _user = await _authenticationService.GetUserByDataInput(input);
             _navigationService.NavigateTo("Workspace",_user, (NavigationService)_navigationService);
         }
     }

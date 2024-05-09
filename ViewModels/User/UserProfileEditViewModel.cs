@@ -1,35 +1,54 @@
-﻿using TFG.Services.DatabaseServices;
-using TFG.ViewModels.Base;
-using TFG.ViewModels;
-using TFGDesktopApp.Models;
+﻿using MongoDB.Bson;
 using TFG.Services.NavigationServices;
-namespace TFG.ViewModels {
+using TFG.ViewModels.Base;
+using TFGDesktopApp.Models;
 
+
+namespace TFG.ViewModels {
     public class UserProfileEditViewModel : UserProfileBaseViewModel {
         public CommandViewModel SaveCommand { get; }
-        public AppUser EditableUser { get; set; }
+        public CommandViewModel PasswordEditCommand { get; }
 
         public UserProfileEditViewModel(AppUser? user, NavigationService navigationService) : base(user, navigationService) {
-            EditableUser = user ?? new AppUser() {
-                Apellido2Usuario = string.Empty,
-                AliasUsuario = string.Empty,
-                EmailUsuario = string.Empty,
-                PasswordUsuario = string.Empty,
-                NombreUsuario = string.Empty,
-                Apellido1Usuario = string.Empty
-            };
-            SaveCommand = new CommandViewModel(async obj => await SaveChangesAsync());
+            SaveCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper());
+            PasswordEditCommand = new CommandViewModel(EditPassword);
         }
 
-        private async Task SaveChangesAsync() {
-            // Actualiza el usuario en la base de datos
-            await _databaseService.UpdateUserAsync(EditableUser);
+        protected override async Task SaveChangesAsyncWrapper() {
+            ObjectId idUser = EditableUser.IdUsuario;
+            bool email = await _databaseService.ExistEmailDB(idUser, EditableUser.EmailUsuario);
+            bool alias = await _databaseService.ExistAliasDB(idUser, EditableUser.AliasUsuario);
+            bool fields = AreAnyFieldsEmpty();
 
-            // Actualiza las propiedades del perfil de usuario
-            UserData();
 
-            // Navega hacia atrás
-            _navigationService.NavigateTo("Profile", EditableUser, _navigationService);
+            if (fields) {
+                ErrorMessage = "Rellene los campos vacios.";
+                return;
+            }
+            if (email) {
+                ErrorMessage = "El email introducido ya esta en uso.";
+                return;
+            }
+
+            if (alias) {
+                ErrorMessage = "El usuario introducido ya esta en uso.";
+                return;
+            }
+
+
+            await SaveChangesAsync();
+        }
+
+        private bool AreAnyFieldsEmpty() {
+            return string.IsNullOrEmpty(EditableUser.AliasUsuario) ||
+                   string.IsNullOrEmpty(EditableUser.EmailUsuario) ||
+                   string.IsNullOrEmpty(EditableUser.NombreUsuario) ||
+                   string.IsNullOrEmpty(EditableUser.Apellido1Usuario) ||
+                   string.IsNullOrEmpty(EditableUser.Apellido2Usuario);
+        }
+
+        private void EditPassword(object obj) {
+            _navigationService.NavigateTo("ProfilePassword", EditableUser, _navigationService);
         }
     }
 }

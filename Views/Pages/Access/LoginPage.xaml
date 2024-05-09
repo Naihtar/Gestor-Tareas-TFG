@@ -39,21 +39,23 @@
 
             <ui:TextBox
                 x:Name="EmailTextBox"
-                Width="200"
+                Width="320"
                 HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
+                FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="Email"
-                Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="User or Email..."
+                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
             <Separator
                 Width="200"
                 Margin="0,4,0,4"
                 Opacity="0" />
             <ui:PasswordBox
                 x:Name="PasswordBox"
-                Width="200"
+                Width="320"
                 FontFamily="Fira Code"
+                FontSize="16"
                 Icon="{ui:SymbolIcon PersonKey20,
                                      Filled=True}"
                 Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -64,11 +66,14 @@
                 Opacity="0" />
             <ui:Button
                 Name="AccessButton"
-                Width="200"
+                Width="320"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Command="{Binding LoginCommand}"
-                Content="Button" />
+                Content="Button"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold" />
             <Separator
                 Width="200"
                 Margin="0,4,0,4"
@@ -98,9 +103,13 @@
             Grid.Column="3"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom">
-            <TextBlock Margin="0,0,10,10">
-                <Hyperlink Command="{Binding CreateAccountCommand}">
-                    Create Account
+            <TextBlock
+                Margin="0,0,8,8"
+                FontFamily="Fira Code"
+                FontSize="16"
+                Opacity="0.5">
+                <Hyperlink>
+                    Sign Up
                 </Hyperlink>
             </TextBlock>
         </Grid>
