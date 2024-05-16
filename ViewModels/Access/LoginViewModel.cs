@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using TFG.Services.AuthentificationServices;
+using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
 using TFGDesktopApp.Models;
@@ -7,27 +8,21 @@ using TFGDesktopApp.Models;
 namespace TFG.ViewModels {
     public class LoginViewModel : BaseViewModel {
         //Atributos
-        private readonly AuthenticationService _authenticationService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly INavigationService _navigationService;
+        private readonly IDatabaseService _databaseService;
         private AppUser? _user;
 
         //TODO - CreateAccountCommand.
         public CommandViewModel LoginCommand { get; private set; }
         public string Data { get; set; }
         public string Password { get; set; }
-        private string? _errorMessage;
+        
 
-        public string? ErrorMessage {
-            get { return _errorMessage; }
-            set {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
-        }
-
-        public LoginViewModel(INavigationService navigationService) {
+        public LoginViewModel(INavigationService navigationService, IDatabaseService databaseService, IAuthenticationService auth) {
+            _databaseService = databaseService;
             _navigationService = navigationService;
-            _authenticationService = new AuthenticationService();
+            _authenticationService = auth;
             Data = string.Empty;
             Password = string.Empty;
 
@@ -51,7 +46,7 @@ namespace TFG.ViewModels {
                 return;
             }
             _user = await _authenticationService.GetUserByDataInput(input);
-            _navigationService.NavigateTo("Workspace",_user, (NavigationService)_navigationService);
+            _navigationService.NavigateTo("Workspace",_user, _navigationService, _databaseService, _authenticationService);
         }
     }
 }

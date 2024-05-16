@@ -33,6 +33,7 @@
   <ItemGroup>
     <Folder Include="Resources\Styles\" />
     <Folder Include="Resources\Theme\" />
+    <Folder Include="ViewModels\Workspace\Task\" />
   </ItemGroup>
 
 </Project>

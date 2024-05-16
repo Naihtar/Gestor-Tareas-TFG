@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson;
+using TFG.Services.AuthentificationServices;
+using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
 using TFGDesktopApp.Models;
@@ -9,10 +11,12 @@ namespace TFG.ViewModels {
         public CommandViewModel SaveCommand { get; }
         public CommandViewModel PasswordEditCommand { get; }
 
-        public UserProfileEditViewModel(AppUser? user, NavigationService navigationService) : base(user, navigationService) {
+        public UserProfileEditViewModel(AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(user, navigationService, db, auth) {
             SaveCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper());
             PasswordEditCommand = new CommandViewModel(EditPassword);
         }
+
+
 
         protected override async Task SaveChangesAsyncWrapper() {
             ObjectId idUser = EditableUser.IdUsuario;
@@ -48,7 +52,7 @@ namespace TFG.ViewModels {
         }
 
         private void EditPassword(object obj) {
-            _navigationService.NavigateTo("ProfilePassword", EditableUser, _navigationService);
+            _navigationService.NavigateTo("ProfilePassword", EditableUser, _navigationService, _databaseService, _authenticationService);
         }
     }
 }

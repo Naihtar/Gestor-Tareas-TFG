@@ -1,0 +1,140 @@
+﻿<Page
+    x:Class="TFG.Views.Pages.Workspace.Container.AppContainerCreateOrEditPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="ContainerEditPage"
+    d:DesignHeight="720"
+    d:DesignWidth="1280"
+    Foreground="White"
+    mc:Ignorable="d">
+
+    <Border
+        Margin="8"
+        Background="#323232"
+        CornerRadius="16">
+        <Grid x:Name="UserProfileData">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Menu
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="4,0,0,0"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold">
+                <ui:MenuItem
+                    Command="{Binding WorkspaceCommand}"
+                    Icon="{ui:SymbolIcon ArrowLeft20,
+                                         Filled=True}"
+                    ToolTip="Workspace" />
+            </Menu>
+
+            <StackPanel
+                Grid.RowSpan="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+                <!--  Container: Name  -->
+                <ui:TextBlock
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Width="auto"
+                    Height="32"
+                    MinWidth="160"
+                    Margin="0,16,0,0"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Name:" />
+                <ui:TextBox
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Width="320"
+                    Height="36"
+                    MinWidth="160"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Icon="{ui:SymbolIcon Person20,
+                                         Filled=True}"
+                    MaxLength="27"
+                    PlaceholderText="Nombre workspace..."
+                    Text="{Binding EditableContainer.NombreContenedor, Mode=TwoWay}"
+                    ToolTip="Max 27 characters" />
+
+                <!--  Container: Description  -->
+                <ui:TextBlock
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Width="auto"
+                    Height="32"
+                    MinWidth="160"
+                    Margin="0,16,0,0"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Descripción:" />
+                <ui:TextBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="320"
+                    Height="100"
+                    MinWidth="160"
+                    MaxHeight="320"
+                    AcceptsReturn="True"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    MaxLength="255"
+                    PlaceholderText="Descripción del contenedor..."
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    Text="{Binding EditableContainer.DescripcionContenedor, Mode=TwoWay}"
+                    TextWrapping="Wrap"
+                    ToolTip="Max 255 characters" />
+                <ui:Button
+                    Width="320 "
+                    Height="32"
+                    Margin="0,16,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Appearance="Info"
+                    Command="{Binding SaveCommandContainer}"
+                    Content="Save"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    Icon="{ui:SymbolIcon Edit20,
+                                         Filled=True}"
+                    IsEnabled="True"
+                    ToolTip="Save container" />
+                <!--  Error Message  -->
+            </StackPanel>
+            <ui:TextBlock
+                Grid.Row="2"
+                Grid.ColumnSpan="4"
+                Width="320"
+                Height="64"
+                Margin="0,16,0,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontFamily="Fira Code"
+                FontSize="16"
+                Foreground="Red"
+                Text="{Binding ErrorMessage}"
+                TextWrapping="Wrap" />
+        </Grid>
+    </Border>
+
+</Page>

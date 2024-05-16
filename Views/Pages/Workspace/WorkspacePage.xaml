@@ -16,8 +16,7 @@
         Background="#323232"
         CornerRadius="16">
         <StackPanel>
-            <!--  Top Bar  -->
-
+            <!--  Workspace: Settings  -->
             <Grid Margin="20,0,20,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -28,19 +27,10 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ui:AutoSuggestBox
-                        Grid.Column="1"
-                        Height="32"
-                        MinWidth="480"
-                        HorizontalAlignment="Center"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Icon="{ui:SymbolIcon Search24}"
-                        PlaceholderText="Search" />
-
+                    <!--  CRUD Workspaces  -->
                     <Menu
                         Grid.Column="0"
                         HorizontalAlignment="Left"
@@ -49,21 +39,57 @@
                         FontWeight="Bold"
                         Foreground="White">
                         <ui:MenuItem Header="File">
-                            <ui:MenuItem Header="Add Workspace" Icon="{ui:SymbolIcon Add12, Filled=True}" />
-                            <ui:MenuItem Header="Edit Workspace" Icon="{ui:SymbolIcon Edit16, Filled=True}" />
-                            <ui:MenuItem Header="Delete Workspace" Icon="{ui:SymbolIcon Delete16, Filled=True}" />
+                            <ui:MenuItem
+                                Command="{Binding AddContainerCommand}"
+                                Header="Add Workspace"
+                                Icon="{ui:SymbolIcon Add12,
+                                                     Filled=True}" />
+                            <ui:MenuItem
+                                Command="{Binding EditContainer}"
+                                Header="Edit Workspace"
+                                Icon="{ui:SymbolIcon Edit16,
+                                                     Filled=True}" />
+                            <ui:MenuItem
+                                Command="{Binding DeleteContainerCommand}"
+                                Header="Delete Workspace"
+                                Icon="{ui:SymbolIcon Delete16,
+                                                     Filled=True}" />
                         </ui:MenuItem>
                         <ui:MenuItem Header="Workspaces">
-                            <MenuItem Header="Workspace 1" />
-                            <MenuItem Header="Workspace 2" />
-                            <MenuItem Header="Workspace 3" />
-                            <MenuItem Header="Workspace 4" />
+                            <ItemsControl ItemsSource="{Binding ContainerNames}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <ui:MenuItem
+                                            Command="{Binding Path=DataContext.ShowContentContainer, RelativeSource={RelativeSource AncestorType={x:Type ui:MenuItem}}}"
+                                            CommandParameter="{Binding}"
+                                            Header="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </ui:MenuItem>
                     </Menu>
+
+                    <!--  Information Workspace  -->
+                    <Menu
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        FontWeight="Bold"
+                        Foreground="White">
+                        <ui:MenuItem
+                            Command="{Binding ContainerCommand}"
+                            Header="{Binding SelectedContainerName}"
+                            Icon="{ui:SymbolIcon WhiteBoard20,
+                                                 Filled=True}" />
+                    </Menu>
+
                 </Grid>
 
+                <!--  Profile  -->
                 <Menu
-                    Grid.Column="1"
+                    Grid.Column="2"
                     HorizontalAlignment="Right"
                     FontFamily="Fira Code"
                     FontSize="20"
@@ -77,160 +103,441 @@
                 </Menu>
             </Grid>
 
-
-            <!--  Buscador  -->
-
-            <!--  Cards  -->
-            <Grid Margin="16,0,16,0">
+            <!--  Workspace: Kanban  -->
+            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
+                <!--  Card: TODO  -->
                 <ui:Card
                     Grid.Column="0"
-                    Margin="0,0,4,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Top">
+                    Margin="8"
+                    VerticalAlignment="Top">
+                    <!--  Background: Card  -->
+                    <ui:Card.Background>
+                        <SolidColorBrush Opacity="0.30" Color="#080808" />
+                    </ui:Card.Background>
+                    <!--  BorderColor: Card  -->
+                    <ui:Card.BorderBrush>
+                        <SolidColorBrush Opacity="0.25" Color="White" />
+                    </ui:Card.BorderBrush>
+                    <!--  Container Task: TODO  -->
                     <StackPanel>
-                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
-                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <Grid>
+                            <Grid.Background>
+                                <SolidColorBrush Opacity="0.45" Color="#0d0d0d" />
+                            </Grid.Background>
+                            <ui:TextBlock
+                                Margin="0,8,0,8"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Text="TODO" />
+                        </Grid>
+                        <Separator
+                            Height="4"
+                            Margin="0,0,0.5,2"
+                            Background="AliceBlue"
+                            Opacity="0.30" />
+                        <ScrollViewer MaxHeight="610" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel.Background>
+                                    <SolidColorBrush Opacity="0.60" Color="#2b2b2b" />
+                                </StackPanel.Background>
+                                <!--  Dynamic Elements  -->
+                                <ui:ListView Grid.Column="0" ItemsSource="{Binding ToDoTasks}">
+                                    <ui:ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid MaxWidth="600" Margin="8,8,8,8">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  Task name  -->
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Margin="0,0,8,0"
+                                                    VerticalAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding NombreTarea, Mode=OneWay}"
+                                                    TextWrapping="Wrap" />
+                                                <!--  Task Tags  -->
+                                                <ItemsControl
+                                                    Grid.Row="1"
+                                                    Margin="0,8,0,8"
+                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding StringFormat="{}#{0}">
+                                                                        <Binding />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <!--  CRUD Buttons  -->
+                                                <StackPanel
+                                                    Grid.RowSpan="3"
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Vertical">
+                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ui:ListView.ItemTemplate>
+                                </ui:ListView>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <!--  Button: Add Task  -->
                         <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            Margin="8"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="lorem ipsum"
-                            IsEnabled="False" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="Add Task"
-                            Icon="{ui:SymbolIcon Add12,
-                                                 Filled=True}" />
+                            Height="36"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Stretch">
+                            <ui:TextBlock>Add Task</ui:TextBlock>
+                        </ui:Button>
                     </StackPanel>
                 </ui:Card>
+                <!--  Card: On Hold  -->
                 <ui:Card
                     Grid.Column="1"
-                    Margin="0,0,4,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Top">
+                    Margin="8"
+                    VerticalAlignment="Top">
+                    <!--  Background: Card  -->
+                    <ui:Card.Background>
+                        <SolidColorBrush Opacity="0.30" Color="#156593" />
+                    </ui:Card.Background>
+                    <!--  BorderColor: Card  -->
+                    <ui:Card.BorderBrush>
+                        <SolidColorBrush Opacity="0.25" Color="White" />
+                    </ui:Card.BorderBrush>
+                    <!--  Container Task: On Hold  -->
                     <StackPanel>
-                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
-                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <Grid>
+                            <Grid.Background>
+                                <SolidColorBrush Opacity="0.45" Color="#071018" />
+                            </Grid.Background>
+                            <ui:TextBlock
+                                Margin="0,8,0,8"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Text="ON HOLD" />
+                        </Grid>
+                        <Separator
+                            Height="4"
+                            Margin="0,0,0.5,2"
+                            Background="AliceBlue"
+                            Opacity="0.30" />
+                        <ScrollViewer MaxHeight="610" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel.Background>
+                                    <SolidColorBrush Opacity="0.15" Color="#081a2b" />
+                                </StackPanel.Background>
+
+                                <!--  Dynamic Elements  -->
+                                <ui:ListView Grid.Column="0" ItemsSource="{Binding OnHoldTasks}">
+                                    <ui:ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid MaxWidth="640" Margin="8,8,8,8">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  Task name  -->
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Margin="0,0,8,0"
+                                                    VerticalAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding NombreTarea, Mode=OneWay}"
+                                                    TextWrapping="Wrap" />
+                                                <ItemsControl
+                                                    Grid.Row="2"
+                                                    Grid.ColumnSpan="3"
+                                                    Margin="0,8,0,8"
+                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding StringFormat="{}#{0}">
+                                                                        <Binding />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <!--  CRUD Buttons  -->
+                                                <StackPanel
+                                                    Grid.RowSpan="3"
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Vertical">
+                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ui:ListView.ItemTemplate>
+                                </ui:ListView>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <!--  Button: Add Task  -->
                         <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            Margin="8"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="lorem ipsum"
-                            IsEnabled="False" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="Add Task"
-                            Icon="{ui:SymbolIcon Add12,
-                                                 Filled=True}" />
-                    </StackPanel>
-                </ui:Card>
-                <ui:Card
-                    Grid.Column="2"
-                    Margin="0,0,4,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Top">
-                    <StackPanel>
-                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
-                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            Margin="8"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="lorem ipsum"
-                            IsEnabled="False" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="Add Task"
-                            Icon="{ui:SymbolIcon Add12,
-                                                 Filled=True}" />
-                    </StackPanel>
-                </ui:Card>
-                <ui:Card
-                    Grid.Column="3"
-                    Margin="0,0,4,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Top">
-                    <StackPanel>
-                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
-                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            Margin="8"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="Task"
-                            IsEnabled="False" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="Add Task"
-                            Icon="{ui:SymbolIcon Add12,
-                                                 Filled=True}" />
-                    </StackPanel>
-                </ui:Card>
-                <ui:Card
-                    Grid.Column="4"
-                    Margin="0,0,4,0"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Top">
-                    <StackPanel>
-                        <ui:TextBlock HorizontalAlignment="Center" VerticalAlignment="Top">lorem ipsum</ui:TextBlock>
-                        <ui:NavigationViewItemSeparator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            Margin="8"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="lorem ipsum"
-                            IsEnabled="False" />
-                        <ui:Button
-                            Grid.Column="0"
-                            Width="196"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Content="Add Task"
-                            Icon="{ui:SymbolIcon Add12,
-                                                 Filled=True}" />
+                            Height="36"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Stretch">
+                            <ui:TextBlock>Add Task</ui:TextBlock>
+                        </ui:Button>
                     </StackPanel>
                 </ui:Card>
 
+                <!--  Card: In Progress  -->
+                <ui:Card
+                    Grid.Column="2"
+                    Margin="8"
+                    VerticalAlignment="Top">
+                    <!--  Background: Card  -->
+                    <ui:Card.Background>
+                        <SolidColorBrush Opacity="0.30" Color="#372442" />
+                    </ui:Card.Background>
+                    <!--  BorderColor: Card  -->
+                    <ui:Card.BorderBrush>
+                        <SolidColorBrush Opacity="0.25" Color="White" />
+                    </ui:Card.BorderBrush>
+                    <!--  Container Task: In Progress  -->
+                    <StackPanel>
+                        <Grid>
+                            <Grid.Background>
+                                <SolidColorBrush Opacity="0.45" Color="#1b1221" />
+                            </Grid.Background>
+                            <ui:TextBlock
+                                Margin="0,8,0,8"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Text="IN PROGRESS" />
+                        </Grid>
+                        <Separator
+                            Height="4"
+                            Margin="0,0,0.5,2"
+                            Background="AliceBlue"
+                            Opacity="0.30" />
+                        <ScrollViewer MaxHeight="610" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel.Background>
+                                    <SolidColorBrush Opacity="0.15" Color="MediumPurple" />
+                                </StackPanel.Background>
+
+                                <!--  Dynamic Elements  -->
+                                <ui:ListView Grid.Column="0" ItemsSource="{Binding InProgressTasks}">
+                                    <ui:ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid MaxWidth="640" Margin="8,8,8,8">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  Task name  -->
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Margin="0,0,8,0"
+                                                    VerticalAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding NombreTarea, Mode=OneWay}"
+                                                    TextWrapping="Wrap" />
+                                                <!--  Task Tags  -->
+                                                <ItemsControl
+                                                    Grid.Row="2"
+                                                    Grid.ColumnSpan="3"
+                                                    Margin="0,8,0,8"
+                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding StringFormat="{}#{0}">
+                                                                        <Binding />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <!--  CRUD Buttons  -->
+                                                <StackPanel
+                                                    Grid.RowSpan="3"
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Vertical">
+                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ui:ListView.ItemTemplate>
+                                </ui:ListView>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <!--  Button: Add Task  -->
+                        <ui:Button
+                            Height="36"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Stretch">
+                            <ui:TextBlock>Add Task</ui:TextBlock>
+                        </ui:Button>
+                    </StackPanel>
+                </ui:Card>
+
+                <!--  Card - Done  -->
+                <ui:Card
+                    Grid.Column="3"
+                    Margin="8"
+                    VerticalAlignment="Top">
+                    <!--  Background: Card  -->
+                    <ui:Card.Background>
+                        <SolidColorBrush Opacity="0.30" Color="#002901" />
+                    </ui:Card.Background>
+                    <!--  BorderColor: Card  -->
+                    <ui:Card.BorderBrush>
+                        <SolidColorBrush Opacity="0.25" Color="White" />
+                    </ui:Card.BorderBrush>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.Background>
+                                <SolidColorBrush Opacity="0.45" Color="#001f01" />
+                            </Grid.Background>
+                            <ui:TextBlock
+                                Margin="0,8,0,8"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="24"
+                                FontWeight="Bold"
+                                Text="DONE" />
+                        </Grid>
+                        <Separator
+                            Height="4"
+                            Margin="0,0,0.5,2"
+                            Background="AliceBlue"
+                            Opacity="0.30" />
+                        <!--  Container Task: Done  -->
+                        <ScrollViewer MaxHeight="610" HorizontalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <StackPanel.Background>
+                                    <SolidColorBrush Opacity="0.15" Color="ForestGreen" />
+                                </StackPanel.Background>
+
+                                <!--  Dynamic Elements  -->
+                                <ui:ListView Grid.Column="0" ItemsSource="{Binding DoneTasks}">
+                                    <ui:ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid
+                                                Width="640"
+                                                MaxWidth="960"
+                                                Margin="8,8,8,8">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <!--  Task name  -->
+                                                <TextBlock
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Margin="0,0,8,0"
+                                                    VerticalAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding NombreTarea, Mode=OneWay}"
+                                                    TextWrapping="Wrap" />
+                                                <!--  Task Tags  -->
+                                                <ItemsControl
+                                                    Grid.Row="2"
+                                                    Grid.ColumnSpan="2"
+                                                    Margin="0,8,0,8"
+                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding StringFormat="{}#{0}">
+                                                                        <Binding />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <!--  CRUD Buttons  -->
+                                                <StackPanel
+                                                    Grid.RowSpan="3"
+                                                    Grid.Column="2"
+                                                    HorizontalAlignment="Right"
+                                                    Orientation="Vertical">
+                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
+                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ui:ListView.ItemTemplate>
+                                </ui:ListView>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <!--  Button: Add Task  -->
+                        <ui:Button
+                            Height="36"
+                            Margin="0,12,0,0"
+                            HorizontalAlignment="Stretch">
+                            <ui:TextBlock>Add Task</ui:TextBlock>
+                        </ui:Button>
+                    </StackPanel>
+                </ui:Card>
             </Grid>
         </StackPanel>
     </Border>

@@ -1,13 +1,21 @@
 ﻿using System.Windows.Controls;
+using TFG.Models;
+using TFG.Services.AuthentificationServices;
+using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels;
 using TFGDesktopApp.Models;
 
 namespace TFG.Views.Pages {
     public partial class WorkSpacePage : Page {
-        public WorkSpacePage(AppUser user, NavigationService nav) {
+        public WorkSpacePage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppContainer? container) {
             InitializeComponent();
-            DataContext = new WorkSpaceViewModel(user, nav);
+            InitializeViewModel(user, nav, db, auth, container);
+        }
+
+        private async void InitializeViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppContainer? container) {
+            DataContext = await WorkSpaceViewModel.CreateAsync(user, nav, db, auth, container);
         }
     }
+
 }

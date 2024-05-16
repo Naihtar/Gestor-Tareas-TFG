@@ -1,4 +1,5 @@
-﻿using TFG.Services.DatabaseServices;
+﻿using TFG.Services.AuthentificationServices;
+using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
 using TFGDesktopApp.Models;
@@ -6,8 +7,9 @@ using TFGDesktopApp.Models;
 namespace TFG.ViewModels {
     public abstract class UserProfileBaseViewModel : BaseViewModel {
         protected AppUser? _user;
-        protected DatabaseService _databaseService;
-        protected NavigationService _navigationService;
+        protected IDatabaseService _databaseService;
+        protected INavigationService _navigationService;
+        protected IAuthenticationService _authenticationService;
         public CommandViewModel WorkspaceCommand { get; }
 
         public AppUser EditableUser { get; set; }
@@ -21,19 +23,11 @@ namespace TFG.ViewModels {
             }
         }
 
-        private string? _errorMessage;
-        public string? ErrorMessage {
-            get { return _errorMessage; }
-            set {
-                _errorMessage = value;
-                OnPropertyChanged(nameof(ErrorMessage));
-            }
-        }
-
-        protected UserProfileBaseViewModel(AppUser? user, NavigationService navigationService) {
+        protected UserProfileBaseViewModel(AppUser? user, INavigationService navigationService,  IDatabaseService db, IAuthenticationService auth) {
             _navigationService = navigationService;
             _user = user;
-            _databaseService = new DatabaseService();
+            _databaseService = db;
+            _authenticationService = auth;
             WorkspaceCommand = new CommandViewModel(WorkspaceBack);
             EditableUser = user ?? new AppUser() {
                 Apellido2Usuario = string.Empty,
@@ -43,19 +37,19 @@ namespace TFG.ViewModels {
                 NombreUsuario = string.Empty,
                 Apellido1Usuario = string.Empty
             };
-            UserData();
+            AppUserData();
         }
 
-        protected async void UserData() {
+        protected async void AppUserData() {
             AppUser u = await _databaseService.GetUserByIdAsync(_user.IdUsuario);
 
             UserProfileProperties = new Dictionary<string, string> {
-            { "Username:", u.AliasUsuario },
-            { "Email:", u.EmailUsuario },
-            { "Name:", u.NombreUsuario },
-            { "First Surname:", u.Apellido1Usuario },
-            { "Second Surname:", u.Apellido2Usuario },
-        };
+                { "Username:", u.AliasUsuario },
+                { "Email:", u.EmailUsuario },
+                { "Name:", u.NombreUsuario },
+                { "First Surname:", u.Apellido1Usuario },
+                { "Second Surname:", u.Apellido2Usuario },
+            };
         }
 
         private void WorkspaceBack(object obj) {
@@ -68,10 +62,10 @@ namespace TFG.ViewModels {
             await _databaseService.UpdateUserAsync(EditableUser);
 
             // Actualiza las propiedades del perfil de usuario
-            UserData();
+            AppUserData();
 
             // Navega hacia atrás
-            _navigationService.NavigateTo("Profile", EditableUser, _navigationService);
+            _navigationService.NavigateTo("Profile", EditableUser, _navigationService, _databaseService, _authenticationService);
         }
         protected abstract Task SaveChangesAsyncWrapper();
     }

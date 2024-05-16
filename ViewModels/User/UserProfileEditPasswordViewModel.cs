@@ -9,7 +9,7 @@ namespace TFG.ViewModels {
 
     public class UserProfileEditPasswordViewModel : UserProfileBaseViewModel {
 
-        private readonly AuthenticationService _authenticationService;
+        private readonly IAuthenticationService _authenticationService;
 
         public CommandViewModel PasswordSaveCommand { get; }
 
@@ -40,12 +40,12 @@ namespace TFG.ViewModels {
         }
 
 
-        public UserProfileEditPasswordViewModel(AppUser? user, NavigationService navigationService) : base(user, navigationService) {
+        public UserProfileEditPasswordViewModel(AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(user, navigationService, db, auth) {
 
             OldPassword = string.Empty;
             NewPassword = string.Empty;
-            NewPasswordCheck = string.Empty;    
-            _authenticationService = new AuthenticationService();
+            NewPasswordCheck = string.Empty;
+            _authenticationService = auth;
             PasswordSaveCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper());
         }
 

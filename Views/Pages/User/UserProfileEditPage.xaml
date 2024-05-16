@@ -3,10 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:TFG.Views.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Title="UserProfileEditPage"
     d:DesignHeight="720"
     d:DesignWidth="1280"
@@ -146,7 +144,9 @@
                         FontSize="14"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}"
-                        Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}" />
+                        MaxLength="27"
+                        Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}"
+                        ToolTip="Max 27 characters" />
                     <ui:TextBox
                         Grid.Row="1"
                         Grid.Column="1"
@@ -157,7 +157,9 @@
                         FontSize="14"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}"
-                        Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}" />
+                        MaxLength="80"
+                        Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}"
+                        ToolTip="Max 80 characters" />
                     <ui:TextBox
                         Grid.Row="2"
                         Grid.Column="1"
@@ -168,7 +170,10 @@
                         FontSize="14"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}"
-                        Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}" />
+                        MaxLength="50"
+                        Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}"
+                        ToolTip="Max 50 characters" />
+
                     <ui:TextBox
                         Grid.Row="3"
                         Grid.Column="1"
@@ -179,7 +184,10 @@
                         FontSize="14"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}"
-                        Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}" />
+                        MaxLength="80"
+                        Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}"
+                        ToolTip="Max 80 characters" />
+
                     <ui:TextBox
                         Grid.Row="4"
                         Grid.Column="1"
@@ -190,7 +198,9 @@
                         FontSize="14"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}"
-                        Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}" />
+                        MaxLength="80"
+                        Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}"
+                        ToolTip="Max 80 characters" />
 
                     <ui:Button
                         Grid.Row="6"
