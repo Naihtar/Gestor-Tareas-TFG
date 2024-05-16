@@ -50,10 +50,10 @@ namespace TFGDesktopApp.Models {
             get { return _apellido2Usuario; }
             set { _apellido2Usuario = value; }
         }
-        private List<ObjectId>? _listaContenedoresUsuario;
+        private List<ObjectId> _listaContenedoresUsuario;
         [BsonElement("contenedores")]
-        public List<ObjectId>? ListaContenedoresUsuario {
-            get { return _listaContenedoresUsuario; }
+        public List<ObjectId> ListaContenedoresUsuario {
+            get { return _listaContenedoresUsuario ??= []; }
             set { _listaContenedoresUsuario = value; }
         }
 
@@ -65,7 +65,7 @@ namespace TFGDesktopApp.Models {
             _nombreUsuario = string.Empty;
             _apellido1Usuario = string.Empty;
             _apellido2Usuario = string.Empty;
-            _listaContenedoresUsuario = null;
+            _listaContenedoresUsuario = [];
         }
     }
 }
