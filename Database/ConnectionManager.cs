@@ -38,13 +38,6 @@ namespace TFG.Database
                 config.Save(ConfigurationSaveMode.Full);
             }
         }
-
-        // Test
-        public static string GetEncryptedConnectionString() {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var section = config.GetSection("connectionStrings") as ConnectionStringsSection;
-            return section.SectionInformation.IsProtected ? config.FilePath : "La cadena de conexión no está encriptada.";
-        }
     }
 }
 
