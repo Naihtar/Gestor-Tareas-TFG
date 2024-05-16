@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TFG.Database
-{
-    class ConnectionManager
-    {
+namespace TFG.Database {
+    class ConnectionManager : IConnectionManager {
         // Método - Obtener el string para conectarse
-        public static string GetConnectionString() {
+        public string GetConnectionString() {
             UnprotectConnectionString();
             var connectionString = ConfigurationManager.ConnectionStrings["MongoDBConnectionString"].ConnectionString;
             ProtectConnectionString();
@@ -18,7 +16,7 @@ namespace TFG.Database
         }
 
         // Método - Encriptar la clave de acceso.
-        private static void ProtectConnectionString() {
+        public void ProtectConnectionString() {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var section = config.GetSection("connectionStrings") as ConnectionStringsSection;
             if (!section.SectionInformation.IsProtected) {
@@ -29,7 +27,7 @@ namespace TFG.Database
         }
 
         // Método - Desencriptar la contraseña
-        private static void UnprotectConnectionString() {
+        public void UnprotectConnectionString() {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var section = config.GetSection("connectionStrings") as ConnectionStringsSection;
             if (section.SectionInformation.IsProtected) {

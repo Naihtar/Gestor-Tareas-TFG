@@ -1,16 +1,17 @@
 using MongoDB.Driver;
-using System.Configuration;
 using System.Windows;
 
 namespace TFG.Database {
-    class DatabaseConnection {
+    class DatabaseConnection : IDatabaseConnection {
         // Atributos
         private readonly IMongoDatabase? _database;
+        private readonly IConnectionManager _connectionManager;
 
         // Constructor
-        public DatabaseConnection() {
+        public DatabaseConnection(IConnectionManager connectionManager) {
+            _connectionManager = connectionManager;
             try {
-                var connectionString = ConnectionManager.GetConnectionString();
+                var connectionString = _connectionManager.GetConnectionString();
                 var client = new MongoClient(connectionString);
                 var databaseName = new MongoUrl(connectionString).DatabaseName;
                 _database = client.GetDatabase(databaseName);
@@ -20,7 +21,7 @@ namespace TFG.Database {
             }
         }
 
-        // Método - Obtener una colección de forma génerica.
+        // Método - Obtener una colección de forma genérica.
         public IMongoCollection<T> GetCollection<T>(string collectionName) {
             return _database.GetCollection<T>(collectionName);
         }
