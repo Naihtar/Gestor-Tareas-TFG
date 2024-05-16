@@ -6,18 +6,14 @@ using TFG.Models;
 using TFGDesktopApp.Models;
 
 namespace TFG.Services.DatabaseServices {
-    public class DatabaseService : IDatabaseService {
+    public class DatabaseService(IDatabaseConnection connectionDB) : IDatabaseService {
 
         //Atributos
-        private readonly IDatabaseConnection _connection;
-        //Constructor 
-        public DatabaseService(IDatabaseConnection con) {
-            _connection = con;
-        }
+        private readonly IDatabaseConnection _dataBase = connectionDB;
 
         // Método genérico.
         public async Task<IMongoCollection<T>> GetCollectionAsync<T>(string collectionName) {
-            return await Task.FromResult(_connection.GetCollection<T>(collectionName));
+            return await Task.FromResult(_dataBase.GetCollection<T>(collectionName));
         }
 
         // Método usuario.
