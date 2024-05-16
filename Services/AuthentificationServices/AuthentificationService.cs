@@ -7,13 +7,9 @@ using TFG.Services.DatabaseServices;
 using TFGDesktopApp.Models;
 
 namespace TFG.Services.AuthentificationServices {
-    public class AuthenticationService {
+    public class AuthenticationService(IDatabaseService db) : IAuthenticationService {
 
-        private readonly DatabaseService _databaseService;
-
-        public AuthenticationService() {
-            _databaseService = new DatabaseService();
-        }
+        private readonly IDatabaseService _databaseService = db;
 
         public async Task<AppUser> GetUserByDataInput(string input) {
             // Obtén la colección de usuarios de forma asíncrona
