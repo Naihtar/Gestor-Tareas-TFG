@@ -92,7 +92,7 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="320"
-                    Height="100"
+                    Height="160"
                     MinWidth="160"
                     MaxHeight="320"
                     AcceptsReturn="True"
@@ -100,7 +100,7 @@
                     FontSize="14"
                     MaxLength="255"
                     PlaceholderText="Descripción del contenedor..."
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     Text="{Binding EditableContainer.DescripcionContenedor, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     ToolTip="Max 255 characters" />

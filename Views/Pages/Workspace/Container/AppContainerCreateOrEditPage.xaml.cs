@@ -4,7 +4,6 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Workspace.Container;
-using TFGDesktopApp.Models;
 
 namespace TFG.Views.Pages.Workspace.Container {
     /// <summary>

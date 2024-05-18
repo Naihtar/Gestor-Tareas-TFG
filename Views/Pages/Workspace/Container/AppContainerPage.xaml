@@ -43,90 +43,66 @@
                                          Filled=True}"
                     ToolTip="Workspace" />
             </Menu>
-
             <StackPanel
                 Grid.RowSpan="2"
                 Grid.Column="0"
                 Grid.ColumnSpan="4"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <StackPanel Grid.Column="0">
-                        <ui:TextBlock
-                            Grid.Column="0"
-                            Width="auto"
-                            Height="32"
-                            MinWidth="160"
-                            Margin="0,8,0,8"
-                            FontFamily="Fira Code"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Text="Nombre:"
-                            TextAlignment="Justify" />
-                        <ui:TextBlock
-                            Grid.Column="0"
-                            Width="auto"
-                            Height="32"
-                            MinWidth="160"
-                            Margin="0,8,0,8"
-                            FontFamily="Fira Code"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Text="Descripción:"
-                            TextAlignment="Justify" />
-                        <ui:TextBlock
-                            Grid.Column="0"
-                            Width="auto"
-                            Height="32"
-                            MinWidth="160"
-                            Margin="0,8,0,8"
-                            FontFamily="Fira Code"
-                            FontSize="16"
-                            FontWeight="Bold"
-                            Text="Fecha Creación:"
-                            TextAlignment="Justify" />
-
-
-                    </StackPanel>
-
-                    <ItemsControl
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Margin="16,0,4,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        ItemsSource="{Binding ContainerProperties}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <ui:TextBlock
-                                        Grid.Column="1"
-                                        Height="auto"
-                                        MinWidth="160"
-                                        MaxWidth="480"
-                                        Margin="0,8,0,8"
-                                        FontFamily="Fira Code"
-                                        FontSize="14"
-                                        Text="{Binding Value}"
-                                        TextAlignment="Justify"
-                                        TextWrapping="Wrap" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Grid>
+                <ui:TextBlock
+                    Width="Auto"
+                    MinWidth="160"
+                    Margin="0,8,0,8"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Nombre:"
+                    TextAlignment="Justify" />
+                <ui:TextBlock
+                    Height="Auto"
+                    MinWidth="160"
+                    MaxWidth="480"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Text="{Binding ContainerProperties[ContainerName]}"
+                    TextAlignment="Justify"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    Width="Auto"
+                    MinWidth="160"
+                    Margin="0,8,0,8"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Descripción:"
+                    TextAlignment="Justify" />
+                <ui:TextBlock
+                    Height="Auto"
+                    MinWidth="160"
+                    MaxWidth="480"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Text="{Binding ContainerProperties[Descripcion]}"
+                    TextAlignment="Justify"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    Width="Auto"
+                    MinWidth="160"
+                    Margin="0,8,0,8"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Fecha Creación:"
+                    TextAlignment="Justify" />
+                <ui:TextBlock
+                    Height="Auto"
+                    MinWidth="160"
+                    MaxWidth="480"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Text="{Binding ContainerProperties[Fecha]}"
+                    TextAlignment="Justify"
+                    TextWrapping="Wrap" />
             </StackPanel>
         </Grid>
     </Border>
