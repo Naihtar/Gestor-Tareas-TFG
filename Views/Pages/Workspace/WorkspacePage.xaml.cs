@@ -4,7 +4,7 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels;
-using TFGDesktopApp.Models;
+using TFG.Models;
 
 namespace TFG.Views.Pages {
     public partial class WorkSpacePage : Page {

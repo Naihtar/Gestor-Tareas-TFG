@@ -7,10 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:viewmodels="clr-namespace:TFG.ViewModels"
+    x:Name="WorkspacePage"
     d:DataContext="{d:DesignInstance Type=viewmodels:WorkSpaceViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     mc:Ignorable="d">
+
     <Border
         Margin="8"
         Background="#323232"
@@ -55,12 +57,12 @@
                                 Icon="{ui:SymbolIcon Delete16,
                                                      Filled=True}" />
                         </ui:MenuItem>
-                        <ui:MenuItem Header="Workspaces">
+                        <ui:MenuItem x:Name="Workspaces" Header="Workspaces">
                             <ItemsControl ItemsSource="{Binding ContainerNames}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <ui:MenuItem
-                                            Command="{Binding Path=DataContext.ShowContentContainer, RelativeSource={RelativeSource AncestorType={x:Type ui:MenuItem}}}"
+                                            Command="{Binding Path=DataContext.ShowContentContainer, ElementName=Workspaces}"
                                             CommandParameter="{Binding}"
                                             Header="{Binding}" />
                                     </DataTemplate>
@@ -150,61 +152,73 @@
                                     <SolidColorBrush Opacity="0.60" Color="#2b2b2b" />
                                 </StackPanel.Background>
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView Grid.Column="0" ItemsSource="{Binding ToDoTasks}">
+
+                                <ui:ListView
+                                    Grid.Column="0"
+                                    ItemsSource="{Binding ToDoTasks}"
+                                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                                    SelectionMode="Single">
                                     <ui:ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid MaxWidth="600" Margin="8,8,8,8">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <ui:Button
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Left"
+                                                    Command="{Binding Path=DataContext.ShowContentTask, ElementName=WorkspacePage}"
+                                                    CommandParameter="{Binding}">
+                                                    <StackPanel MaxWidth="600">
+                                                        <!--  Task name  -->
+                                                        <TextBlock
+                                                            Grid.Row="0"
+                                                            Margin="0,0,8,0"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Center"
+                                                            FontWeight="Bold"
+                                                            Text="{Binding NombreTarea, Mode=OneWay}"
+                                                            TextWrapping="Wrap" />
 
-                                                <!--  Task name  -->
-                                                <TextBlock
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Margin="0,0,8,0"
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Text="{Binding NombreTarea, Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
-                                                <!--  Task Tags  -->
-                                                <ItemsControl
-                                                    Grid.Row="1"
-                                                    Margin="0,8,0,8"
-                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
-                                                                <TextBlock.Text>
-                                                                    <MultiBinding StringFormat="{}#{0}">
-                                                                        <Binding />
-                                                                    </MultiBinding>
-                                                                </TextBlock.Text>
-                                                            </TextBlock>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <!--  CRUD Buttons  -->
-                                                <StackPanel
-                                                    Grid.RowSpan="3"
-                                                    Grid.Column="2"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Vertical">
-                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
-                                                </StackPanel>
-                                            </Grid>
+                                                        <!--  Task Tags  -->
+                                                        <ItemsControl
+                                                            Grid.Row="1"
+                                                            Margin="0,8,0,8"
+                                                            ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock
+                                                                        Margin="0,0,4,0"
+                                                                        HorizontalAlignment="Left"
+                                                                        Foreground="LightBlue">
+                                                                        <TextBlock.Text>
+                                                                            <MultiBinding StringFormat="{}#{0}">
+                                                                                <Binding />
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Text>
+                                                                    </TextBlock>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ui:Button>
+                                                <ui:Button
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Stretch"
+                                                    HorizontalContentAlignment="Left"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="{Binding}">
+                                                    Potato
+                                                </ui:Button>
+                                            </StackPanel>
                                         </DataTemplate>
                                     </ui:ListView.ItemTemplate>
                                 </ui:ListView>
+
+
                             </StackPanel>
                         </ScrollViewer>
                         <!--  Button: Add Task  -->
@@ -255,58 +269,56 @@
                                 </StackPanel.Background>
 
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView Grid.Column="0" ItemsSource="{Binding OnHoldTasks}">
+                                <ui:ListView
+                                    Grid.Column="0"
+                                    ItemsSource="{Binding OnHoldTasks}"
+                                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
                                     <ui:ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid MaxWidth="640" Margin="8,8,8,8">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
+                                            <ui:Button
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalContentAlignment="Left"
+                                                Command="{Binding Path=DataContext.ShowContentTask, ElementName=WorkspacePage}"
+                                                CommandParameter="{Binding}">
+                                                <StackPanel MaxWidth="600">
+                                                    <!--  Task name  -->
+                                                    <TextBlock
+                                                        Grid.Row="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding NombreTarea, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
 
-                                                <!--  Task name  -->
-                                                <TextBlock
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Margin="0,0,8,0"
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Text="{Binding NombreTarea, Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
-                                                <ItemsControl
-                                                    Grid.Row="2"
-                                                    Grid.ColumnSpan="3"
-                                                    Margin="0,8,0,8"
-                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
-                                                                <TextBlock.Text>
-                                                                    <MultiBinding StringFormat="{}#{0}">
-                                                                        <Binding />
-                                                                    </MultiBinding>
-                                                                </TextBlock.Text>
-                                                            </TextBlock>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <!--  CRUD Buttons  -->
-                                                <StackPanel
-                                                    Grid.RowSpan="3"
-                                                    Grid.Column="2"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Vertical">
-                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                    <!--  Task Tags  -->
+                                                    <ItemsControl
+                                                        Grid.Row="1"
+                                                        Margin="0,8,0,8"
+                                                        ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock
+                                                                    Margin="0,0,4,0"
+                                                                    HorizontalAlignment="Left"
+                                                                    Foreground="LightBlue">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding StringFormat="{}#{0}">
+                                                                            <Binding />
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
-                                            </Grid>
+                                            </ui:Button>
                                         </DataTemplate>
                                     </ui:ListView.ItemTemplate>
                                 </ui:ListView>
@@ -361,59 +373,56 @@
                                 </StackPanel.Background>
 
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView Grid.Column="0" ItemsSource="{Binding InProgressTasks}">
+                                <ui:ListView
+                                    Grid.Column="0"
+                                    ItemsSource="{Binding InProgressTasks}"
+                                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
                                     <ui:ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid MaxWidth="640" Margin="8,8,8,8">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
+                                            <ui:Button
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalContentAlignment="Left"
+                                                Command="{Binding Path=DataContext.ShowContentTask, ElementName=WorkspacePage}"
+                                                CommandParameter="{Binding}">
+                                                <StackPanel MaxWidth="600">
+                                                    <!--  Task name  -->
+                                                    <TextBlock
+                                                        Grid.Row="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding NombreTarea, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
 
-                                                <!--  Task name  -->
-                                                <TextBlock
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Margin="0,0,8,0"
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Text="{Binding NombreTarea, Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
-                                                <!--  Task Tags  -->
-                                                <ItemsControl
-                                                    Grid.Row="2"
-                                                    Grid.ColumnSpan="3"
-                                                    Margin="0,8,0,8"
-                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
-                                                                <TextBlock.Text>
-                                                                    <MultiBinding StringFormat="{}#{0}">
-                                                                        <Binding />
-                                                                    </MultiBinding>
-                                                                </TextBlock.Text>
-                                                            </TextBlock>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <!--  CRUD Buttons  -->
-                                                <StackPanel
-                                                    Grid.RowSpan="3"
-                                                    Grid.Column="2"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Vertical">
-                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                    <!--  Task Tags  -->
+                                                    <ItemsControl
+                                                        Grid.Row="1"
+                                                        Margin="0,8,0,8"
+                                                        ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock
+                                                                    Margin="0,0,4,0"
+                                                                    HorizontalAlignment="Left"
+                                                                    Foreground="LightBlue">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding StringFormat="{}#{0}">
+                                                                            <Binding />
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
-                                            </Grid>
+                                            </ui:Button>
                                         </DataTemplate>
                                     </ui:ListView.ItemTemplate>
                                 </ui:ListView>
@@ -468,62 +477,56 @@
                                 </StackPanel.Background>
 
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView Grid.Column="0" ItemsSource="{Binding DoneTasks}">
+                                <ui:ListView
+                                    Grid.Column="0"
+                                    ItemsSource="{Binding DoneTasks}"
+                                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
                                     <ui:ListView.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid
-                                                Width="640"
-                                                MaxWidth="960"
-                                                Margin="8,8,8,8">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                    <RowDefinition Height="*" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
+                                            <ui:Button
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                HorizontalContentAlignment="Left"
+                                                Command="{Binding Path=DataContext.ShowContentTask, ElementName=WorkspacePage}"
+                                                CommandParameter="{Binding}">
+                                                <StackPanel MaxWidth="600">
+                                                    <!--  Task name  -->
+                                                    <TextBlock
+                                                        Grid.Row="0"
+                                                        Margin="0,0,8,0"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        FontWeight="Bold"
+                                                        Text="{Binding NombreTarea, Mode=OneWay}"
+                                                        TextWrapping="Wrap" />
 
-                                                <!--  Task name  -->
-                                                <TextBlock
-                                                    Grid.Row="0"
-                                                    Grid.Column="0"
-                                                    Margin="0,0,8,0"
-                                                    VerticalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    Text="{Binding NombreTarea, Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
-                                                <!--  Task Tags  -->
-                                                <ItemsControl
-                                                    Grid.Row="2"
-                                                    Grid.ColumnSpan="2"
-                                                    Margin="0,8,0,8"
-                                                    ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Margin="0,0,4,0" Foreground="LightBlue">
-                                                                <TextBlock.Text>
-                                                                    <MultiBinding StringFormat="{}#{0}">
-                                                                        <Binding />
-                                                                    </MultiBinding>
-                                                                </TextBlock.Text>
-                                                            </TextBlock>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
-                                                <!--  CRUD Buttons  -->
-                                                <StackPanel
-                                                    Grid.RowSpan="3"
-                                                    Grid.Column="2"
-                                                    HorizontalAlignment="Right"
-                                                    Orientation="Vertical">
-                                                    <ui:Button Margin="0,0,0,4" Icon="{ui:SymbolIcon Open20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,4" Icon="{ui:SymbolIcon Edit20, Filled=True}" />
-                                                    <ui:Button Margin="0,4,0,0" Icon="{ui:SymbolIcon Delete20, Filled=True}" />
+                                                    <!--  Task Tags  -->
+                                                    <ItemsControl
+                                                        Grid.Row="1"
+                                                        Margin="0,8,0,8"
+                                                        ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock
+                                                                    Margin="0,0,4,0"
+                                                                    HorizontalAlignment="Left"
+                                                                    Foreground="LightBlue">
+                                                                    <TextBlock.Text>
+                                                                        <MultiBinding StringFormat="{}#{0}">
+                                                                            <Binding />
+                                                                        </MultiBinding>
+                                                                    </TextBlock.Text>
+                                                                </TextBlock>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
                                                 </StackPanel>
-                                            </Grid>
+                                            </ui:Button>
                                         </DataTemplate>
                                     </ui:ListView.ItemTemplate>
                                 </ui:ListView>

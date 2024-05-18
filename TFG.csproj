@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
     <PackageReference Include="MongoDB.Driver" Version="2.25.0" />
     <PackageReference Include="WPF-UI" Version="3.0.4" />
   </ItemGroup>
@@ -33,7 +34,6 @@
   <ItemGroup>
     <Folder Include="Resources\Styles\" />
     <Folder Include="Resources\Theme\" />
-    <Folder Include="ViewModels\Workspace\Task\" />
   </ItemGroup>
 
 </Project>
