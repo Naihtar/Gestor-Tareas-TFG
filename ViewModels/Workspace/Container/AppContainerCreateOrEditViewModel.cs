@@ -4,7 +4,7 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFGDesktopApp.Models;
+using TFG.Models;
 
 namespace TFG.ViewModels.Workspace.Container {
     class AppContainerCreateOrEditViewModel : AppContainerBaseViewModel {
@@ -12,7 +12,7 @@ namespace TFG.ViewModels.Workspace.Container {
         public CommandViewModel SaveCommandContainer { get; }
         private readonly bool _isCreate;
 
-        public AppContainerCreateOrEditViewModel(AppContainer container, AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(container, user, navigationService, db, auth) {
+        public AppContainerCreateOrEditViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(container, user, navigationService, db, auth) {
             _isCreate = container == null;
             SaveCommandContainer = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
         }

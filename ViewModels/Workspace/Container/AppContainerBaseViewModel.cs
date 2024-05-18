@@ -3,14 +3,13 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFGDesktopApp.Models;
 
 namespace TFG.ViewModels.Workspace.Container {
     public abstract class AppContainerBaseViewModel : BaseViewModel {
         public CommandViewModel WorkspaceCommand { get; }
 
         protected AppContainer? _appContainer;
-        protected AppUser? _user;
+        protected AppUser _user;
         protected readonly IDatabaseService _databaseService;
         protected readonly INavigationService _navigationService;
         protected readonly IAuthenticationService _authenticationService;
@@ -25,17 +24,17 @@ namespace TFG.ViewModels.Workspace.Container {
                 OnPropertyChanged(nameof(ContainerProperties));
             }
         }
-        protected AppContainerBaseViewModel(AppContainer container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) {
+        protected AppContainerBaseViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) {
             _appContainer = container;
             _user = user;
 
             WorkspaceCommand = new CommandViewModel(WorkspaceBack);
-            EditableContainer = container ?? new AppContainer() {
+            EditableContainer = _appContainer ?? new AppContainer() {
                 NombreContenedor = string.Empty,
                 DescripcionContenedor = string.Empty,
                 UsuarioID = _user.IdUsuario,
                 ListaTareas = [],
-                FechaCreacionContenedor = new DateTime()
+                FechaCreacionContenedor = DateTime.Now
             };
 
             _navigationService = navigationService;
@@ -47,19 +46,18 @@ namespace TFG.ViewModels.Workspace.Container {
         }
 
         protected async void AppContainerData() {
-            AppContainer c = await _databaseService.GetContainerByIdAsync(_appContainer.IdContenedor);
+            AppContainer container = await _databaseService.GetContainerByIdAsync(_appContainer.IdContenedor);
 
             ContainerProperties = new Dictionary<string, string> {
-                {"ContainerName", c.NombreContenedor },
-                {"Descripción", c.DescripcionContenedor},
-                {"Fecha", c.FechaCreacionContenedor.ToString() },
+                {"ContainerName", container.NombreContenedor },
+                {"Descripcion", container.DescripcionContenedor ??= string.Empty},
+                {"Fecha", container.FechaCreacionContenedor.ToString() },
             };
         }
 
         private void WorkspaceBack(object obj) {
             _navigationService.GoBack();
         }
-
 
         protected async Task SaveEditChangesAsync() {
             // Actualiza el usuario en la base de datos
