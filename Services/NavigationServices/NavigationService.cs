@@ -4,7 +4,7 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Views.Pages;
 using TFG.Views.Pages.Workspace.Container;
-using TFGDesktopApp.Models;
+using TFG.Views.Pages.Workspace.Task;
 
 namespace TFG.Services.NavigationServices {
     public class NavigationService(Frame frame) : INavigationService {
@@ -36,7 +36,10 @@ namespace TFG.Services.NavigationServices {
 
         }
 
+
+
         public void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
+
 
             switch (route) {
 
@@ -58,6 +61,19 @@ namespace TFG.Services.NavigationServices {
             }
 
         }
+
+
+        public void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task) {
+            switch (route) {
+                case "Task":
+                    _frame.Navigate(new AppTaskPage(container, user, this, db, auth, task));
+                    break;
+                case "EditTask":
+                    _frame.Navigate(new AppTaskEditPage(container, user, this, db, auth, task));
+                    break;
+            }
+        }
+
 
     }
 }

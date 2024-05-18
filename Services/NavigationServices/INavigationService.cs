@@ -2,7 +2,7 @@
 using TFG.Models;
 using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
-using TFGDesktopApp.Models;
+using TFG.Models;
 
 namespace TFG.Services.NavigationServices {
 
@@ -11,6 +11,7 @@ namespace TFG.Services.NavigationServices {
         void NavigateTo(string route, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth);
 
         void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth);
+        void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth, AppTask task);
 
         void GoBack();
     }
