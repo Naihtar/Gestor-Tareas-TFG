@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace TFGDesktopApp.Models {
+namespace TFG.Models {
     public class AppUser : IDisposable {
         public AppUser() { }
 

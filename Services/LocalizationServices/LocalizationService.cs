@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows;
 
-namespace TFGDesktopApp.Services {
+namespace TFG.Services {
     public class LocalizationService {
         public void SetLang(string lang) {
             Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);

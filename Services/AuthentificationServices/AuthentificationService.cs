@@ -4,7 +4,7 @@ using BCrypt.Net;
 using MongoDB.Driver;
 using TFG.Database;
 using TFG.Services.DatabaseServices;
-using TFGDesktopApp.Models;
+using TFG.Models;
 
 namespace TFG.Services.AuthentificationServices {
     public class AuthenticationService(IDatabaseService db) : IAuthenticationService {
