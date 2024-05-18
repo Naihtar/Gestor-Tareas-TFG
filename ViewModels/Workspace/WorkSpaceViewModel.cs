@@ -6,7 +6,9 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFGDesktopApp.Models;
+using TFG.Models;
+using System.Windows.Input;
+using Wpf.Ui.Input;
 
 namespace TFG.ViewModels {
     public class WorkSpaceViewModel : BaseViewModel {
@@ -40,6 +42,8 @@ namespace TFG.ViewModels {
         public CommandViewModel EditContainer { get; private set; } //Editar el contenido del contenedor.
         public CommandViewModel DeleteContainerCommand { get; private set; } // Eliminar el contenido del contenedor.
         public CommandViewModel AddContainerCommand { get; private set; } // Añadir el contenido del contenedor.
+        public CommandViewModel ShowContentTask { get; private set; } //Mostrar el contenido del contenedor.
+        public CommandViewModel MoveTaskCommand { get; private set; } //Mostrar el contenido del contenedor.
 
         //Colecciones visuales en la vista.
         public ObservableCollection<AppTask> ToDoTasks { get; private set; } //TODO List
@@ -59,13 +63,24 @@ namespace TFG.ViewModels {
             }
         }
 
+        private AppTask? _selectedTask;
+        public AppTask? SelectedTask {
+            get { return _selectedTask; }
+            set {
+                if (_selectedTask != value) {
+                    _selectedTask = value;
+                    OnPropertyChanged(nameof(SelectedTask));
+                }
+            }
+        }
+
         // Constructor principal.
         private WorkSpaceViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
 
             //Objetos
             _user = user;
             _appContainer = null; //Es null, para controlar ContainerAccess
-
+            _selectedTask = null;
             //Servicios
             _navigationService = nav; //Servicio encargado de la navegación entre ventanas.
             _databaseService = db; // Servicio encargado de la obtención de información desde la BDD.
@@ -77,6 +92,8 @@ namespace TFG.ViewModels {
             EditContainer = new CommandViewModel(ContainerEdit); //Acceder a la información del contenedor
             DeleteContainerCommand = new CommandViewModel(async (obj) => await DeleteContainer());
             AddContainerCommand = new CommandViewModel(AddContainer);
+            ShowContentTask = new CommandViewModel(TaskAccess); // Mostrar el contenido del contenedor
+            MoveTaskCommand = new CommandViewModel(MoveTaskToNextList, CanMoveTask);
 
             //Atributos: View
             SelectedContainerName = string.Empty; // Nombre del contenedor
@@ -242,5 +259,69 @@ namespace TFG.ViewModels {
         private void AddContainer(object obj) {
             _navigationService.NavigateTo("ContainerAdd", null, _user, _navigationService, _databaseService, _authenticationService); //Ir a la vista del container
         }
+
+        //Tasks
+
+        private void TaskAccess(object obj) {
+            if (obj is AppTask task) {
+                SelectedTask = task;
+                _navigationService.NavigateTo("Task", _appContainer, _user, _navigationService, _databaseService, _authenticationService, SelectedTask); //Ir a la vista del container
+                SelectedTask = null;
+            } else {
+                MessageBox.Show("No se pudo seleccionar la tarea.");
+            }
+        }
+
+        // Método que realiza el movimiento de la tarea
+        private void MoveTaskToNextList(object obj) {
+
+            //if (obj is AppTask task) {
+            //    SelectedTask = task;
+            //    MessageBox.Show("No se pudo seleccionar la tarea.");
+            //} 
+
+            if (SelectedTask == null) return;
+            // Determinar la lista actual de la tarea
+            ObservableCollection<AppTask> currentList = null;
+            ObservableCollection<AppTask> nextList = null;
+            if (obj is AppTask task) {
+                SelectedTask = task;
+
+                switch (SelectedTask.EstadoTarea) {
+                    case "Pendiente":
+                        currentList = ToDoTasks;
+                        nextList = InProgressTasks;
+                        SelectedTask.EstadoTarea = "En progreso";
+                        break;
+                    case "En progreso":
+                        currentList = InProgressTasks;
+                        nextList = OnHoldTasks;
+                        SelectedTask.EstadoTarea = "En espera";
+                        break;
+                    case "En espera":
+                        currentList = OnHoldTasks;
+                        nextList = DoneTasks;
+                        SelectedTask.EstadoTarea = "Completado";
+                        break;
+                    case "Completado":
+                        MessageBox.Show("La tarea ya está completada.");
+                        return;
+                    default:
+                        MessageBox.Show($"Estado desconocido: {SelectedTask.EstadoTarea}");
+                        return;
+                }
+            }
+            // Mover la tarea a la siguiente lista
+            if (currentList != null && nextList != null) {
+                currentList.Remove(SelectedTask);
+                nextList.Add(SelectedTask);
+            }
+        }
+
+        private bool CanMoveTask(object obj) {
+            return SelectedTask != null;
+        }
+
     }
 }
+
