@@ -14,7 +14,7 @@ namespace TFG.ViewModels {
             _navigationService = navigationService;
             _databaseService = database;
             _authenticationService = auth;
-            _navigationService.NavigateTo(_databaseService, auth);
+            _navigationService.NavigateTo(_databaseService, _authenticationService);
         }
     }
 

@@ -10,10 +10,7 @@ namespace TFG.Views.Pages {
 
         public LoginPage(INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
             InitializeComponent();
-            IDatabaseService databaseService = db;
-            IAuthenticationService authService = auth;
-
-            DataContext = new LoginViewModel(nav, databaseService, auth);
+            DataContext = new LoginViewModel(nav, db, auth);
         }
 
     }
