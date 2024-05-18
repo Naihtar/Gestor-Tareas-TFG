@@ -2,11 +2,11 @@
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFGDesktopApp.Models;
+using TFG.Models;
 
 namespace TFG.ViewModels {
     public abstract class UserProfileBaseViewModel : BaseViewModel {
-        protected AppUser? _user;
+        protected AppUser _user;
         protected IDatabaseService _databaseService;
         protected INavigationService _navigationService;
         protected IAuthenticationService _authenticationService;
@@ -23,7 +23,7 @@ namespace TFG.ViewModels {
             }
         }
 
-        protected UserProfileBaseViewModel(AppUser? user, INavigationService navigationService,  IDatabaseService db, IAuthenticationService auth) {
+        protected UserProfileBaseViewModel(AppUser user, INavigationService navigationService,  IDatabaseService db, IAuthenticationService auth) {
             _navigationService = navigationService;
             _user = user;
             _databaseService = db;

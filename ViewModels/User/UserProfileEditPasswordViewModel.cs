@@ -3,7 +3,7 @@ using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels;
 using TFG.ViewModels.Base;
-using TFGDesktopApp.Models;
+using TFG.Models;
 
 namespace TFG.ViewModels {
 
