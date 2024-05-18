@@ -51,181 +51,113 @@
                 Grid.ColumnSpan="4"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
-                <!--  TODO: Hay que hacer binding a la imagen de la base de datos  -->
-                <ui:Image
-                    Grid.Column="2"
-                    Width="240"
-                    HorizontalAlignment="Center"
-                    Source="/Resources/Images/LogoTFG.png" />
-                <Grid
-                    Grid.RowSpan="2"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="4"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
 
-                    <!--  Labels  -->
-                    <ui:TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        Width="auto"
-                        Height="32"
-                        MinWidth="160"
-                        Margin="0,16,0,0"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="Username:" />
-                    <ui:TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Width="auto"
-                        Height="32"
-                        MinWidth="160"
-                        Margin="0,16,0,0"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="Email:" />
-                    <ui:TextBlock
-                        Grid.Row="2"
-                        Grid.Column="0"
-                        Width="auto"
-                        Height="32"
-                        MinWidth="160"
-                        Margin="0,16,0,0"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="Name:" />
-                    <ui:TextBlock
-                        Grid.Row="3"
-                        Grid.Column="0"
-                        Width="auto"
-                        Height="32"
-                        MinWidth="160"
-                        Margin="0,16,0,0"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="First Surname:" />
-                    <ui:TextBlock
-                        Grid.Row="4"
-                        Grid.Column="0"
-                        Width="auto"
-                        Height="32"
-                        MinWidth="160"
-                        Margin="0,16,0,0"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        FontWeight="Bold"
-                        Text="Second Surname:" />
 
-                    <!--  TextBoxes  -->
-                    <ui:TextBox
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Width="320"
-                        Height="36"
-                        MinWidth="160"
-                        FontFamily="Fira Code"
-                        FontSize="14"
-                        Icon="{ui:SymbolIcon Person20,
-                                             Filled=True}"
-                        MaxLength="27"
-                        Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}"
-                        ToolTip="Max 27 characters" />
-                    <ui:TextBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="320"
-                        Height="36"
-                        MinWidth="160"
-                        FontFamily="Fira Code"
-                        FontSize="14"
-                        Icon="{ui:SymbolIcon Person20,
-                                             Filled=True}"
-                        MaxLength="80"
-                        Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}"
-                        ToolTip="Max 80 characters" />
-                    <ui:TextBox
-                        Grid.Row="2"
-                        Grid.Column="1"
-                        Width="320"
-                        Height="36"
-                        MinWidth="160"
-                        FontFamily="Fira Code"
-                        FontSize="14"
-                        Icon="{ui:SymbolIcon Person20,
-                                             Filled=True}"
-                        MaxLength="50"
-                        Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}"
-                        ToolTip="Max 50 characters" />
+                <!--  Labels  -->
+                <ui:TextBlock
+                    Width="auto"
+                    MinWidth="160"
+                    Margin="0,16,0,16"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Username:" />
+                <ui:TextBox
+                    Width="320"
+                    Height="36"
+                    MinWidth="160"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Icon="{ui:SymbolIcon Person20,
+                                         Filled=True}"
+                    MaxLength="27"
+                    Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}"
+                    ToolTip="Max 27 characters" />
+                <ui:TextBlock
+                    Width="auto"
+                    MinWidth="160"
+                    Margin="0,16,0,16"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Email:" />
 
-                    <ui:TextBox
-                        Grid.Row="3"
-                        Grid.Column="1"
-                        Width="320"
-                        Height="36"
-                        MinWidth="160"
-                        FontFamily="Fira Code"
-                        FontSize="14"
-                        Icon="{ui:SymbolIcon Person20,
-                                             Filled=True}"
-                        MaxLength="80"
-                        Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}"
-                        ToolTip="Max 80 characters" />
+                <ui:TextBox
+                    Width="320"
+                    Height="36"
+                    MinWidth="160"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Icon="{ui:SymbolIcon Person20,
+                                         Filled=True}"
+                    MaxLength="80"
+                    Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}"
+                    ToolTip="Max 80 characters" />
+                <ui:TextBlock
+                    Width="auto"
+                    MinWidth="160"
+                    Margin="0,16,0,16"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Name:" />
 
-                    <ui:TextBox
-                        Grid.Row="4"
-                        Grid.Column="1"
-                        Width="320"
-                        Height="36"
-                        MinWidth="160"
-                        FontFamily="Fira Code"
-                        FontSize="14"
-                        Icon="{ui:SymbolIcon Person20,
-                                             Filled=True}"
-                        MaxLength="80"
-                        Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}"
-                        ToolTip="Max 80 characters" />
+                <ui:TextBox
+                    Width="320"
+                    Height="36"
+                    MinWidth="160"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Icon="{ui:SymbolIcon Person20,
+                                         Filled=True}"
+                    MaxLength="50"
+                    Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}"
+                    ToolTip="Max 50 characters" />
+                <ui:TextBlock
+                    Width="auto"
+                    MinWidth="160"
+                    Margin="0,16,0,16"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="First Surname:" />
 
-                    <ui:Button
-                        Grid.Row="6"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Width="320 "
-                        Height="32"
-                        Margin="0,16,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        Appearance="Secondary"
-                        Command="{Binding PasswordEditCommand}"
-                        Content="Change Password"
-                        FontFamily="Fira Code"
-                        FontSize="16"
-                        Icon="{ui:SymbolIcon Edit20,
-                                             Filled=True}"
-                        IsEnabled="True"
-                        ToolTip="Change Password" />
-                </Grid>
+                <ui:TextBox
+                    Width="320"
+                    Height="36"
+                    MinWidth="160"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Icon="{ui:SymbolIcon Person20,
+                                         Filled=True}"
+                    MaxLength="80"
+                    Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}"
+                    ToolTip="Max 80 characters" />
+                <ui:TextBlock
+                    Width="auto"
+                    MinWidth="160"
+                    Margin="0,16,0,16"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Text="Second Surname:" />
+                <ui:TextBox
+                    Width="320"
+                    Height="36"
+                    MinWidth="160"
+                    FontFamily="Fira Code"
+                    FontSize="14"
+                    Icon="{ui:SymbolIcon Person20,
+                                         Filled=True}"
+                    MaxLength="80"
+                    Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}"
+                    ToolTip="Max 80 characters" />
+
 
                 <ui:Button
                     Width="320 "
                     Height="32"
-                    Margin="0,16,0,0"
+                    Margin="0,16,0,8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Appearance="Info"
@@ -235,8 +167,24 @@
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    IsEnabled="True"
                     ToolTip="Save Profile" />
+
+
+                <ui:Button
+                    Width="320 "
+                    Height="32"
+                    Margin="0,8,0,16"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Appearance="Secondary"
+                    Command="{Binding PasswordEditCommand}"
+                    Content="Change Password"
+                    FontFamily="Fira Code"
+                    FontSize="16"
+                    Icon="{ui:SymbolIcon Edit20,
+                                         Filled=True}"
+                    ToolTip="Change Password" />
+
                 <!--  Error Message  -->
                 <ui:TextBlock
                     Width="auto"
