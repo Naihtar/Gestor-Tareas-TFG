@@ -3,7 +3,6 @@ using MongoDB.Driver;
 using System.Windows;
 using TFG.Database;
 using TFG.Models;
-using TFGDesktopApp.Models;
 
 namespace TFG.Services.DatabaseServices {
     public class DatabaseService(IDatabaseConnection connectionDB) : IDatabaseService {
@@ -161,9 +160,9 @@ namespace TFG.Services.DatabaseServices {
 
         // Metodo Tasks:
 
-        public async Task<AppTask> GetTestkByIdAsync(ObjectId taskId) {
+        public async Task<AppTask> GetTastkByIdAsync(ObjectId taskId) {
             var collection = await GetCollectionAsync<AppTask>("tareas");
-            var filter = Builders<AppTask>.Filter.Eq(t => t.ContenedorID, taskId);
+            var filter = Builders<AppTask>.Filter.Eq(t => t.IdTarea, taskId);
             return await collection.Find(filter).FirstOrDefaultAsync();
         }
 
@@ -199,6 +198,10 @@ namespace TFG.Services.DatabaseServices {
             }
         }
 
-
+        public async Task UpdateTaskAsync(AppTask task) {
+            var tasks = await GetCollectionAsync<AppTask>("tareas");
+            var filter = Builders<AppTask>.Filter.Eq(tarea => tarea.IdTarea, task.IdTarea);
+            await tasks.ReplaceOneAsync(filter, task);
+        }
     }
 }
