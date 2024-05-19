@@ -32,22 +32,6 @@ namespace TFG.Models {
             set { _fechaCreacionTarea = value; }
         }
 
-        //private DateTime _fechaModificacionTarea;
-        //[BsonElement("fechaModificacion")]
-        //[BsonRepresentation(BsonType.DateTime)]
-        //public DateTime FechaModificacionTarea {
-        //    get { return _fechaModificacionTarea; }
-        //    set { _fechaModificacionTarea = value; }
-        //}
-
-        //private DateTime _fechaVencimiento;
-        //[BsonElement("fechaVencimiento")]
-        //[BsonRepresentation(BsonType.DateTime)]
-        //public DateTime FechaVencimientoTarea {
-        //    get { return _fechaVencimiento; }
-        //    set { _fechaVencimiento = value; }
-        //}
-
         private string _estadoTarea;
         [BsonElement("estado")]
         public required string EstadoTarea {
