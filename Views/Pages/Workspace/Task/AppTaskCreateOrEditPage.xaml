@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="TFG.Views.Pages.Workspace.Task.AppTaskEditPage"
+    x:Class="TFG.Views.Pages.Workspace.Task.AppTaskCreateOrEditPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
     xmlns:tasks="clr-namespace:TFG.ViewModels.Workspace.Tasks"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="AppTaskEditPage"
-    d:DataContext="{d:DesignInstance Type=tasks:AppTaskEditViewModel}"
+    d:DataContext="{d:DesignInstance Type=tasks:AppTaskCreateOrEditViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     Foreground="White"
@@ -105,7 +105,7 @@
                     Text="{Binding EditableTask.DescripcionTarea, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     ToolTip="Max 255 characters" />
-                <!--  Container: Name  -->
+
                 <!--  Container: Tags  -->
                 <ui:TextBlock
                     Grid.Row="2"
@@ -126,11 +126,10 @@
                     MinWidth="160"
                     FontFamily="Fira Code"
                     FontSize="14"
-                    Icon="{ui:SymbolIcon Tag32,
-                                         Filled=True}"
-                    PlaceholderText="Etiquetas..."
+                    MaxLength="255"
+                    PlaceholderText="Tags Tarea..."
                     Text="{Binding TagsTask, Mode=TwoWay}"
-                    ToolTip="Etiquetas separadas por comas" />
+                    ToolTip="Separate tags with commas" />
 
                 <ui:Button
                     Width="320 "
@@ -152,7 +151,7 @@
             <ui:TextBlock
                 Grid.Row="2"
                 Grid.ColumnSpan="4"
-                Width="320"
+                Width="480"
                 Height="64"
                 Margin="0,16,0,16"
                 HorizontalAlignment="Center"
@@ -161,6 +160,7 @@
                 FontSize="16"
                 Foreground="Red"
                 Text="{Binding ErrorMessage}"
+                TextAlignment="Justify"
                 TextWrapping="Wrap" />
         </Grid>
     </Border>

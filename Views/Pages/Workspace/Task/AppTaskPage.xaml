@@ -151,6 +151,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Appearance="Danger"
+                        Command="{Binding DeleteTaskCommand}"
                         Content="Delete Task"
                         FontFamily="Fira Code"
                         FontSize="16"
