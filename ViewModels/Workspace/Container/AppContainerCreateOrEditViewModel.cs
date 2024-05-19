@@ -4,7 +4,6 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFG.Models;
 
 namespace TFG.ViewModels.Workspace.Container {
     class AppContainerCreateOrEditViewModel : AppContainerBaseViewModel {
@@ -27,8 +26,7 @@ namespace TFG.ViewModels.Workspace.Container {
 
         protected override async Task SaveContainerAsyncWrapper() {
 
-            ObjectId id = _user.IdUsuario;
-            bool name = await CheckNameDBB(id);
+            bool name = await CheckNameDBB(_user.IdUsuario);
             bool fieldName = CheckFieldName();
 
             if (fieldName) {
@@ -42,7 +40,7 @@ namespace TFG.ViewModels.Workspace.Container {
             }
 
             if (_isCreate) {
-                EditableContainer.UsuarioID = id;
+                EditableContainer.UsuarioID = _user.IdUsuario;
                 EditableContainer.ListaTareas = [];
                 EditableContainer.FechaCreacionContenedor = DateTime.Now;
                 await SaveAddContainerAsync();
