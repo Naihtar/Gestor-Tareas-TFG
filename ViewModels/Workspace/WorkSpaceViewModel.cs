@@ -6,9 +6,6 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFG.Models;
-using System.Windows.Input;
-using Wpf.Ui.Input;
 
 namespace TFG.ViewModels {
     public class WorkSpaceViewModel : BaseViewModel {
@@ -38,12 +35,13 @@ namespace TFG.ViewModels {
         //Comandos
         public CommandViewModel UserProfileCommand { get; private set; } //Acceder al profile
         public CommandViewModel ContainerCommand { get; private set; } //Acceder al contenedor
-        public CommandViewModel ShowContentContainer { get; private set; } //Mostrar el contenido del contenedor.
-        public CommandViewModel EditContainer { get; private set; } //Editar el contenido del contenedor.
+        public CommandViewModel ContentContainerCommand { get; private set; } //Mostrar el contenido del contenedor.
+        public CommandViewModel EditContainerCommand { get; private set; } //Editar el contenido del contenedor.
         public CommandViewModel DeleteContainerCommand { get; private set; } // Eliminar el contenido del contenedor.
         public CommandViewModel AddContainerCommand { get; private set; } // Añadir el contenido del contenedor.
-        public CommandViewModel ShowContentTask { get; private set; } //Mostrar el contenido del contenedor.
+        public CommandViewModel ContentTaskCommand { get; private set; } //Mostrar el contenido del contenedor.
         public CommandViewModel MoveTaskCommand { get; private set; } //Mostrar el contenido del contenedor.
+        public CommandViewModel AddTaskCommand { get; private set; } //Añadir el contenido de una task.
 
         //Colecciones visuales en la vista.
         public ObservableCollection<AppTask> ToDoTasks { get; private set; } //TODO List
@@ -87,13 +85,14 @@ namespace TFG.ViewModels {
             _authenticationService = auth; //Servicio de authentificación.
             //Comandos
             UserProfileCommand = new CommandViewModel(UserProfileAccess); // Acceder al perfil de usuario
-            ShowContentContainer = new CommandViewModel(ContentContainers); // Mostrar el contenido del contenedor
+            ContentContainerCommand = new CommandViewModel(ContentContainers); // Mostrar el contenido del contenedor
             ContainerCommand = new CommandViewModel(ContainerAccess); //Acceder a la información del contenedor
-            EditContainer = new CommandViewModel(ContainerEdit); //Acceder a la información del contenedor
+            EditContainerCommand = new CommandViewModel(ContainerEdit); //Acceder a la información del contenedor
             DeleteContainerCommand = new CommandViewModel(async (obj) => await DeleteContainer());
             AddContainerCommand = new CommandViewModel(AddContainer);
-            ShowContentTask = new CommandViewModel(TaskAccess); // Mostrar el contenido del contenedor
+            ContentTaskCommand = new CommandViewModel(TaskAccess); // Mostrar el contenido del contenedor
             MoveTaskCommand = new CommandViewModel(MoveTaskToNextList, CanMoveTask);
+            AddTaskCommand = new CommandViewModel(CreateTask);
 
             //Atributos: View
             SelectedContainerName = string.Empty; // Nombre del contenedor
@@ -131,24 +130,35 @@ namespace TFG.ViewModels {
 
         //Obtener contenedores.
         private async Task InitializeAsync() {
-            _userContainers = await ObtainContainerDB(); //Asignamos la lista de contenedores.
-            _containerNames = ContainerNames; //Obtenemos los nombres de los contenedores.
+            try {
+                _userContainers = await ObtainContainerDB().ConfigureAwait(false);
+                _containerNames = ContainerNames;
+            } catch (Exception ex) {
+                // Maneja la excepción apropiadamente
+                ErrorMessage = $"Error initializing containers: {ex.Message}";
+            }
         }
 
-        //Obtener desde la base de datos los contenedores vía ID del listado de contenedores del usuario.
         private async Task<List<AppContainer>> ObtainContainerDB() {
-            List<ObjectId> containerIds = await _databaseService.GetListContianerUser(_user.IdUsuario); // Listado de IDs de los contenedores del usuario
-            List<AppContainer> containers = []; //Lista de contenedores.
-            if (containerIds != null && containerIds.Count > 0) {
-                foreach (var id in containerIds) {
-                    var container = await _databaseService.GetContainerByIdAsync(id); //Obtener el contenedor por el ID.
-                    if (container != null) {
-                        containers.Add(container);
+            try {
+                List<ObjectId> containerIds = await _databaseService.GetListContianerUser(_user.IdUsuario).ConfigureAwait(false);
+                List<AppContainer> containers = [];
+                if (containerIds != null && containerIds.Count > 0) {
+                    foreach (var id in containerIds) {
+                        var container = await _databaseService.GetContainerByIdAsync(id);
+                        if (container != null) {
+                            containers.Add(container);
+                        }
                     }
                 }
+                return containers;
+            } catch (Exception ex) {
+                // Maneja la excepción apropiadamente
+                ErrorMessage = $"Error obtaining containers from DB: {ex.Message}";
+                return new List<AppContainer>();
             }
-            return containers; // Devuelve la lista de contendores.
         }
+
 
 
         // Método para cargar las tareas del contenedor seleccionado
@@ -160,7 +170,7 @@ namespace TFG.ViewModels {
                 OnHoldTasks.Clear();
                 DoneTasks.Clear();
 
-                if (_appContainer.ListaTareas.Count > 0) {
+                if (_appContainer.ListaTareas.Count > 0 || _appContainer != null) {
                     // Obtener desde la base de datos las tareas del contenedor seleccionado
                     List<AppTask> tasks = await _databaseService.GetTasksByContainerIdAsync(_appContainer.IdContenedor);
 
@@ -270,6 +280,16 @@ namespace TFG.ViewModels {
             } else {
                 MessageBox.Show("No se pudo seleccionar la tarea.");
             }
+        }
+        private void CreateTask(object obj) {
+            if (_appContainer == null) {
+                MessageBox.Show($"No has seleccionado ningún contenedor");
+                return;
+            }
+            string status = obj.ToString(); // TODO Editar
+            _navigationService.NavigateTo("AddTask", _appContainer, _user, _navigationService, _databaseService, _authenticationService, null, status); //Ir a la vista del container
+            SelectedTask = null;
+
         }
 
         // Método que realiza el movimiento de la tarea
