@@ -7,7 +7,6 @@ using TFG.ViewModels.Base;
 
 namespace TFG.ViewModels.Workspace.Tasks {
     public abstract class AppTaskBaseViewModel : BaseViewModel {
-
         public CommandViewModel WorkspaceCommand { get; }
         public CommandViewModel SetStateCommand { get; }
         protected AppContainer _appContainer;
@@ -19,11 +18,15 @@ namespace TFG.ViewModels.Workspace.Tasks {
         protected string _statusTask = "Pendiente";
         public AppTask EditableTask { get; set; }
         private string _tagsTask;
+
         public string TagsTask {
             get => _tagsTask;
             set {
-                _tagsTask = value;
-                OnPropertyChanged(TagsTask);
+                if (_tagsTask != value) {
+                    _tagsTask = value;
+                    OnPropertyChanged(nameof(TagsTask));
+                    UpdateTagsFromText();
+                }
             }
         }
 
@@ -36,23 +39,21 @@ namespace TFG.ViewModels.Workspace.Tasks {
             }
         }
 
-
         protected AppTaskBaseViewModel(AppTask? task, AppContainer container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) {
             _appContainer = container;
             _appTask = task;
             _user = user;
             WorkspaceCommand = new CommandViewModel(WorkspaceBack);
-            SetStateCommand = new CommandViewModel(OnButtonPressed);
+            //SetStateCommand = new CommandViewModel(OnButtonPressed);
             EditableTask = _appTask ?? new AppTask() {
-
                 NombreTarea = string.Empty,
                 DescripcionTarea = string.Empty,
                 FechaCreacionTarea = DateTime.Now,
                 EstadoTarea = _statusTask,
                 ContenedorID = _appContainer.IdContenedor,
-                EtiquetasTarea = ["", "", ""], //TODO -> Revisar esta parte.
-
+                EtiquetasTarea = Array.Empty<string>(), // Initialize as empty array
             };
+
             _tagsTask = string.Empty;
             _navigationService = navigationService;
             _databaseService = db;
@@ -62,42 +63,50 @@ namespace TFG.ViewModels.Workspace.Tasks {
                 AppTaskData();
             }
 
+            // Initialize TagsTask from EditableTask
+            TagsTask = string.Join(", ", EditableTask.EtiquetasTarea);
         }
 
         protected async void AppTaskData() {
-            AppTask t = await _databaseService.GetTastkByIdAsync(_appTask.IdTarea);
-            TaskProperties = new Dictionary<string, string> {
-                { "Nombre:", t.NombreTarea },
-                { "Descripcion:", t.DescripcionTarea },
-                { "Fecha:", t.FechaCreacionTarea.ToString() },
-                { "Tags:", string.Join(", ", t.EtiquetasTarea.Select(etiqueta => $"#{etiqueta}")) }
-            };
+            AppTask task = await _databaseService.GetTastkByIdAsync(_appTask.IdTarea);
+            TaskProperties = new Dictionary<string, string>
+            {
+            { "Nombre:", task.NombreTarea },
+            { "Descripcion:", task.DescripcionTarea },
+            { "Fecha:", task.FechaCreacionTarea.ToString() },
+            { "Tags:", string.Join(", ", task.EtiquetasTarea.Select(etiqueta => $"#{etiqueta}")) }
+        };
         }
 
         protected async Task SaveEditChangesAsync() {
             await _databaseService.UpdateTaskAsync(EditableTask);
-            AppTaskData();
-
-            _navigationService.NavigateTo("Task", _appContainer, _user, _navigationService, _databaseService, _authenticationService,
-    EditableTask);
+            _navigationService.NavigateTo("Workspace", _appContainer, _user, _navigationService, _databaseService, _authenticationService);
         }
 
         protected async Task SaveAddContainerAsync() {
-            //TODO
+            await _databaseService.AddTask(EditableTask, _appContainer.IdContenedor);
+            _navigationService.NavigateTo("Workspace", _appContainer, _user, _navigationService, _databaseService, _authenticationService);
         }
 
-        private void OnButtonPressed(object obj) {
-            string? buttonNumber = obj.ToString();
-
-            _statusTask = buttonNumber;
-        }
+        //private void OnButtonPressed(object obj) {
+        //    string? buttonNumber = obj.ToString();
+        //    _statusTask = buttonNumber;
+        //}
 
         protected abstract Task SaveTaskAsyncWrapper();
 
         private void WorkspaceBack(object obj) {
-
             _navigationService.GoBack();
         }
 
+        protected void UpdateTagsFromText() {
+            var tags = TagsTask.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                               .Select(tag => tag.Trim().Replace("#", "").Replace(" ","_"))
+                               .ToArray();
+
+            EditableTask.EtiquetasTarea = tags;
+            TagsTask = string.Join(", ", tags);
+        }
     }
+
 }
