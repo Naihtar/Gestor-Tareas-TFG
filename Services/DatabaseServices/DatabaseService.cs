@@ -203,5 +203,71 @@ namespace TFG.Services.DatabaseServices {
             var filter = Builders<AppTask>.Filter.Eq(tarea => tarea.IdTarea, task.IdTarea);
             await tasks.ReplaceOneAsync(filter, task);
         }
+
+        public async Task<bool> DeleteTask(ObjectId idTarea) {
+            try {
+                // Obtén la colección de tareas
+                var taskCollection = await GetCollectionAsync<AppTask>("tareas");
+
+                // Crea un filtro para encontrar la tarea
+                var taskFilter = Builders<AppTask>.Filter.Eq(t => t.IdTarea, idTarea);
+
+                // Encuentra la tarea
+                var task = await taskCollection.Find(taskFilter).FirstOrDefaultAsync();
+
+                if (task != null) {
+                    // Obtén la colección de contenedores
+                    var containerCollection = await GetCollectionAsync<AppContainer>("contenedores");
+
+                    // Crea un filtro para encontrar los contenedores asociados a la tarea
+                    var containerFilter = Builders<AppContainer>.Filter.AnyEq(container => container.ListaTareas, idTarea);
+
+                    // Encuentra los contenedores
+                    var containers = await containerCollection.Find(containerFilter).ToListAsync();
+
+                    // Remueve el ID de la tarea de la lista de tareas de cada contenedor
+                    var containerUpdate = Builders<AppContainer>.Update.Pull(container => container.ListaTareas, idTarea);
+                    foreach (var container in containers) {
+                        await containerCollection.UpdateOneAsync(containerFilter, containerUpdate);
+                    }
+
+                    // Elimina la tarea
+                    var taskResult = await taskCollection.DeleteOneAsync(taskFilter);
+
+                    return taskResult.DeletedCount > 0;
+                }
+                return false;
+            } catch (Exception ex) {
+                MessageBox.Show($"Error al intentar eliminar la tarea y removerla de los contenedores. {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> AddTask(AppTask appTask, ObjectId containerId) {
+            var collection = await GetCollectionAsync<AppTask>("tareas");
+            var containerCollection = await GetCollectionAsync<AppContainer>("contenedores");
+
+            try {
+                await collection.InsertOneAsync(appTask);
+
+                // Obtén el usuario de la base de datos
+                var container = await containerCollection.Find(container => container.IdContenedor == containerId).FirstOrDefaultAsync();
+
+                if (container != null) {
+                    // Agrega el ID del contenedor a la lista de contenedores del usuario
+                    container.ListaTareas.Add(appTask.IdTarea);
+
+                    // Actualiza el usuario en la base de datos
+                    var update = Builders<AppContainer>.Update.Set(appContainer => appContainer.ListaTareas, container.ListaTareas);
+                    await containerCollection.UpdateOneAsync(appContainer => appContainer.IdContenedor == containerId, update);
+                }
+
+                return true;
+            } catch (Exception ex) {
+                MessageBox.Show($"Error al intentar crear la tarea. {ex.Message}");
+                return false;
+            }
+        }
+
     }
 }

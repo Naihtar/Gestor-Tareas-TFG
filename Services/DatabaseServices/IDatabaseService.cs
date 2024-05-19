@@ -19,6 +19,7 @@ namespace TFG.Services.DatabaseServices {
         Task<bool> AddContainer(AppContainer container, ObjectId userId);
         Task<List<ObjectId>> GetListContianerUser(ObjectId userId);
         Task UpdateTaskAsync(AppTask task);
-
+        Task<bool> DeleteTask(ObjectId taskId);
+        Task<bool> AddTask(AppTask task, ObjectId containerId);
     }
 }
