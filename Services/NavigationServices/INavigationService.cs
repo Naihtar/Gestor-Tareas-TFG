@@ -11,7 +11,8 @@ namespace TFG.Services.NavigationServices {
         void NavigateTo(string route, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth);
 
         void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth);
-        void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth, AppTask task);
+        void NavigateTo(string route, AppContainer container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth, AppTask task);
+        void NavigateTo(string route, AppContainer container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth, AppTask? task, string status);
 
         void GoBack();
     }

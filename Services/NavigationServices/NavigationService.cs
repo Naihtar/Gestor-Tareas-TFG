@@ -63,13 +63,20 @@ namespace TFG.Services.NavigationServices {
         }
 
 
-        public void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task) {
+        public void NavigateTo(string route, AppContainer container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask? task) {
             switch (route) {
                 case "Task":
                     _frame.Navigate(new AppTaskPage(container, user, this, db, auth, task));
                     break;
                 case "EditTask":
-                    _frame.Navigate(new AppTaskEditPage(container, user, this, db, auth, task));
+                    _frame.Navigate(new AppTaskCreateOrEditPage(container, user, this, db, auth, task));
+                    break;
+            }
+        }
+        public void NavigateTo(string route, AppContainer container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask? task, string status) {
+            switch (route) {
+                case "AddTask":
+                    _frame.Navigate(new AppTaskCreateOrEditPage(container, user, this, db, auth, null, status));
                     break;
             }
         }
