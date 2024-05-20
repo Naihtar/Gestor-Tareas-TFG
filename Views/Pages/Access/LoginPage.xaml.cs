@@ -6,11 +6,11 @@ using TFG.Services.NavigationServices;
 using TFG.ViewModels;
 
 namespace TFG.Views.Pages {
-    public partial class LoginPage : Page {
+    public partial class LogInPage : Page {
 
-        public LoginPage(INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
+        public LogInPage(INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
             InitializeComponent();
-            DataContext = new LoginViewModel(nav, db, auth);
+            DataContext = new LogInViewModel(nav, db, auth);
         }
 
     }
