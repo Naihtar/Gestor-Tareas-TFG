@@ -3,6 +3,7 @@ using TFG.Models;
 using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Views.Pages;
+using TFG.Views.Pages.Access;
 using TFG.Views.Pages.Workspace.Container;
 using TFG.Views.Pages.Workspace.Task;
 
@@ -15,7 +16,11 @@ namespace TFG.Services.NavigationServices {
             }
         }
         public void NavigateTo(IDatabaseService db, IAuthenticationService auth) {
-            _frame.Navigate(new LoginPage(this, db, auth));
+            _frame.Navigate(new LogInPage(this, db, auth));
+        }
+
+        public void NavigateTo(IDatabaseService db) {
+            _frame.Navigate(new SignUpPage(db, this));
         }
 
         public void NavigateTo(string route, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
@@ -35,8 +40,6 @@ namespace TFG.Services.NavigationServices {
             }
 
         }
-
-
 
         public void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
 
