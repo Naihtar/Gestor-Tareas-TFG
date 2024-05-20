@@ -9,7 +9,7 @@
     xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Width="1280"
     Height="720"
-    d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodels:LogInViewModel}"
     Icon="/Resources/Images/LogoTFG.png"
     ResizeMode="NoResize"
     WindowCornerPreference="Round"
