@@ -6,7 +6,7 @@ using TFG.ViewModels.Base;
 using TFG.Models;
 
 namespace TFG.ViewModels {
-    public class LoginViewModel : BaseViewModel {
+    public class LogInViewModel : BaseViewModel {
         //Atributos
         private readonly IAuthenticationService _authenticationService;
         private readonly INavigationService _navigationService;
@@ -14,19 +14,20 @@ namespace TFG.ViewModels {
         private AppUser? _user;
 
         //TODO - CreateAccountCommand.
-        public CommandViewModel LoginCommand { get; private set; }
+        public CommandViewModel LogInCommand { get; private set; }
+        public CommandViewModel SignUpCommand { get; private set; }
         public string Data { get; set; }
         public string Password { get; set; }
         
 
-        public LoginViewModel(INavigationService navigationService, IDatabaseService databaseService, IAuthenticationService auth) {
+        public LogInViewModel(INavigationService navigationService, IDatabaseService databaseService, IAuthenticationService auth) {
             _databaseService = databaseService;
             _navigationService = navigationService;
             _authenticationService = auth;
             Data = string.Empty;
             Password = string.Empty;
 
-            LoginCommand = new CommandViewModel(async (obj) => await LoginAsync(), CanLogin);
+            LogInCommand = new CommandViewModel(async (obj) => await LoginAsync(), CanLogin);
         }
 
 
