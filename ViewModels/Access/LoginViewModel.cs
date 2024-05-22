@@ -16,9 +16,26 @@ namespace TFG.ViewModels {
         //TODO - CreateAccountCommand.
         public CommandViewModel LogInCommand { get; private set; }
         public CommandViewModel SignUpCommand { get; private set; }
-        public string Data { get; set; }
-        public string Password { get; set; }
-        
+
+        private string _data;
+
+        public string Data {
+
+            get { return _data; }
+            set {
+                _data = value;
+                OnPropertyChanged(Data);
+            }
+        }
+
+        private string _password;
+        public string Password {
+            get { return _password; }
+            set {
+                _password = value; OnPropertyChanged(Password);
+            }
+        }
+
 
         public LogInViewModel(INavigationService navigationService, IDatabaseService databaseService, IAuthenticationService auth) {
             _databaseService = databaseService;
@@ -26,8 +43,8 @@ namespace TFG.ViewModels {
             _authenticationService = auth;
             Data = string.Empty;
             Password = string.Empty;
-
             LogInCommand = new CommandViewModel(async (obj) => await LoginAsync(), CanLogin);
+            SignUpCommand = new CommandViewModel(SignUpAccess);
         }
 
 
@@ -47,7 +64,11 @@ namespace TFG.ViewModels {
                 return;
             }
             _user = await _authenticationService.GetUserByDataInput(input);
-            _navigationService.NavigateTo("Workspace",_user, _navigationService, _databaseService, _authenticationService);
+            _navigationService.NavigateTo("Workspace", _user, _navigationService, _databaseService, _authenticationService);
+        }
+
+        private void SignUpAccess(object obj) {
+            _navigationService.NavigateTo("SignUp", _databaseService, _authenticationService);
         }
     }
 }
