@@ -46,14 +46,14 @@ namespace TFG.Models {
 
         private string _apellido2Usuario;
         [BsonElement("apellido2")]
-        public required string Apellido2Usuario {
+        public string Apellido2Usuario {
             get { return _apellido2Usuario; }
             set { _apellido2Usuario = value; }
         }
         private List<ObjectId> _listaContenedoresUsuario;
         [BsonElement("contenedores")]
         public List<ObjectId> ListaContenedoresUsuario {
-            get { return _listaContenedoresUsuario ??= []; }
+            get { return _listaContenedoresUsuario; }
             set { _listaContenedoresUsuario = value; }
         }
 
