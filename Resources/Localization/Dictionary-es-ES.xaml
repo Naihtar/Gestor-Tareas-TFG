@@ -3,7 +3,74 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:System="clr-namespace:System;assembly=System.Runtime">
 
-    <System:String x:Key="UserStr">Usuario</System:String>
+    <!--  Información de Inicio de Sesión  -->
+    <System:String x:Key="UserOrEmailStr">Usuario o Correo Electrónico</System:String>
     <System:String x:Key="PasswordStr">Contraseña</System:String>
-    <System:String x:Key="AccessButtonStr">Acceder</System:String>
+    <System:String x:Key="LogInButtonStr">Iniciar Sesión</System:String>
+    <System:String x:Key="LogInTextStr">Iniciar Sesión</System:String>
+
+
+    <!--  Información de Registro  -->
+    <System:String x:Key="SignUpButtonStr">Crear Cuenta</System:String>
+    <System:String x:Key="SignUpTextStr">Registrarse</System:String>
+    <System:String x:Key="SignUpInfoStr">Si desea crear una cuenta haga click</System:String>
+    <System:String x:Key="UsernameStr">Usuario</System:String>
+    <System:String x:Key="EmailStr">Correo Electrónico</System:String>
+    <System:String x:Key="RepeatEmailStr">Repetir Correo Electrónico</System:String>
+    <System:String x:Key="RepeatPasswordStr">Repetir Contraseña</System:String>
+    <System:String x:Key="NameStr">Nombre</System:String>
+    <System:String x:Key="FirstSurnameStr">Primer Apellido</System:String>
+    <System:String x:Key="SecondSurnameStr">Segundo Apellido</System:String>
+
+    <!--  Información de Espacio de Trabajo  -->
+    <System:String x:Key="FileStr">Archivo</System:String>
+    <System:String x:Key="AddWorkspaceStr">Agregar Espacio de Trabajo</System:String>
+    <System:String x:Key="EditWorkspaceStr">Editar Espacio de Trabajo</System:String>
+    <System:String x:Key="DeleteWorkspaceStr">Eliminar Espacio de Trabajo</System:String>
+    <System:String x:Key="WorkspacesStr">Espacios de trabajo</System:String>
+    <System:String x:Key="WorkspaceStr">Espacio de trabajo</System:String>
+
+    <!--  Información de Tareas  -->
+    <System:String x:Key="TODOStr">PENDIENTE</System:String>
+    <System:String x:Key="ONHOLDStr">EN ESPERA</System:String>
+    <System:String x:Key="INPROGRESSStr">EN PROGRESO</System:String>
+    <System:String x:Key="DONEStr">COMPLETADO</System:String>
+    <System:String x:Key="AddTaskButtonStr">Añadir Tarea</System:String>
+    <System:String x:Key="TitleStr">Titulo</System:String>
+    <System:String x:Key="DescriptionStr">Descripción</System:String>
+    <System:String x:Key="TagsStr">Etiquetas</System:String>
+    <System:String x:Key="SaveButtonStr">Guardar</System:String>
+    <System:String x:Key="DateCreateStr">Fecha de creación</System:String>
+    <System:String x:Key="EditTaskButtonStr">Editar Tarea</System:String>
+    <System:String x:Key="DeleteTaskButtonStr">Eliminar Tarea</System:String>
+
+    <!--  Información de Perfil  -->
+    <System:String x:Key="ProfileStr">Perfil</System:String>
+    <System:String x:Key="DeleteUserButtonStr">Eliminar Cuenta</System:String>
+    <System:String x:Key="ChangePasswordButtonStr">Cambiar Contraseña</System:String>
+    <System:String x:Key="OldPasswordStr">Contraseña Antigua</System:String>
+    <System:String x:Key="NewPasswordStr">Contraseña Nueva</System:String>
+    <System:String x:Key="RepeatNewPasswordStr">Repetir Contraseña Nueva</System:String>
+    <System:String x:Key="LogOutButtonStr">Cerrar Sesión</System:String>
+    <System:String x:Key="EditProfileButtonStr">Editar Cuenta</System:String>
+
+    <!--  Mensajes de ToolTip  -->
+    <System:String x:Key="Max27CharStr">27 letras máximo</System:String>
+    <System:String x:Key="Max80CharStr">80 letras máximo</System:String>
+    <System:String x:Key="Max50CharStr">50 letras máximo</System:String>
+    <System:String x:Key="Max255CharStr">255 letras máximo</System:String>
+    <System:String x:Key="TagsInstrucctionStr">Introduzca las etiquetas separadas por comas</System:String>
+    <System:String x:Key="SaveButtonInfoStr">Guardar el contenido</System:String>
+    <System:String x:Key="EditTastButtonInfoStr">Volver al espacio de trabajo</System:String>
+    <System:String x:Key="DeleteTastButtonInfoStr">Volver al espacio de trabajo</System:String>
+    <System:String x:Key="DeleteUserEmailInfoStr">Confirme su Correo Electrónico</System:String>
+    <System:String x:Key="DeleteUserPasswordInfoStr">Confirme su Correo Electrónico</System:String>
+    <System:String x:Key="DeleteButtonInfoStr">Eliminación de su cuenta</System:String>
+    <System:String x:Key="ChangePasswordButtonInfoStr">Cambiar la contraseña</System:String>
+    <System:String x:Key="GoBackButtonInfoStr">Ventana anterior</System:String>
+    <System:String x:Key="EasterEggStr">Code Monke SL</System:String>
+    <System:String x:Key="WorkspaceBackButtonStr">Volver al espacio de trabajo</System:String>
+    <System:String x:Key="LogInEmailOrUserInfoStr">Introduzca su Usuario o Correo Electrónico para iniciar sesión</System:String>
+    <System:String x:Key="LogInPasswordInfoStr">Introduzca su contraseña para iniciar sesión</System:String>
+
 </ResourceDictionary>
