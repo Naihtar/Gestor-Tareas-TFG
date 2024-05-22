@@ -4,6 +4,7 @@ using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Views.Pages;
 using TFG.Views.Pages.Access;
+using TFG.Views.Pages.User;
 using TFG.Views.Pages.Workspace.Container;
 using TFG.Views.Pages.Workspace.Task;
 
@@ -15,13 +16,17 @@ namespace TFG.Services.NavigationServices {
                 _frame.GoBack();
             }
         }
-        public void NavigateTo(IDatabaseService db, IAuthenticationService auth) {
-            _frame.Navigate(new LogInPage(this, db, auth));
+        public void NavigateTo(string route, IDatabaseService db, IAuthenticationService auth) {
+            switch (route) {
+                case "LogIn":
+                    _frame.Navigate(new LogInPage(this, db, auth));
+                    break;
+                case "SignUp":
+                    _frame.Navigate(new SignUpPage(db, this, auth));
+                    break;
+            }
         }
 
-        public void NavigateTo(IDatabaseService db) {
-            _frame.Navigate(new SignUpPage(db, this));
-        }
 
         public void NavigateTo(string route, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
             switch (route) {
@@ -36,6 +41,9 @@ namespace TFG.Services.NavigationServices {
                     break;
                 case "ProfilePassword":
                     _frame.Navigate(new UserProfileEditPasswordPage(user, this, db, auth));
+                    break;
+                case "DeleteProfile":
+                    _frame.Navigate(new UserProfileDeletePage(user, this, db, auth));
                     break;
             }
 

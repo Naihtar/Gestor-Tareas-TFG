@@ -7,8 +7,7 @@ using TFG.Models;
 namespace TFG.Services.NavigationServices {
 
     public interface INavigationService {
-        void NavigateTo(IDatabaseService db, IAuthenticationService auth);
-        void NavigateTo(IDatabaseService db);
+        void NavigateTo(string route ,IDatabaseService db, IAuthenticationService auth);
         void NavigateTo(string route, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth);
 
         void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService databaseService, IAuthenticationService auth);
