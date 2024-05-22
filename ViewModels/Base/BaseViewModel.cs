@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 
 namespace TFG.ViewModels.Base {
     public abstract class BaseViewModel : INotifyPropertyChanged {
@@ -20,6 +22,16 @@ namespace TFG.ViewModels.Base {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         }
+
+        public static bool IsValidEmail(string email) {
+            try {
+                var addr = new MailAddress(email);
+                return addr.Address == email;
+            } catch {
+                return false;
+            }
+        }
+
 
     }
 }

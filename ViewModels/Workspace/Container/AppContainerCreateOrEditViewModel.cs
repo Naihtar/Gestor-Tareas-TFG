@@ -8,45 +8,56 @@ using TFG.ViewModels.Base;
 namespace TFG.ViewModels.Workspace.Container {
     class AppContainerCreateOrEditViewModel : AppContainerBaseViewModel {
 
-        public CommandViewModel SaveCommandContainer { get; }
+        public CommandViewModel SaveContainerCommand { get; }
         private readonly bool _isCreate;
+
+        private string? _name;
+        public string? Name {
+            get { return _name; }
+            set {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
 
         public AppContainerCreateOrEditViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(container, user, navigationService, db, auth) {
             _isCreate = container == null;
-            SaveCommandContainer = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
+            SaveContainerCommand = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
+            Name = EditableContainer.NombreContenedor;
         }
 
         private bool CheckFieldName() {
-            return string.IsNullOrEmpty(EditableContainer.NombreContenedor);
+            return string.IsNullOrEmpty(Name);
         }
 
         private async Task<bool> CheckNameDBB(ObjectId id) {
-            return await _databaseService.ExistContainerWithName(EditableContainer.NombreContenedor, id);
+            return await _databaseService.ExistContainerWithName(Name, id);
         }
 
         protected override async Task SaveContainerAsyncWrapper() {
+            bool nameExists = await CheckNameDBB(_user.IdUsuario);
+            bool fieldNameEmpty = CheckFieldName();
 
-            bool name = await CheckNameDBB(_user.IdUsuario);
-            bool fieldName = CheckFieldName();
-
-            if (fieldName) {
+            if (fieldNameEmpty) {
                 ErrorMessage = "Rellene el campo del nombre.";
                 return;
             }
 
-            if (name) {
+            if (Name != EditableContainer.NombreContenedor && nameExists) {
                 ErrorMessage = "El nombre introducido ya esta en uso.";
                 return;
             }
 
+            EditableContainer.NombreContenedor = Name;
             if (_isCreate) {
                 EditableContainer.UsuarioID = _user.IdUsuario;
                 EditableContainer.ListaTareas = [];
                 EditableContainer.FechaCreacionContenedor = DateTime.Now;
                 await SaveAddContainerAsync();
-                return;
+            } else {
+                await SaveEditChangesAsync();
             }
-            await SaveEditChangesAsync();
         }
+
     }
 }

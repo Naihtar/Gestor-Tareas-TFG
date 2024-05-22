@@ -6,7 +6,7 @@ using TFG.ViewModels.Base;
 
 namespace TFG.ViewModels.Workspace.Container {
     public abstract class AppContainerBaseViewModel : BaseViewModel {
-        public CommandViewModel WorkspaceCommand { get; }
+        public CommandViewModel GoBackCommand { get; }
 
         protected AppContainer? _appContainer;
         protected AppUser _user;
@@ -28,7 +28,7 @@ namespace TFG.ViewModels.Workspace.Container {
             _appContainer = container;
             _user = user;
 
-            WorkspaceCommand = new CommandViewModel(WorkspaceBack);
+            GoBackCommand = new CommandViewModel(GoBack);
             EditableContainer = _appContainer ?? new AppContainer() {
                 NombreContenedor = string.Empty,
                 DescripcionContenedor = string.Empty,
@@ -55,13 +55,18 @@ namespace TFG.ViewModels.Workspace.Container {
             };
         }
 
-        private void WorkspaceBack(object obj) {
+        private void GoBack(object obj) {
             _navigationService.GoBack();
         }
 
         protected async Task SaveEditChangesAsync() {
             // Actualiza el usuario en la base de datos
-            await _databaseService.UpdateContainerAsync(EditableContainer);
+            bool success = await _databaseService.UpdateContainerAsync(EditableContainer);
+
+            if (!success) {
+                ErrorMessage = "Ha ocurrido un error al guardar la edición del Workspace.";
+                return;
+            }
 
             // Actualiza las propiedades del perfil de usuario
             AppContainerData();
@@ -73,7 +78,13 @@ namespace TFG.ViewModels.Workspace.Container {
 
         protected async Task SaveAddContainerAsync() {
 
-            await _databaseService.AddContainer(EditableContainer, _user.IdUsuario);
+            bool success = await _databaseService.AddContainer(EditableContainer, _user.IdUsuario);
+
+            if (!success) {
+                ErrorMessage = "Ha ocurrido un error al crear el nuevo Workspace.";
+                return;
+            }
+
             _navigationService.NavigateTo("Workspace", EditableContainer, _user, _navigationService, _databaseService, _authenticationService);
         }
         protected abstract Task SaveContainerAsyncWrapper();

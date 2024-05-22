@@ -2,10 +2,12 @@
     x:Class="TFG.Views.Pages.Workspace.Container.AppContainerCreateOrEditPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:container="clr-namespace:TFG.ViewModels.Workspace.Container"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="ContainerEditPage"
+    d:DataContext="{d:DesignInstance Type=container:AppContainerCreateOrEditViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     Foreground="White"
@@ -36,10 +38,10 @@
                 FontSize="16"
                 FontWeight="Bold">
                 <ui:MenuItem
-                    Command="{Binding WorkspaceCommand}"
+                    Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="Workspace" />
+                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
             </Menu>
 
             <StackPanel
@@ -54,13 +56,12 @@
                     Grid.Row="2"
                     Grid.Column="0"
                     Width="auto"
-                    Height="32"
                     MinWidth="160"
-                    Margin="0,16,0,0"
+                    Margin="0,16,0,16"
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Name:" />
+                    Text="{StaticResource TitleStr}" />
                 <ui:TextBox
                     Grid.Row="0"
                     Grid.Column="1"
@@ -72,53 +73,51 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="27"
-                    PlaceholderText="Nombre workspace..."
+                    PlaceholderText="{StaticResource TitleStr}"
                     Text="{Binding EditableContainer.NombreContenedor, Mode=TwoWay}"
-                    ToolTip="Max 27 characters" />
+                    ToolTip="{StaticResource Max27CharStr}" />
 
                 <!--  Container: Description  -->
                 <ui:TextBlock
                     Grid.Row="1"
                     Grid.Column="0"
                     Width="auto"
-                    Height="32"
                     MinWidth="160"
-                    Margin="0,16,0,0"
+                    Margin="0,16,0,16"
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Descripción:" />
+                    Text="{StaticResource DescriptionStr}" />
                 <ui:TextBox
                     Grid.Row="1"
                     Grid.Column="1"
                     Width="320"
-                    Height="160"
+                    Height="120"
                     MinWidth="160"
                     MaxHeight="320"
                     AcceptsReturn="True"
                     FontFamily="Fira Code"
                     FontSize="14"
                     MaxLength="255"
-                    PlaceholderText="Descripción del contenedor..."
+                    PlaceholderText="{StaticResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     Text="{Binding EditableContainer.DescripcionContenedor, Mode=TwoWay}"
                     TextWrapping="Wrap"
-                    ToolTip="Max 255 characters" />
+                    ToolTip="{StaticResource Max255CharStr}" />
                 <ui:Button
                     Width="320 "
                     Height="32"
-                    Margin="0,16,0,0"
+                    Margin="0,16,0,16"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Appearance="Info"
-                    Command="{Binding SaveCommandContainer}"
-                    Content="Save"
+                    Command="{Binding SaveContainerCommand}"
+                    Content="{StaticResource SaveButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    IsEnabled="True"
-                    ToolTip="Save container" />
+                    ToolTip="{StaticResource SaveButtonInfoStr}" />
                 <!--  Error Message  -->
             </StackPanel>
             <ui:TextBlock

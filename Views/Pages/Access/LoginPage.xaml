@@ -35,78 +35,79 @@
 
             <ui:Image
                 Width="300"
-                Margin="0,4,0,4"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
-                Source="/Resources/Images/LogoTFG.png" />
+                Source="/Resources/Images/LogoTFG.png"
+                ToolTip="{StaticResource EasterEggStr}" />
 
             <ui:TextBlock
-                x:Name="Info"
-                Width="320"
+                x:Name="LogIn"
+                Width="360"
                 Margin="16"
                 FontFamily="Fira Code"
                 FontSize="24"
                 FontWeight="Bold"
-                Text="Log In"
+                Text="{StaticResource LogInTextStr}"
                 TextAlignment="Center" />
 
             <ui:TextBox
                 x:Name="EmailTextBox"
-                Width="320"
+                Width="360"
+                Margin="0,0,0,8"
                 HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="User or Email..."
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
-            <Separator
-                Width="200"
-                Margin="0,4,0,4"
-                Opacity="0" />
+                PlaceholderText="{StaticResource UserOrEmailStr}"
+                Text="{Binding Data}"
+                ToolTip="{StaticResource LogInEmailOrUserInfoStr}" />
             <ui:PasswordBox
                 x:Name="PasswordBox"
-                Width="320"
+                Width="360"
+                Margin="0,8,0,16"
                 FontFamily="Fira Code"
                 FontSize="16"
                 Icon="{ui:SymbolIcon PersonKey20,
                                      Filled=True}"
-                Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                PlaceholderText="Password" />
-            <Separator
-                Width="200"
-                Margin="0,4,0,4"
-                Opacity="0" />
+                Password="{Binding Password, Mode=TwoWay}"
+                PlaceholderText="{StaticResource PasswordStr}"
+                ToolTip="{StaticResource LogInPasswordInfoStr}" />
+
             <ui:Button
                 Name="AccessButton"
-                Width="320"
+                Width="360"
+                Margin="0,0,0,16"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Command="{Binding LogInCommand}"
-                Content="Button"
+                Content="{StaticResource LogInButtonStr}"
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold" />
-            <Separator
-                Width="200"
-                Margin="0,4,0,4"
-                Opacity="0" />
+
         </StackPanel>
         <Grid
             Grid.Row="2"
             Grid.Column="1"
-            Width="200"
+            Grid.ColumnSpan="2"
+            Width="auto"
             HorizontalAlignment="Center"
             VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="37*" />
+            </Grid.ColumnDefinitions>
             <Label
                 Name="ErrorMessage"
-                Margin="4"
+                Grid.ColumnSpan="2"
+                Margin="4,4,4,4"
                 HorizontalContentAlignment="Center"
                 FontFamily="Fira Code"
                 FontSize="32"
                 Foreground="Red">
                 <TextBlock
-                    Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ErrorMessage}"
                     TextAlignment="Center"
                     TextWrapping="WrapWithOverflow" />
             </Label>
@@ -121,8 +122,8 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 Opacity="0.5">
-                <Hyperlink Command="">
-                    Sign Up
+                <Hyperlink Command="{Binding SignUpCommand}" Foreground="White">
+                    <TextBlock Text="{StaticResource SignUpButtonStr}" ToolTip="{StaticResource SignUpInfoStr}" />
                 </Hyperlink>
             </TextBlock>
         </Grid>

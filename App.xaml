@@ -11,6 +11,8 @@
                 <!--<ui:ThemesDictionary Theme="Light" />-->
                 <ui:ThemesDictionary Theme="Dark" />
                 <ui:ControlsDictionary />
+                <ResourceDictionary Source="/Resources/Localization/Dictionary-es-ES.xaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

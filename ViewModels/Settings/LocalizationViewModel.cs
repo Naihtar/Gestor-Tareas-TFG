@@ -15,7 +15,7 @@ public class LocalizationViewModel : BaseViewModel {
         SetLanguageCommand = new CommandViewModel(SetLang);
 
         // Establece el idioma predefinido
-        SetLang("en-US");  // Cambia "en-US" al código de idioma que desees
+        SetLang("es-ES");
     }
 
     private void SetLang(object langObj) {

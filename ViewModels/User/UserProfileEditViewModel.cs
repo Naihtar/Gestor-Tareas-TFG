@@ -20,10 +20,14 @@ namespace TFG.ViewModels {
 
         protected override async Task SaveChangesAsyncWrapper() {
             ObjectId idUser = EditableUser.IdUsuario;
-            bool email = await _databaseService.ExistEmailDB(idUser, EditableUser.EmailUsuario);
-            bool alias = await _databaseService.ExistAliasDB(idUser, EditableUser.AliasUsuario);
+            bool email = await _databaseService.CheckEmailByUserIDAsync(idUser, EditableUser.EmailUsuario);
+            bool alias = await _databaseService.CheckUsernameByUserIDAsync(idUser, EditableUser.AliasUsuario);
             bool fields = AreAnyFieldsEmpty();
 
+            if (!IsValidEmail(EditableUser.EmailUsuario)) {
+                ErrorMessage = "El email introducido no es válido.";
+                return;
+            }
 
             if (fields) {
                 ErrorMessage = "Rellene los campos vacios.";
@@ -47,8 +51,7 @@ namespace TFG.ViewModels {
             return string.IsNullOrEmpty(EditableUser.AliasUsuario) ||
                    string.IsNullOrEmpty(EditableUser.EmailUsuario) ||
                    string.IsNullOrEmpty(EditableUser.NombreUsuario) ||
-                   string.IsNullOrEmpty(EditableUser.Apellido1Usuario) ||
-                   string.IsNullOrEmpty(EditableUser.Apellido2Usuario);
+                   string.IsNullOrEmpty(EditableUser.Apellido1Usuario);
         }
 
         private void EditPassword(object obj) {

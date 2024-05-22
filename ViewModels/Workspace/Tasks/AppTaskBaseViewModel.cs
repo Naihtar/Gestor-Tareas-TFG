@@ -7,7 +7,7 @@ using TFG.ViewModels.Base;
 
 namespace TFG.ViewModels.Workspace.Tasks {
     public abstract class AppTaskBaseViewModel : BaseViewModel {
-        public CommandViewModel WorkspaceCommand { get; }
+        public CommandViewModel GoBackCommand { get; }
         public CommandViewModel SetStateCommand { get; }
         protected AppContainer _appContainer;
         protected AppTask? _appTask;
@@ -43,7 +43,7 @@ namespace TFG.ViewModels.Workspace.Tasks {
             _appContainer = container;
             _appTask = task;
             _user = user;
-            WorkspaceCommand = new CommandViewModel(WorkspaceBack);
+            GoBackCommand = new CommandViewModel(GoBack);
             //SetStateCommand = new CommandViewModel(OnButtonPressed);
             EditableTask = _appTask ?? new AppTask() {
                 NombreTarea = string.Empty,
@@ -79,7 +79,13 @@ namespace TFG.ViewModels.Workspace.Tasks {
         }
 
         protected async Task SaveEditChangesAsync() {
-            await _databaseService.UpdateTaskAsync(EditableTask);
+
+            bool success = await _databaseService.UpdateTaskAsync(EditableTask);
+
+            if (!success) {
+                ErrorMessage = "Ha ocurrido un error inesperado";
+                return;
+            }
             _navigationService.NavigateTo("Workspace", _appContainer, _user, _navigationService, _databaseService, _authenticationService);
         }
 
@@ -95,13 +101,13 @@ namespace TFG.ViewModels.Workspace.Tasks {
 
         protected abstract Task SaveTaskAsyncWrapper();
 
-        private void WorkspaceBack(object obj) {
+        private void GoBack(object obj) {
             _navigationService.GoBack();
         }
 
         protected void UpdateTagsFromText() {
             var tags = TagsTask.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                               .Select(tag => tag.Trim().Replace("#", "").Replace(" ","_"))
+                               .Select(tag => tag.Trim().Replace("#", "").Replace(" ", "_"))
                                .ToArray();
 
             EditableTask.EtiquetasTarea = tags;

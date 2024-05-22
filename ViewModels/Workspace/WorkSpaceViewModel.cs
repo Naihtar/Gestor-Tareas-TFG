@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using TFG.Models;
 using TFG.Services.AuthentificationServices;
@@ -21,16 +22,12 @@ namespace TFG.ViewModels {
 
         //Listas de datos
         private List<AppContainer> _userContainers; // Contenedores del usuario
-        private List<string> _containerNames; // Nombre de los contenedores
         public List<string> ContainerNames {
             get {
-                _containerNames.Clear();
-                foreach (var container in _userContainers) {
-                    _containerNames.Add(container.NombreContenedor);
-                }
-                return _containerNames;
+                return _userContainers.Select(container => container.NombreContenedor).ToList();
             }
         }
+
 
         //Comandos
         public CommandViewModel UserProfileCommand { get; private set; } //Acceder al profile
@@ -48,11 +45,14 @@ namespace TFG.ViewModels {
         public ObservableCollection<AppTask> InProgressTasks { get; private set; } //In Progress List 
         public ObservableCollection<AppTask> DoneTasks { get; private set; } //DONE List
         public ObservableCollection<AppTask> OnHoldTasks { get; private set; } //On Hold List
+        private readonly ResourceDictionary _resourceDictionary = new ResourceDictionary(); // Referencia al diccionario de recursos
 
         //Atributos: View
         private string? _selectedContainerName; // Nombre del contenedor.
         public string SelectedContainerName {
-            get { return ($"Workspace: {_selectedContainerName}"); }
+            get {
+                return $"{_resourceDictionary["WorkspaceStr"]}: {_selectedContainerName}";
+            }
             set {
                 if (_selectedContainerName != value) {
                     _selectedContainerName = value;
@@ -60,6 +60,7 @@ namespace TFG.ViewModels {
                 }
             }
         }
+
 
         private AppTask? _selectedTask;
         public AppTask? SelectedTask {
@@ -72,9 +73,30 @@ namespace TFG.ViewModels {
             }
         }
 
+        private bool _hasContainer;
+        public bool HasContainer {
+            get { return _hasContainer; }
+            set {
+                if (_hasContainer != value) {
+                    _hasContainer = value;
+                    OnPropertyChanged(nameof(HasContainer));
+                }
+            }
+        }
+        private bool _maxContainer;
+        public bool MaxContainer {
+            get { return _maxContainer; }
+            set {
+                if (_maxContainer != value) {
+                    _maxContainer = value;
+                    OnPropertyChanged(nameof(MaxContainer));
+                }
+            }
+        }
+
         // Constructor principal.
         private WorkSpaceViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
-
+            _resourceDictionary = Application.Current.Resources; //TODO pasarlo ya inicializado desde MainWindowViewModel.
             //Objetos
             _user = user;
             _appContainer = null; //Es null, para controlar ContainerAccess
@@ -83,6 +105,7 @@ namespace TFG.ViewModels {
             _navigationService = nav; //Servicio encargado de la navegación entre ventanas.
             _databaseService = db; // Servicio encargado de la obtención de información desde la BDD.
             _authenticationService = auth; //Servicio de authentificación.
+
             //Comandos
             UserProfileCommand = new CommandViewModel(UserProfileAccess); // Acceder al perfil de usuario
             ContentContainerCommand = new CommandViewModel(ContentContainers); // Mostrar el contenido del contenedor
@@ -91,7 +114,7 @@ namespace TFG.ViewModels {
             DeleteContainerCommand = new CommandViewModel(async (obj) => await DeleteContainer());
             AddContainerCommand = new CommandViewModel(AddContainer);
             ContentTaskCommand = new CommandViewModel(TaskAccess); // Mostrar el contenido del contenedor
-            MoveTaskCommand = new CommandViewModel(MoveTaskToNextList, CanMoveTask);
+            MoveTaskCommand = new CommandViewModel(MoveTaskToNextList);
             AddTaskCommand = new CommandViewModel(CreateTask);
 
             //Atributos: View
@@ -99,7 +122,6 @@ namespace TFG.ViewModels {
 
             //Lista de datos
             _userContainers = []; //Lista de contenedores que tiene el usuario
-            _containerNames = []; //Lista de los nombres de los contenedores
 
             //Colecciones visuales en la vista. (ObservationCollection).
             ToDoTasks = [];
@@ -132,10 +154,11 @@ namespace TFG.ViewModels {
         private async Task InitializeAsync() {
             try {
                 _userContainers = await ObtainContainerDB().ConfigureAwait(false);
-                _containerNames = ContainerNames;
+                OnPropertyChanged(nameof(ContainerNames));
+                HasContainers(_userContainers);
+                MaxContainers(_userContainers);
             } catch (Exception ex) {
-                // Maneja la excepción apropiadamente
-                ErrorMessage = $"Error initializing containers: {ex.Message}";
+                ErrorMessage = $"Error al iniciar los contenedores: {ex.Message}";
             }
         }
 
@@ -151,11 +174,13 @@ namespace TFG.ViewModels {
                         }
                     }
                 }
+                HasContainers(containers);
+                MaxContainers(containers);
                 return containers;
             } catch (Exception ex) {
                 // Maneja la excepción apropiadamente
-                ErrorMessage = $"Error obtaining containers from DB: {ex.Message}";
-                return new List<AppContainer>();
+                ErrorMessage = $"Error al obtener los contenedores de la DB: {ex.Message}";
+                return [];
             }
         }
 
@@ -163,39 +188,45 @@ namespace TFG.ViewModels {
 
         // Método para cargar las tareas del contenedor seleccionado
         private async void LoadTasksForContainer() {
-            if (_appContainer != null) {
-                // Limpiar colecciones
-                ToDoTasks.Clear();
-                InProgressTasks.Clear();
-                OnHoldTasks.Clear();
-                DoneTasks.Clear();
+            try {
+                if (_appContainer != null) {
+                    // Limpiar colecciones
 
-                if (_appContainer.ListaTareas.Count > 0 || _appContainer != null) {
-                    // Obtener desde la base de datos las tareas del contenedor seleccionado
-                    List<AppTask> tasks = await _databaseService.GetTasksByContainerIdAsync(_appContainer.IdContenedor);
 
-                    // Iterarlas y asignarlas a la colección correspondiente.
-                    foreach (var task in tasks) {
-                        switch (task.EstadoTarea) {
-                            case "Pendiente":
-                                ToDoTasks.Add(task);
-                                break;
-                            case "En progreso":
-                                InProgressTasks.Add(task);
-                                break;
-                            case "En espera":
-                                OnHoldTasks.Add(task);
-                                break;
-                            case "Completado":
-                                DoneTasks.Add(task);
-                                break;
-                            default:
-                                MessageBox.Show($"Hay un error con la tarea: {task.NombreTarea}");
-                                break;
+                    bool hasTask = await _databaseService.HasTasksInContainerAsync(_appContainer.IdContenedor);
+
+                    ClearTasks();
+
+                    if (hasTask) {
+                        // Obtener desde la base de datos las tareas del contenedor seleccionado
+                        List<AppTask> tasks = await _databaseService.GetTasksByContainerIdAsync(_appContainer.IdContenedor);
+
+                        // Iterarlas y asignarlas a la colección correspondiente.
+                        foreach (var task in tasks) {
+                            switch (task.EstadoTarea) {
+                                case "Pendiente":
+                                    ToDoTasks.Add(task);
+                                    break;
+                                case "En progreso":
+                                    InProgressTasks.Add(task);
+                                    break;
+                                case "En espera":
+                                    OnHoldTasks.Add(task);
+                                    break;
+                                case "Completado":
+                                    DoneTasks.Add(task);
+                                    break;
+                                default:
+                                    MessageBox.Show($"Hay un error con la tarea: {task.NombreTarea}");
+                                    break;
+                            }
                         }
                     }
                 }
+            } catch (Exception ex) {
+                ErrorMessage = $"Error al obtener los contenedores de la DB: {ex.Message}";
             }
+
         }
 
         //Asignar el contenido a los contenedores y acceder al contenedor deseado.
@@ -213,6 +244,7 @@ namespace TFG.ViewModels {
                 }
             }
         }
+
 
         //Método para acceder al perfil de usuario
         private void UserProfileAccess(object obj) {
@@ -250,14 +282,12 @@ namespace TFG.ViewModels {
                     _userContainers.Remove(_appContainer);
 
                     // Limpia las colecciones de tareas
-                    ToDoTasks.Clear();
-                    InProgressTasks.Clear();
-                    OnHoldTasks.Clear();
-                    DoneTasks.Clear();
+                    ClearTasks();
 
                     // Actualiza la interfaz de usuario
                     OnPropertyChanged(nameof(ContainerNames));
                     SelectedContainerName = string.Empty;
+                    MaxContainers(_userContainers);
 
                     // Muestra un mensaje de confirmación
                     MessageBox.Show("El contenedor y sus elementos asociados se han eliminado correctamente.");
@@ -267,6 +297,11 @@ namespace TFG.ViewModels {
         }
 
         private void AddContainer(object obj) {
+            if (MaxContainer) {
+                MessageBox.Show("Alcanzado el máximo de contenedores.");
+                return;
+            }
+
             _navigationService.NavigateTo("ContainerAdd", null, _user, _navigationService, _databaseService, _authenticationService); //Ir a la vista del container
         }
 
@@ -282,64 +317,55 @@ namespace TFG.ViewModels {
             }
         }
         private void CreateTask(object obj) {
+            HasContainer = _userContainers.Count > 0;
+
             if (_appContainer == null) {
                 MessageBox.Show($"No has seleccionado ningún contenedor");
                 return;
             }
-            string status = obj.ToString(); // TODO Editar
+            string? status = obj.ToString(); // TODO Editar
             _navigationService.NavigateTo("AddTask", _appContainer, _user, _navigationService, _databaseService, _authenticationService, null, status); //Ir a la vista del container
             SelectedTask = null;
-
+            LoadTasksForContainer();
         }
 
         // Método que realiza el movimiento de la tarea
-        private void MoveTaskToNextList(object obj) {
-
-            //if (obj is AppTask task) {
-            //    SelectedTask = task;
-            //    MessageBox.Show("No se pudo seleccionar la tarea.");
-            //} 
-
-            if (SelectedTask == null) return;
-            // Determinar la lista actual de la tarea
-            ObservableCollection<AppTask> currentList = null;
-            ObservableCollection<AppTask> nextList = null;
-            if (obj is AppTask task) {
-                SelectedTask = task;
-
-                switch (SelectedTask.EstadoTarea) {
-                    case "Pendiente":
-                        currentList = ToDoTasks;
-                        nextList = InProgressTasks;
-                        SelectedTask.EstadoTarea = "En progreso";
-                        break;
-                    case "En progreso":
-                        currentList = InProgressTasks;
-                        nextList = OnHoldTasks;
-                        SelectedTask.EstadoTarea = "En espera";
-                        break;
-                    case "En espera":
-                        currentList = OnHoldTasks;
-                        nextList = DoneTasks;
-                        SelectedTask.EstadoTarea = "Completado";
-                        break;
-                    case "Completado":
-                        MessageBox.Show("La tarea ya está completada.");
-                        return;
-                    default:
-                        MessageBox.Show($"Estado desconocido: {SelectedTask.EstadoTarea}");
-                        return;
-                }
+        private async void MoveTaskToNextList(object obj) {
+            if (_selectedTask == null) {
+                MessageBox.Show("No has seleccionado ninguna tarea.");
+                return;
             }
-            // Mover la tarea a la siguiente lista
-            if (currentList != null && nextList != null) {
-                currentList.Remove(SelectedTask);
-                nextList.Add(SelectedTask);
+
+            string? status = obj.ToString();
+
+            _selectedTask.EstadoTarea = status;
+
+            // Update the task in the database
+            bool isUpdated = await _databaseService.UpdateTaskAsync(_selectedTask);
+
+            if (!isUpdated) {
+                // Reload tasks to reflect the updated status
+                MessageBox.Show("No se pudo mover la tarea. Por favor, inténtalo de nuevo.");
+                return;
             }
+            LoadTasksForContainer();
         }
 
-        private bool CanMoveTask(object obj) {
-            return SelectedTask != null;
+        private void ClearTasks() {
+            ToDoTasks.Clear();
+            InProgressTasks.Clear();
+            OnHoldTasks.Clear();
+            DoneTasks.Clear();
+        }
+
+        private void HasContainers(List<AppContainer> containers) {
+
+            HasContainer = containers.Count > 0;
+
+        }
+        private void MaxContainers(List<AppContainer> containers) {
+
+            MaxContainer = containers.Count >= 5;
         }
 
     }

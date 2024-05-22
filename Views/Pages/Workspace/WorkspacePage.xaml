@@ -40,24 +40,27 @@
                         FontSize="20"
                         FontWeight="Bold"
                         Foreground="White">
-                        <ui:MenuItem Header="File">
+                        <ui:MenuItem Header="{StaticResource FileStr}">
                             <ui:MenuItem
                                 Command="{Binding AddContainerCommand}"
-                                Header="Add Workspace"
+                                Header="{StaticResource AddWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Add12,
                                                      Filled=True}" />
                             <ui:MenuItem
                                 Command="{Binding EditContainerCommand}"
-                                Header="Edit Workspace"
+                                Header="{StaticResource EditWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Edit16,
                                                      Filled=True}" />
                             <ui:MenuItem
                                 Command="{Binding DeleteContainerCommand}"
-                                Header="Delete Workspace"
+                                Header="{StaticResource DeleteWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Delete16,
                                                      Filled=True}" />
                         </ui:MenuItem>
-                        <ui:MenuItem x:Name="Workspaces" Header="Workspaces">
+                        <ui:MenuItem
+                            x:Name="Workspaces"
+                            Header="{StaticResource WorkspacesStr}"
+                            IsEnabled="{Binding HasContainer}">
                             <ItemsControl ItemsSource="{Binding ContainerNames}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -79,7 +82,9 @@
                         VerticalAlignment="Center"
                         FontSize="20"
                         FontWeight="Bold"
-                        Foreground="White">
+                        Foreground="White"
+                        IsEnabled="{Binding HasContainer}">
+
                         <ui:MenuItem
                             Command="{Binding ContainerCommand}"
                             Header="{Binding SelectedContainerName}"
@@ -99,7 +104,7 @@
                     Foreground="White">
                     <ui:MenuItem
                         Command="{Binding UserProfileCommand}"
-                        Header="Profile"
+                        Header="{StaticResource ProfileStr}"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}" />
                 </Menu>
@@ -141,7 +146,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="TODO" />
+                                Text="{StaticResource TODOStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -149,17 +154,17 @@
                             Background="AliceBlue"
                             Opacity="0.30" />
                         <ScrollViewer MaxHeight="455" HorizontalScrollBarVisibility="Auto">
-                            <StackPanel>
+                            <StackPanel x:Name="ToDo_Tasks">
                                 <StackPanel.Background>
                                     <SolidColorBrush Opacity="0.60" Color="#2b2b2b" />
                                 </StackPanel.Background>
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView
+                                <ListBox
                                     Grid.Column="0"
                                     ItemsSource="{Binding ToDoTasks}"
                                     SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
                                     SelectionMode="Single">
-                                    <ui:ListView.ItemTemplate>
+                                    <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -181,6 +186,7 @@
                                                             Margin="0,0,8,0"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
+                                                            FontSize="14"
                                                             FontWeight="Bold"
                                                             Text="{Binding NombreTarea, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
@@ -200,7 +206,7 @@
                                                                     <TextBlock
                                                                         Margin="0,0,4,0"
                                                                         HorizontalAlignment="Left"
-                                                                        FontSize="12"
+                                                                        FontSize="11"
                                                                         Foreground="LightBlue">
                                                                         <TextBlock.Text>
                                                                             <MultiBinding StringFormat="{}#{0}">
@@ -215,14 +221,17 @@
                                                 </ui:Button>
                                                 <ui:Button
                                                     Grid.Column="3"
+                                                    Margin="4,0,0,0"
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="En espera"
                                                     Icon="{ui:SymbolIcon IosArrowRtl24}" />
                                             </Grid>
                                         </DataTemplate>
-                                    </ui:ListView.ItemTemplate>
-                                </ui:ListView>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </StackPanel>
                         </ScrollViewer>
                         <!--  Button: Add Task  -->
@@ -231,9 +240,9 @@
                             Margin="0,12,0,0"
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
-                            CommandParameter="Pendiente">
-                            <ui:TextBlock>Add Task</ui:TextBlock>
-                        </ui:Button>
+                            CommandParameter="Pendiente"
+                            Content="{StaticResource AddTaskButtonStr}"
+                            IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
 
@@ -262,7 +271,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="ON HOLD" />
+                                Text="{StaticResource ONHOLDStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -270,17 +279,19 @@
                             Background="AliceBlue"
                             Opacity="0.30" />
                         <ScrollViewer MaxHeight="455" HorizontalScrollBarVisibility="Auto">
-                            <StackPanel>
+                            <StackPanel x:Name="On_Hold_Tasks">
                                 <StackPanel.Background>
                                     <SolidColorBrush Opacity="0.15" Color="#081a2b" />
                                 </StackPanel.Background>
 
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView
+                                <ListBox
                                     Grid.Column="0"
+                                    Background="Transparent"
                                     ItemsSource="{Binding OnHoldTasks}"
-                                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
-                                    <ui:ListView.ItemTemplate>
+                                    SelectedItem="{Binding SelectedTask, Mode=TwoWay}"
+                                    SelectionMode="Single">
+                                    <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -302,6 +313,7 @@
                                                             Margin="0,0,8,0"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
+                                                            FontSize="14"
                                                             FontWeight="Bold"
                                                             Text="{Binding NombreTarea, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
@@ -321,7 +333,7 @@
                                                                     <TextBlock
                                                                         Margin="0,0,4,0"
                                                                         HorizontalAlignment="Left"
-                                                                        FontSize="12"
+                                                                        FontSize="11"
                                                                         Foreground="LightBlue">
                                                                         <TextBlock.Text>
                                                                             <MultiBinding StringFormat="{}#{0}">
@@ -340,6 +352,8 @@
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="En progreso"
                                                     Icon="{ui:SymbolIcon IosArrowRtl24,
                                                                          Filled=True}" />
                                                 <ui:Button
@@ -348,12 +362,14 @@
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="Pendiente"
                                                     Icon="{ui:SymbolIcon IosArrowLtr24,
                                                                          Filled=True}" />
                                             </Grid>
                                         </DataTemplate>
-                                    </ui:ListView.ItemTemplate>
-                                </ui:ListView>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </StackPanel>
                         </ScrollViewer>
                         <!--  Button: Add Task  -->
@@ -362,9 +378,9 @@
                             Margin="0,12,0,0"
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
-                            CommandParameter="En espera">
-                            <ui:TextBlock>Add Task</ui:TextBlock>
-                        </ui:Button>
+                            CommandParameter="Pendiente"
+                            Content="{StaticResource AddTaskButtonStr}"
+                            IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
 
@@ -401,17 +417,17 @@
                             Background="AliceBlue"
                             Opacity="0.30" />
                         <ScrollViewer MaxHeight="455" HorizontalScrollBarVisibility="Auto">
-                            <StackPanel>
+                            <StackPanel x:Name="In_Progress_Tasks">
                                 <StackPanel.Background>
                                     <SolidColorBrush Opacity="0.15" Color="MediumPurple" />
                                 </StackPanel.Background>
 
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView
+                                <ListBox
                                     Grid.Column="0"
                                     ItemsSource="{Binding InProgressTasks}"
                                     SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
-                                    <ui:ListView.ItemTemplate>
+                                    <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -433,6 +449,7 @@
                                                             Margin="0,0,8,0"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
+                                                            FontSize="14"
                                                             FontWeight="Bold"
                                                             Text="{Binding NombreTarea, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
@@ -452,7 +469,7 @@
                                                                     <TextBlock
                                                                         Margin="0,0,4,0"
                                                                         HorizontalAlignment="Left"
-                                                                        FontSize="12"
+                                                                        FontSize="11"
                                                                         Foreground="LightBlue">
                                                                         <TextBlock.Text>
                                                                             <MultiBinding StringFormat="{}#{0}">
@@ -471,6 +488,8 @@
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="Completado"
                                                     Icon="{ui:SymbolIcon IosArrowRtl24,
                                                                          Filled=True}" />
                                                 <ui:Button
@@ -479,12 +498,14 @@
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="En espera"
                                                     Icon="{ui:SymbolIcon IosArrowLtr24,
                                                                          Filled=True}" />
                                             </Grid>
                                         </DataTemplate>
-                                    </ui:ListView.ItemTemplate>
-                                </ui:ListView>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </StackPanel>
                         </ScrollViewer>
                         <!--  Button: Add Task  -->
@@ -493,9 +514,9 @@
                             Margin="0,12,0,0"
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
-                            CommandParameter="En progreso">
-                            <ui:TextBlock>Add Task</ui:TextBlock>
-                        </ui:Button>
+                            CommandParameter="Pendiente"
+                            Content="{StaticResource AddTaskButtonStr}"
+                            IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
 
@@ -523,7 +544,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="DONE" />
+                                Text="{StaticResource DONEStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -532,17 +553,17 @@
                             Opacity="0.30" />
                         <!--  Container Task: Done  -->
                         <ScrollViewer MaxHeight="455" HorizontalScrollBarVisibility="Auto">
-                            <StackPanel>
+                            <StackPanel x:Name="Done_Tasks">
                                 <StackPanel.Background>
                                     <SolidColorBrush Opacity="0.15" Color="ForestGreen" />
                                 </StackPanel.Background>
 
                                 <!--  Dynamic Elements  -->
-                                <ui:ListView
+                                <ListBox
                                     Grid.Column="0"
                                     ItemsSource="{Binding DoneTasks}"
                                     SelectedItem="{Binding SelectedTask, Mode=TwoWay}">
-                                    <ui:ListView.ItemTemplate>
+                                    <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -564,6 +585,7 @@
                                                             Margin="0,0,8,0"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
+                                                            FontSize="14"
                                                             FontWeight="Bold"
                                                             Text="{Binding NombreTarea, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
@@ -583,7 +605,7 @@
                                                                     <TextBlock
                                                                         Margin="0,0,4,0"
                                                                         HorizontalAlignment="Left"
-                                                                        FontSize="12"
+                                                                        FontSize="11"
                                                                         Foreground="LightBlue">
                                                                         <TextBlock.Text>
                                                                             <MultiBinding StringFormat="{}#{0}">
@@ -602,12 +624,14 @@
                                                     HorizontalAlignment="Stretch"
                                                     VerticalAlignment="Stretch"
                                                     HorizontalContentAlignment="Center"
+                                                    Command="{Binding Path=DataContext.MoveTaskCommand, ElementName=WorkspacePage}"
+                                                    CommandParameter="En progreso"
                                                     Icon="{ui:SymbolIcon IosArrowLtr24,
                                                                          Filled=True}" />
                                             </Grid>
                                         </DataTemplate>
-                                    </ui:ListView.ItemTemplate>
-                                </ui:ListView>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </StackPanel>
                         </ScrollViewer>
                         <!--  Button: Add Task  -->
@@ -616,9 +640,9 @@
                             Margin="0,12,0,0"
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
-                            CommandParameter="Completado">
-                            <ui:TextBlock>Add Task</ui:TextBlock>
-                        </ui:Button>
+                            CommandParameter="Pendiente"
+                            Content="{StaticResource AddTaskButtonStr}"
+                            IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
             </Grid>

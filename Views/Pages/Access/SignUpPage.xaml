@@ -2,11 +2,13 @@
     x:Class="TFG.Views.Pages.Access.SignUpPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:access="clr-namespace:TFG.ViewModels.Access"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TFG.Views.Pages.Access"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="SignUpPage"
+    d:DataContext="{d:DesignInstance Type=access:SignUpViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     Foreground="White"
@@ -37,25 +39,56 @@
                                      Filled=True}"
                 ToolTip="Workspace" />
         </Menu>
-        <StackPanel
+        <Grid
             Grid.Row="1"
             Grid.Column="1"
             Grid.ColumnSpan="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
             <ui:TextBlock
                 x:Name="Info"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
                 Width="320"
-                Margin="16"
+                Margin="0,16,0,16"
                 FontFamily="Fira Code"
                 FontSize="24"
                 FontWeight="Bold"
-                Text="Sign Up"
+                Text="{StaticResource SignUpTextStr}"
                 TextAlignment="Center" />
 
+            <ui:TextBlock
+                Grid.Row="1"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,0,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource UsernameStr}" />
             <ui:TextBox
                 x:Name="UsernameTextBox"
+                Grid.Row="1"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 HorizontalAlignment="Stretch"
@@ -63,53 +96,117 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="Username"
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="{StaticResource UsernameStr}"
+                Text="{Binding CreateUser.AliasUsuario}" />
+
+            <ui:TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,0,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource EmailStr}" />
             <ui:TextBox
                 x:Name="EmailTextBox"
+                Grid.Row="2"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
                 FontSize="16"
-                Icon="{ui:SymbolIcon Person20,
+                Icon="{ui:SymbolIcon Mail20,
                                      Filled=True}"
-                PlaceholderText="Email"
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="{StaticResource EmailStr}"
+                Text="{Binding UserEmail}" />
+
+            <ui:TextBlock
+                Grid.Row="3"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,16,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource RepeatEmailStr}" />
             <ui:TextBox
                 x:Name="EmailRepeatTextBox"
+                Grid.Row="3"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 HorizontalAlignment="Stretch"
                 FontFamily="Fira Code"
                 FontSize="16"
-                Icon="{ui:SymbolIcon Person20,
+                Icon="{ui:SymbolIcon Mail20,
                                      Filled=True}"
-                PlaceholderText="Repeat Email"
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="{StaticResource RepeatEmailStr}"
+                Text="{Binding UserCheckEmail}" />
+
+            <ui:TextBlock
+                Grid.Row="4"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,16,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource PasswordStr}" />
             <ui:PasswordBox
                 x:Name="PasswordBox"
+                Grid.Row="4"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 FontFamily="Fira Code"
                 FontSize="16"
-                Icon="{ui:SymbolIcon PersonKey20,
+                Icon="{ui:SymbolIcon Key20,
                                      Filled=True}"
-                Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                PlaceholderText="Password" />
+                Password="{Binding UserPassword, Mode=TwoWay}"
+                PlaceholderText="{StaticResource PasswordStr}" />
+
+            <ui:TextBlock
+                Grid.Row="5"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,16,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource RepeatPasswordStr}" />
             <ui:PasswordBox
                 x:Name="PasswordBox2"
+                Grid.Row="5"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 FontFamily="Fira Code"
                 FontSize="16"
-                Icon="{ui:SymbolIcon PersonKey20,
+                Icon="{ui:SymbolIcon Key20,
                                      Filled=True}"
-                Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                PlaceholderText="Repeat Password" />
+                Password="{Binding UserCheckPassword, Mode=TwoWay}"
+                PlaceholderText="{StaticResource RepeatPasswordStr}" />
 
+            <ui:TextBlock
+                Grid.Row="6"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,16,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource NameStr}" />
             <ui:TextBox
                 x:Name="NameTextBox"
+                Grid.Row="6"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 HorizontalAlignment="Stretch"
@@ -117,10 +214,23 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="Name"
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="{StaticResource NameStr}"
+                Text="{Binding CreateUser.NombreUsuario}" />
+
+            <ui:TextBlock
+                Grid.Row="7"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,16,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource FirstSurnameStr}" />
             <ui:TextBox
                 x:Name="SurnameTextBox1"
+                Grid.Row="7"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 HorizontalAlignment="Stretch"
@@ -128,10 +238,23 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="First Surname"
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="{StaticResource FirstSurnameStr}"
+                Text="{Binding CreateUser.Apellido1Usuario}" />
+
+            <ui:TextBlock
+                Grid.Row="8"
+                Grid.Column="0"
+                Width="auto"
+                MinWidth="160"
+                Margin="0,16,16,16"
+                FontFamily="Fira Code"
+                FontSize="16"
+                FontWeight="Bold"
+                Text="{StaticResource SecondSurnameStr}" />
             <ui:TextBox
                 x:Name="SurnameTextBox2"
+                Grid.Row="8"
+                Grid.Column="1"
                 Width="320"
                 Margin="0,8,0,8"
                 HorizontalAlignment="Stretch"
@@ -139,28 +262,32 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="Second Surname"
-                Text="{Binding Data, UpdateSourceTrigger=PropertyChanged}" />
+                PlaceholderText="{StaticResource SecondSurnameStr}"
+                Text="{Binding CreateUser.Apellido2Usuario}" />
+
 
             <ui:Button
                 Name="AccessButton"
+                Grid.Row="9"
+                Grid.ColumnSpan="2"
                 Width="320"
-                Margin="0,8,0,16"
+                Margin="0,16,0,16"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Appearance="Primary"
-                Command="{Binding LogInCommand}"
-                Content="Button"
+                Command="{Binding CreateUserCommand}"
+                Content="{StaticResource SignUpButtonStr}"
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
                 Foreground="White" />
-        </StackPanel>
+        </Grid>
         <Grid
             Grid.Row="2"
             Grid.Column="1"
-            Width="200"
-            HorizontalAlignment="Center"
+            Grid.ColumnSpan="2"
+            Width="auto"
+            HorizontalAlignment="Stretch"
             VerticalAlignment="Top">
             <Label
                 Name="ErrorMessage"
@@ -170,7 +297,7 @@
                 FontSize="32"
                 Foreground="Red">
                 <TextBlock
-                    Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}"
+                    Text="{Binding ErrorMessage}"
                     TextAlignment="Center"
                     TextWrapping="WrapWithOverflow" />
             </Label>

@@ -38,10 +38,10 @@
                 FontSize="16"
                 FontWeight="Bold">
                 <ui:MenuItem
-                    Command="{Binding WorkspaceCommand}"
+                    Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="Workspace" />
+                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
             </Menu>
             <Menu
                 Grid.Row="0"
@@ -51,7 +51,7 @@
                 FontSize="16"
                 FontWeight="Bold">
                 <ui:MenuItem
-                    Command="{Binding WorkspaceCommand}"
+                    Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon Settings20,
                                          Filled=True}"
                     ToolTip="Settings" />
@@ -80,7 +80,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Username:"
+                            Text="{StaticResource UsernameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -99,7 +99,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Email:"
+                            Text="{StaticResource EmailStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -117,7 +117,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Name:"
+                            Text="{StaticResource NameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -135,7 +135,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="First Surname:"
+                            Text="{StaticResource FirstSurnameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -153,7 +153,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="Second Surname:"
+                            Text="{StaticResource SecondSurnameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -182,8 +182,9 @@
                         Margin="0,0,4,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
+                        d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileViewModel}"
                         Command="{Binding EditCommand}"
-                        Content="Editar perfil"
+                        Content="{StaticResource EditProfileButtonStr}"
                         FontFamily="Fira Code"
                         FontSize="16"
                         Icon="{ui:SymbolIcon Edit20,
@@ -197,9 +198,9 @@
                         Margin="4,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
-                        Appearance="Danger"
+                        Appearance="Caution"
                         Command="{Binding LogOutCommand}"
-                        Content="Log out"
+                        Content="{StaticResource LogOutButtonStr}"
                         FontFamily="Fira Code"
                         FontSize="16"
                         Icon="{ui:SymbolIcon ArrowExit20,
@@ -208,6 +209,23 @@
                         ToolTip="Log out" />
                 </Grid>
             </StackPanel>
+            <ui:Button
+                Grid.Row="3"
+                Grid.Column="4"
+                Width="Auto"
+                Height="32"
+                MinWidth="160"
+                Margin="0,0,0,16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileViewModel}"
+                Appearance="Danger"
+                Command="{Binding DeleteCommand}"
+                Content="{StaticResource DeleteUserButtonStr}"
+                FontFamily="Fira Code"
+                FontSize="16"
+                Icon="{ui:SymbolIcon Warning28}"
+                ToolTip="{StaticResource DeleteButtonInfoStr}" />
         </Grid>
     </Border>
 </Page>

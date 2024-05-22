@@ -37,10 +37,10 @@
                 FontSize="16"
                 FontWeight="Bold">
                 <ui:MenuItem
-                    Command="{Binding WorkspaceCommand}"
+                    Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="Workspace" />
+                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
             </Menu>
 
             <!--  Labels  -->
@@ -57,7 +57,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Nombre:"
+                    Text="{StaticResource TitleStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"
@@ -75,7 +75,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Descripción:"
+                    Text="{StaticResource DescriptionStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"
@@ -93,7 +93,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Fecha Creación:"
+                    Text="{StaticResource DateCreateStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"
@@ -111,7 +111,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Etiquetas:"
+                    Text="{StaticResource TagsStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"
@@ -130,34 +130,34 @@
                     </Grid.ColumnDefinitions>
                     <ui:Button
                         Grid.Column="0"
-                        Width="160 "
+                        Width="180 "
                         Height="32"
                         Margin="0,0,4,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Command="{Binding EditTaskAccessCommand}"
-                        Content="Edit Task"
+                        Content="{StaticResource EditTaskButtonStr}"
                         FontFamily="Fira Code"
                         FontSize="16"
                         Icon="{ui:SymbolIcon Edit20,
                                              Filled=True}"
                         IsEnabled="True"
-                        ToolTip="Edit Task" />
+                        ToolTip="{StaticResource EditTastButtonInfoStr}" />
                     <ui:Button
                         Grid.Column="1"
-                        Width="160 "
+                        Width="180 "
                         Height="32"
                         Margin="4,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Appearance="Danger"
                         Command="{Binding DeleteTaskCommand}"
-                        Content="Delete Task"
+                        Content="{StaticResource DeleteTaskButtonStr}"
                         FontFamily="Fira Code"
                         FontSize="16"
                         Icon="{ui:SymbolIcon Warning20,
                                              Filled=True}"
-                        ToolTip="Delete Task" />
+                        ToolTip="{StaticResource DeleteTastButtonInfoStr}" />
                 </Grid>
             </StackPanel>
         </Grid>

@@ -9,11 +9,9 @@ namespace TFG.ViewModels {
 
     public class UserProfileEditPasswordViewModel : UserProfileBaseViewModel {
 
-        private readonly IAuthenticationService _authenticationService;
-
         public CommandViewModel PasswordSaveCommand { get; }
 
-        
+
         private string? _oldPassword;
         public string? OldPassword {
             get { return _oldPassword; }
@@ -52,11 +50,12 @@ namespace TFG.ViewModels {
         protected override async Task SaveChangesAsyncWrapper() {
 
 
-            if(string.IsNullOrEmpty(OldPassword) || string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(NewPasswordCheck)) {
+            if (string.IsNullOrEmpty(OldPassword) || string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(NewPasswordCheck)) {
                 ErrorMessage = "Rellene los campos vacios.";
                 return;
             }
 
+            //TODO
             if (!await _databaseService.VerifyPasswordAsync(EditableUser.IdUsuario, OldPassword)) {
                 ErrorMessage = "La contraseña antigua es incorrecta.";
                 return;

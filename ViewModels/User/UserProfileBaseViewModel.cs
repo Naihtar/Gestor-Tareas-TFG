@@ -10,7 +10,7 @@ namespace TFG.ViewModels {
         protected IDatabaseService _databaseService;
         protected INavigationService _navigationService;
         protected IAuthenticationService _authenticationService;
-        public CommandViewModel WorkspaceCommand { get; }
+        public CommandViewModel GoBackCommand { get; }
 
         public AppUser EditableUser { get; set; }
 
@@ -23,12 +23,12 @@ namespace TFG.ViewModels {
             }
         }
 
-        protected UserProfileBaseViewModel(AppUser user, INavigationService navigationService,  IDatabaseService db, IAuthenticationService auth) {
+        protected UserProfileBaseViewModel(AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) {
             _navigationService = navigationService;
             _user = user;
             _databaseService = db;
             _authenticationService = auth;
-            WorkspaceCommand = new CommandViewModel(WorkspaceBack);
+            GoBackCommand = new CommandViewModel(GoBack);
             EditableUser = user ?? new AppUser() {
                 Apellido2Usuario = string.Empty,
                 AliasUsuario = string.Empty,
@@ -52,14 +52,19 @@ namespace TFG.ViewModels {
             };
         }
 
-        private void WorkspaceBack(object obj) {
+        private void GoBack(object obj) {
             _navigationService.GoBack();
         }
 
 
         protected async Task SaveChangesAsync() {
             // Actualiza el usuario en la base de datos
-            await _databaseService.UpdateUserAsync(EditableUser);
+            bool success = await _databaseService.UpdateUserAsync(EditableUser);
+
+            if (!success) {
+                ErrorMessage = "Ha ocurrido un error inesperado al actualizar el usuario.";
+                return;
+            }
 
             // Actualiza las propiedades del perfil de usuario
             AppUserData();

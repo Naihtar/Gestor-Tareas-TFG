@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewmodels="clr-namespace:TFG.ViewModels"
     Title="UserProfileEditPage"
+    d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileEditViewModel}"
     d:DesignHeight="720"
     d:DesignWidth="1280"
     Foreground="White"
     mc:Ignorable="d">
-    <!--
-        //TODO -> Reestructurar este programa para ver como organizar las vistas, dejando de forma parcial la parte dinamica.
-    -->
+
     <Border
         Margin="8"
         Background="#323232"
@@ -39,10 +39,10 @@
                 FontWeight="Bold"
                 Foreground="White">
                 <ui:MenuItem
-                    Command="{Binding WorkspaceCommand}"
+                    Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="Workspace" />
+                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
             </Menu>
 
             <StackPanel
@@ -61,7 +61,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Username:" />
+                    Text="{StaticResource UsernameStr}" />
                 <ui:TextBox
                     Width="320"
                     Height="36"
@@ -72,7 +72,7 @@
                                          Filled=True}"
                     MaxLength="27"
                     Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}"
-                    ToolTip="Max 27 characters" />
+                    ToolTip="{StaticResource Max27CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -80,7 +80,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Email:" />
+                    Text="{StaticResource EmailStr}" />
 
                 <ui:TextBox
                     Width="320"
@@ -92,7 +92,7 @@
                                          Filled=True}"
                     MaxLength="80"
                     Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}"
-                    ToolTip="Max 80 characters" />
+                    ToolTip="{StaticResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -100,7 +100,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Name:" />
+                    Text="{StaticResource NameStr}" />
 
                 <ui:TextBox
                     Width="320"
@@ -112,7 +112,7 @@
                                          Filled=True}"
                     MaxLength="50"
                     Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}"
-                    ToolTip="Max 50 characters" />
+                    ToolTip="{StaticResource Max50CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -120,7 +120,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="First Surname:" />
+                    Text="{StaticResource FirstSurnameStr}" />
 
                 <ui:TextBox
                     Width="320"
@@ -132,7 +132,7 @@
                                          Filled=True}"
                     MaxLength="80"
                     Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}"
-                    ToolTip="Max 80 characters" />
+                    ToolTip="{StaticResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -140,7 +140,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Second Surname:" />
+                    Text="{StaticResource SecondSurnameStr}" />
                 <ui:TextBox
                     Width="320"
                     Height="36"
@@ -151,7 +151,7 @@
                                          Filled=True}"
                     MaxLength="80"
                     Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}"
-                    ToolTip="Max 80 characters" />
+                    ToolTip="{StaticResource Max80CharStr}" />
 
 
                 <ui:Button
@@ -162,12 +162,12 @@
                     VerticalAlignment="Top"
                     Appearance="Info"
                     Command="{Binding SaveCommand}"
-                    Content="Save"
+                    Content="{StaticResource SaveButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    ToolTip="Save Profile" />
+                    ToolTip="{StaticResource SaveButtonInfoStr}" />
 
 
                 <ui:Button
@@ -178,12 +178,12 @@
                     VerticalAlignment="Top"
                     Appearance="Secondary"
                     Command="{Binding PasswordEditCommand}"
-                    Content="Change Password"
+                    Content="{StaticResource ChangePasswordButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    ToolTip="Change Password" />
+                    ToolTip="{StaticResource ChangePasswordButtonInfoStr}" />
 
                 <!--  Error Message  -->
                 <ui:TextBlock

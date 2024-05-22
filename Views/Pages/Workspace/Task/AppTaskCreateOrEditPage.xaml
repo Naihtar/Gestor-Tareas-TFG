@@ -38,10 +38,10 @@
                 FontSize="16"
                 FontWeight="Bold">
                 <ui:MenuItem
-                    Command="{Binding WorkspaceCommand}"
+                    Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="Workspace" />
+                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
             </Menu>
 
             <StackPanel
@@ -62,7 +62,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Name:" />
+                    Text="{StaticResource TitleStr}" />
                 <ui:TextBox
                     Grid.Row="0"
                     Grid.Column="1"
@@ -74,9 +74,9 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="27"
-                    PlaceholderText="Nombre Tarea..."
+                    PlaceholderText="{StaticResource TitleStr}"
                     Text="{Binding EditableTask.NombreTarea, Mode=TwoWay}"
-                    ToolTip="Max 27 characters" />
+                    ToolTip="{StaticResource Max27CharStr}" />
 
                 <!--  Container: Description  -->
                 <ui:TextBlock
@@ -88,7 +88,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Descripción:" />
+                    Text="{StaticResource DescriptionStr}" />
                 <ui:TextBox
                     Grid.Row="1"
                     Grid.Column="1"
@@ -100,11 +100,11 @@
                     FontFamily="Fira Code"
                     FontSize="14"
                     MaxLength="255"
-                    PlaceholderText="Descripción del contenedor..."
+                    PlaceholderText="{StaticResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     Text="{Binding EditableTask.DescripcionTarea, Mode=TwoWay}"
                     TextWrapping="Wrap"
-                    ToolTip="Max 255 characters" />
+                    ToolTip="{StaticResource Max255CharStr}" />
 
                 <!--  Container: Tags  -->
                 <ui:TextBlock
@@ -116,8 +116,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="Tags:" />
-
+                    Text="{StaticResource TagsStr}" />
                 <ui:TextBox
                     Grid.Row="2"
                     Grid.Column="1"
@@ -127,10 +126,11 @@
                     FontFamily="Fira Code"
                     FontSize="14"
                     MaxLength="255"
-                    PlaceholderText="Tags Tarea..."
+                    PlaceholderText="{StaticResource TagsStr}"
                     Text="{Binding TagsTask, Mode=TwoWay}"
-                    ToolTip="Separate tags with commas" />
+                    ToolTip="{StaticResource TagsInstrucctionStr}" />
 
+                <!--  Container: Save Button  -->
                 <ui:Button
                     Width="320 "
                     Height="32"
@@ -139,12 +139,12 @@
                     VerticalAlignment="Top"
                     Appearance="Info"
                     Command="{Binding SaveTaskCommand}"
-                    Content="Save"
+                    Content="{StaticResource SaveButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    ToolTip="Save container" />
+                    ToolTip="{StaticResource SaveButtonInfoStr}" />
 
             </StackPanel>
             <!--  Error Message  -->
@@ -160,7 +160,7 @@
                 FontSize="16"
                 Foreground="Red"
                 Text="{Binding ErrorMessage}"
-                TextAlignment="Justify"
+                TextAlignment="Center"
                 TextWrapping="Wrap" />
         </Grid>
     </Border>
