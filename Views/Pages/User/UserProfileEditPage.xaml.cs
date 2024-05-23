@@ -9,12 +9,10 @@ namespace TFG.Views.Pages {
     /// <summary>
     /// Interaction logic for UserProfileEditPage.xaml
     /// </summary>
-    public partial class UserProfileEditPage : Page
-    {
-        public UserProfileEditPage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth)
-        {
+    public partial class UserProfileEditPage : Page {
+        public UserProfileEditPage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) {
             InitializeComponent();
-            DataContext = new UserProfileEditViewModel(user, nav, db, auth);
+            DataContext = new UserProfileEditViewModel(user, nav, db, auth, task, container);
         }
 
     }

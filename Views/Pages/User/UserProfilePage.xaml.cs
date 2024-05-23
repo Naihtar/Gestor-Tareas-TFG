@@ -11,9 +11,9 @@ namespace TFG.Views.Pages {
     /// </summary>
     public partial class UserProfilePage : Page
     {
-        public UserProfilePage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
+        public UserProfilePage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) {
             InitializeComponent();
-            DataContext = new UserProfileViewModel(user, nav, db, auth);
+            DataContext = new UserProfileViewModel(user, nav, db, auth, task, container);
         }
     }
 }

@@ -97,7 +97,7 @@
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
                 PlaceholderText="{StaticResource UsernameStr}"
-                Text="{Binding CreateUser.AliasUsuario}" />
+                Text="{Binding CreateUser.AppUserUsername}" />
 
             <ui:TextBlock
                 Grid.Row="2"
@@ -215,7 +215,7 @@
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
                 PlaceholderText="{StaticResource NameStr}"
-                Text="{Binding CreateUser.NombreUsuario}" />
+                Text="{Binding CreateUser.AppUserName}" />
 
             <ui:TextBlock
                 Grid.Row="7"
@@ -239,7 +239,7 @@
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
                 PlaceholderText="{StaticResource FirstSurnameStr}"
-                Text="{Binding CreateUser.Apellido1Usuario}" />
+                Text="{Binding CreateUser.AppUserSurname1}" />
 
             <ui:TextBlock
                 Grid.Row="8"
@@ -263,7 +263,7 @@
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
                 PlaceholderText="{StaticResource SecondSurnameStr}"
-                Text="{Binding CreateUser.Apellido2Usuario}" />
+                Text="{Binding CreateUser.AppUserSurname2}" />
 
 
             <ui:Button

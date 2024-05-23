@@ -2,70 +2,89 @@
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFG.Models {
+    // Implementamos la interfaz IDisposable - "https://learn.microsoft.com/es-es/dotnet/api/system.idisposable?view=net-8.0"
     public class AppUser : IDisposable {
+        private bool disposed = false; // Para detectar llamadas redundantes
+
         public AppUser() { }
 
-        private ObjectId _idUsuario;
+        private ObjectId _appUserID;
         [BsonId]
-        public ObjectId IdUsuario {
-            get { return _idUsuario; }
-            set { _idUsuario = value; }
+        public ObjectId AppUserID {
+            get { return _appUserID; }
+            set { _appUserID = value; }
         }
 
-        private string _aliasUsuario;
+        private string _appUserUsername;
         [BsonElement("aliasUsuario")]
-        public required string AliasUsuario {
-            get { return _aliasUsuario; }
-            set { _aliasUsuario = value; }
+        public required string AppUserUsername {
+            get { return _appUserUsername; }
+            set { _appUserUsername = value; }
         }
-        private string _emailUsuario;
+        private string _appUserEmail;
         [BsonElement("email")]
-        public required string EmailUsuario {
-            get { return _emailUsuario; }
-            set { _emailUsuario = value; }
+        public required string AppUserEmail {
+            get { return _appUserEmail; }
+            set { _appUserEmail = value; }
         }
 
-        private string _passwordUsuario;
+        private string _appUserPassword;
         [BsonElement("password")]
-        public required string PasswordUsuario {
-            get { return _passwordUsuario; }
-            set { _passwordUsuario = value; }
+        public required string AppUserPassword {
+            get { return _appUserPassword; }
+            set { _appUserPassword = value; }
         }
-        private string _nombreUsuario;
+        private string _appUserName;
         [BsonElement("nombre")]
-        public required string NombreUsuario {
-            get { return _nombreUsuario; }
-            set { _nombreUsuario = value; }
+        public required string AppUserName {
+            get { return _appUserName; }
+            set { _appUserName = value; }
         }
-        private string _apellido1Usuario;
+        private string _appUserSurname1;
         [BsonElement("apellido1")]
-        public required string Apellido1Usuario {
-            get { return _apellido1Usuario; }
-            set { _apellido1Usuario = value; }
+        public required string AppUserSurname1 {
+            get { return _appUserSurname1; }
+            set { _appUserSurname1 = value; }
         }
 
-        private string _apellido2Usuario;
+        private string _appUserSurname2;
         [BsonElement("apellido2")]
-        public string Apellido2Usuario {
-            get { return _apellido2Usuario; }
-            set { _apellido2Usuario = value; }
+        public string AppUserSurname2 {
+            get { return _appUserSurname2; }
+            set { _appUserSurname2 = value; }
         }
-        private List<ObjectId> _listaContenedoresUsuario;
+        private List<ObjectId> _appUserAppContainerList;
         [BsonElement("contenedores")]
-        public List<ObjectId> ListaContenedoresUsuario {
-            get { return _listaContenedoresUsuario; }
-            set { _listaContenedoresUsuario = value; }
+        public List<ObjectId> AppUserAppContainerList {
+            get { return _appUserAppContainerList; }
+            set { _appUserAppContainerList = value; }
         }
 
+        // Implementación del método Dispose, nos permite eliminar los datos en memoria.
         public void Dispose() {
-            _idUsuario = default(ObjectId);
-            _aliasUsuario = string.Empty;
-            _emailUsuario = string.Empty;
-            _passwordUsuario = string.Empty;
-            _nombreUsuario = string.Empty;
-            _apellido1Usuario = string.Empty;
-            _apellido2Usuario = string.Empty;
-            _listaContenedoresUsuario = [];
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Destructor
+        ~AppUser() {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposed) {
+                if (disposing) {
+                    _appUserID = ObjectId.Empty;
+                    _appUserUsername = string.Empty;
+                    _appUserEmail = string.Empty;
+                    _appUserPassword = string.Empty;
+                    _appUserName = string.Empty;
+                    _appUserSurname1 = string.Empty;
+                    _appUserSurname2 = string.Empty;
+                    _appUserAppContainerList = [];
+                }
+                disposed = true;
+            }
         }
     }
 }

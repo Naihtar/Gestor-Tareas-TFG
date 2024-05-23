@@ -50,12 +50,14 @@
                                 Command="{Binding EditContainerCommand}"
                                 Header="{StaticResource EditWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Edit16,
-                                                     Filled=True}" />
+                                                     Filled=True}"
+                                IsEnabled="{Binding HasContainer}" />
                             <ui:MenuItem
                                 Command="{Binding DeleteContainerCommand}"
                                 Header="{StaticResource DeleteWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Delete16,
-                                                     Filled=True}" />
+                                                     Filled=True}"
+                                IsEnabled="{Binding HasContainer}" />
                         </ui:MenuItem>
                         <ui:MenuItem
                             x:Name="Workspaces"
@@ -188,14 +190,14 @@
                                                             VerticalAlignment="Center"
                                                             FontSize="14"
                                                             FontWeight="Bold"
-                                                            Text="{Binding NombreTarea, Mode=OneWay}"
+                                                            Text="{Binding AppTaskTitle, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
 
                                                         <!--  Task Tags  -->
                                                         <ItemsControl
                                                             Grid.Row="1"
                                                             Margin="0,8,0,8"
-                                                            ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                            ItemsSource="{Binding AppTaskTags, Mode=OneWay}">
                                                             <ItemsControl.ItemsPanel>
                                                                 <ItemsPanelTemplate>
                                                                     <StackPanel Orientation="Horizontal" />
@@ -315,14 +317,14 @@
                                                             VerticalAlignment="Center"
                                                             FontSize="14"
                                                             FontWeight="Bold"
-                                                            Text="{Binding NombreTarea, Mode=OneWay}"
+                                                            Text="{Binding AppTaskTitle, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
 
                                                         <!--  Task Tags  -->
                                                         <ItemsControl
                                                             Grid.Row="1"
                                                             Margin="0,8,0,8"
-                                                            ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                            ItemsSource="{Binding AppTaskTags, Mode=OneWay}">
                                                             <ItemsControl.ItemsPanel>
                                                                 <ItemsPanelTemplate>
                                                                     <StackPanel Orientation="Horizontal" />
@@ -451,14 +453,14 @@
                                                             VerticalAlignment="Center"
                                                             FontSize="14"
                                                             FontWeight="Bold"
-                                                            Text="{Binding NombreTarea, Mode=OneWay}"
+                                                            Text="{Binding AppTaskTitle, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
 
                                                         <!--  Task Tags  -->
                                                         <ItemsControl
                                                             Grid.Row="1"
                                                             Margin="0,8,0,8"
-                                                            ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                            ItemsSource="{Binding AppTaskTags, Mode=OneWay}">
                                                             <ItemsControl.ItemsPanel>
                                                                 <ItemsPanelTemplate>
                                                                     <StackPanel Orientation="Horizontal" />
@@ -587,14 +589,14 @@
                                                             VerticalAlignment="Center"
                                                             FontSize="14"
                                                             FontWeight="Bold"
-                                                            Text="{Binding NombreTarea, Mode=OneWay}"
+                                                            Text="{Binding AppTaskTitle, Mode=OneWay}"
                                                             TextWrapping="Wrap" />
 
                                                         <!--  Task Tags  -->
                                                         <ItemsControl
                                                             Grid.Row="1"
                                                             Margin="0,8,0,8"
-                                                            ItemsSource="{Binding EtiquetasTarea, Mode=OneWay}">
+                                                            ItemsSource="{Binding AppTaskTags, Mode=OneWay}">
                                                             <ItemsControl.ItemsPanel>
                                                                 <ItemsPanelTemplate>
                                                                     <StackPanel Orientation="Horizontal" />

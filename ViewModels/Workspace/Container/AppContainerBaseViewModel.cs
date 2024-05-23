@@ -30,11 +30,11 @@ namespace TFG.ViewModels.Workspace.Container {
 
             GoBackCommand = new CommandViewModel(GoBack);
             EditableContainer = _appContainer ?? new AppContainer() {
-                NombreContenedor = string.Empty,
-                DescripcionContenedor = string.Empty,
-                UsuarioID = _user.IdUsuario,
-                ListaTareas = [],
-                FechaCreacionContenedor = DateTime.Now
+                AppContainerTitle = string.Empty,
+                AppContainerDescription = string.Empty,
+                AppUserID = _user.AppUserID,
+                AppContainerAppTasksList = [],
+                AppContainerCreateDate = DateTime.Now
             };
 
             _navigationService = navigationService;
@@ -46,12 +46,17 @@ namespace TFG.ViewModels.Workspace.Container {
         }
 
         protected async void AppContainerData() {
-            AppContainer container = await _databaseService.GetContainerByIdAsync(_appContainer.IdContenedor);
+            AppContainer? container = await _databaseService.GetContainerByContainerIDAsync(_appContainer.AppContainerID);
+
+            if (container == null) {
+                ErrorMessage = "Ha ocurrido un error al obtener el espacio de traabajo";
+                return;
+            }
 
             ContainerProperties = new Dictionary<string, string> {
-                {"ContainerName", container.NombreContenedor },
-                {"Descripcion", container.DescripcionContenedor ??= string.Empty},
-                {"Fecha", container.FechaCreacionContenedor.ToString() },
+                {"ContainerName", container.AppContainerTitle },
+                {"Descripcion", container.AppContainerDescription ??= string.Empty},
+                {"Fecha", container.AppContainerCreateDate.ToString() },
             };
         }
 
@@ -78,7 +83,7 @@ namespace TFG.ViewModels.Workspace.Container {
 
         protected async Task SaveAddContainerAsync() {
 
-            bool success = await _databaseService.AddContainer(EditableContainer, _user.IdUsuario);
+            bool success = await _databaseService.AddContainerAsync(EditableContainer, _user.AppUserID);
 
             if (!success) {
                 ErrorMessage = "Ha ocurrido un error al crear el nuevo Workspace.";

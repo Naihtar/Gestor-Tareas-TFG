@@ -30,29 +30,32 @@ namespace TFG.ViewModels {
             _authenticationService = auth;
             GoBackCommand = new CommandViewModel(GoBack);
             EditableUser = user ?? new AppUser() {
-                Apellido2Usuario = string.Empty,
-                AliasUsuario = string.Empty,
-                EmailUsuario = string.Empty,
-                PasswordUsuario = string.Empty,
-                NombreUsuario = string.Empty,
-                Apellido1Usuario = string.Empty
+                AppUserSurname2 = string.Empty,
+                AppUserUsername = string.Empty,
+                AppUserEmail = string.Empty,
+                AppUserPassword = string.Empty,
+                AppUserName = string.Empty,
+                AppUserSurname1 = string.Empty
             };
             AppUserData();
         }
 
         protected async void AppUserData() {
-            AppUser u = await _databaseService.GetUserByIdAsync(_user.IdUsuario);
-
+            AppUser u = await _databaseService.GetUserByIDAsync(_user.AppUserID);
+            if(u == null) {
+                ErrorMessage = "Ha ocurrido un error inesperado al mostrar el usuario.";
+                return;
+            }
             UserProfileProperties = new Dictionary<string, string> {
-                { "Username:", u.AliasUsuario },
-                { "Email:", u.EmailUsuario },
-                { "Name:", u.NombreUsuario },
-                { "First Surname:", u.Apellido1Usuario },
-                { "Second Surname:", u.Apellido2Usuario },
+                { "Username:", u.AppUserUsername },
+                { "Email:", u.AppUserEmail },
+                { "Name:", u.AppUserName },
+                { "First Surname:", u.AppUserSurname1 },
+                { "Second Surname:", u.AppUserSurname2 },
             };
         }
 
-        private void GoBack(object obj) {
+        protected void GoBack(object obj) {
             _navigationService.GoBack();
         }
 
@@ -70,7 +73,7 @@ namespace TFG.ViewModels {
             AppUserData();
 
             // Navega hacia atrás
-            _navigationService.NavigateTo("Profile", EditableUser, _navigationService, _databaseService, _authenticationService);
+            _navigationService.NavigateTo("Profile", null, EditableUser, _navigationService, _databaseService, _authenticationService, null);
         }
         protected abstract Task SaveChangesAsyncWrapper();
     }

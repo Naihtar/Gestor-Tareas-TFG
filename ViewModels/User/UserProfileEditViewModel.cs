@@ -11,7 +11,7 @@ namespace TFG.ViewModels {
         public CommandViewModel SaveCommand { get; }
         public CommandViewModel PasswordEditCommand { get; }
 
-        public UserProfileEditViewModel(AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(user, navigationService, db, auth) {
+        public UserProfileEditViewModel(AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth, AppTask? task, AppContainer? container) : base(user, navigationService, db, auth) {
             SaveCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper());
             PasswordEditCommand = new CommandViewModel(EditPassword);
         }
@@ -19,12 +19,12 @@ namespace TFG.ViewModels {
 
 
         protected override async Task SaveChangesAsyncWrapper() {
-            ObjectId idUser = EditableUser.IdUsuario;
-            bool email = await _databaseService.CheckEmailByUserIDAsync(idUser, EditableUser.EmailUsuario);
-            bool alias = await _databaseService.CheckUsernameByUserIDAsync(idUser, EditableUser.AliasUsuario);
+            ObjectId idUser = EditableUser.AppUserID;
+            bool email = await _databaseService.CheckUserByEmailAsync(idUser, EditableUser.AppUserEmail);
+            bool alias = await _databaseService.CheckUserByUsernameAsync(idUser, EditableUser.AppUserUsername);
             bool fields = AreAnyFieldsEmpty();
 
-            if (!IsValidEmail(EditableUser.EmailUsuario)) {
+            if (!IsValidEmail(EditableUser.AppUserEmail)) {
                 ErrorMessage = "El email introducido no es válido.";
                 return;
             }
@@ -48,10 +48,10 @@ namespace TFG.ViewModels {
         }
 
         private bool AreAnyFieldsEmpty() {
-            return string.IsNullOrEmpty(EditableUser.AliasUsuario) ||
-                   string.IsNullOrEmpty(EditableUser.EmailUsuario) ||
-                   string.IsNullOrEmpty(EditableUser.NombreUsuario) ||
-                   string.IsNullOrEmpty(EditableUser.Apellido1Usuario);
+            return string.IsNullOrEmpty(EditableUser.AppUserUsername) ||
+                   string.IsNullOrEmpty(EditableUser.AppUserEmail) ||
+                   string.IsNullOrEmpty(EditableUser.AppUserName) ||
+                   string.IsNullOrEmpty(EditableUser.AppUserSurname1);
         }
 
         private void EditPassword(object obj) {

@@ -23,7 +23,7 @@ namespace TFG.ViewModels.Workspace.Container {
         public AppContainerCreateOrEditViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(container, user, navigationService, db, auth) {
             _isCreate = container == null;
             SaveContainerCommand = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
-            Name = EditableContainer.NombreContenedor;
+            Name = EditableContainer.AppContainerTitle;
         }
 
         private bool CheckFieldName() {
@@ -31,11 +31,11 @@ namespace TFG.ViewModels.Workspace.Container {
         }
 
         private async Task<bool> CheckNameDBB(ObjectId id) {
-            return await _databaseService.ExistContainerWithName(Name, id);
+            return await _databaseService.CheckContainerByTitleAndUserIDAsync(Name, id);
         }
 
         protected override async Task SaveContainerAsyncWrapper() {
-            bool nameExists = await CheckNameDBB(_user.IdUsuario);
+            bool nameExists = await CheckNameDBB(_user.AppUserID);
             bool fieldNameEmpty = CheckFieldName();
 
             if (fieldNameEmpty) {
@@ -43,16 +43,16 @@ namespace TFG.ViewModels.Workspace.Container {
                 return;
             }
 
-            if (Name != EditableContainer.NombreContenedor && nameExists) {
+            if (Name != EditableContainer.AppContainerTitle && nameExists) {
                 ErrorMessage = "El nombre introducido ya esta en uso.";
                 return;
             }
 
-            EditableContainer.NombreContenedor = Name;
+            EditableContainer.AppContainerTitle = Name;
             if (_isCreate) {
-                EditableContainer.UsuarioID = _user.IdUsuario;
-                EditableContainer.ListaTareas = [];
-                EditableContainer.FechaCreacionContenedor = DateTime.Now;
+                EditableContainer.AppUserID = _user.AppUserID;
+                EditableContainer.AppContainerAppTasksList = [];
+                EditableContainer.AppContainerCreateDate = DateTime.Now;
                 await SaveAddContainerAsync();
             } else {
                 await SaveEditChangesAsync();

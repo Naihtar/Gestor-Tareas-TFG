@@ -63,7 +63,13 @@ namespace TFG.ViewModels {
                 ErrorMessage = "Email o contraseña incorrecto/a.";
                 return;
             }
-            _user = await _authenticationService.GetUserByDataInput(input);
+            _user = await _authenticationService.GetUserByDataInputAsync(input);
+
+            if (_user == null) {
+                ErrorMessage = "Ha ocurrido un error al intentar acceder.";
+                return;
+            }
+
             _navigationService.NavigateTo("Workspace", _user, _navigationService, _databaseService, _authenticationService);
         }
 

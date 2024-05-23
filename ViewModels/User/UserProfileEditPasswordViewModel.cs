@@ -56,7 +56,7 @@ namespace TFG.ViewModels {
             }
 
             //TODO
-            if (!await _databaseService.VerifyPasswordAsync(EditableUser.IdUsuario, OldPassword)) {
+            if (!await _databaseService.VerifyPasswordByUserIDAsync(EditableUser.AppUserID, OldPassword)) {
                 ErrorMessage = "La contraseña antigua es incorrecta.";
                 return;
             }
@@ -66,7 +66,7 @@ namespace TFG.ViewModels {
                 return;
             }
 
-            EditableUser.PasswordUsuario = _authenticationService.HashPassword(NewPassword);
+            EditableUser.AppUserPassword = _authenticationService.HashPassword(NewPassword);
 
             await SaveChangesAsync();
         }

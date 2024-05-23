@@ -12,6 +12,8 @@ using TFG.ViewModels.Base;
 namespace TFG.ViewModels.User {
     internal class UserProfileDeleteViewModel : UserProfileBaseViewModel {
 
+        private readonly AppTask _task;
+        private readonly AppContainer _container;
         public CommandViewModel DeleteProfileCommand { get; }
 
         private string? _emailUser;
@@ -33,17 +35,18 @@ namespace TFG.ViewModels.User {
             }
         }
 
-        public UserProfileDeleteViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) : base(user, nav, db, auth) {
+        public UserProfileDeleteViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) : base(user, nav, db, auth) {
 
             EmailUser = string.Empty;
             PasswordUser = string.Empty;
-
+            _task = task;
+            _container = container;
             DeleteProfileCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper(), CanDelete);
 
         }
 
         protected override async Task SaveChangesAsyncWrapper() {
-            AppUser checkUser = await _databaseService.GetUserByEmailAsync(EmailUser);
+            AppUser? checkUser = await _databaseService.GetUserByEmailAsync(EmailUser);
 
             // Comprueba si checkUser es null
             if (checkUser == null) {
@@ -51,32 +54,34 @@ namespace TFG.ViewModels.User {
                 return;
             }
 
-            bool email = checkUser.EmailUsuario.Equals(EditableUser.EmailUsuario, StringComparison.CurrentCultureIgnoreCase);
+            bool email = checkUser.AppUserEmail.Equals(EditableUser.AppUserEmail, StringComparison.CurrentCultureIgnoreCase);
 
             if (!email) {
                 ErrorMessage = "El email introducido no es correcto.";
                 return;
             }
 
-            if (!await _databaseService.VerifyPasswordAsync(_user.IdUsuario, PasswordUser)) {
+            if (!await _databaseService.VerifyPasswordByUserIDAsync(_user.AppUserID, PasswordUser)) {
                 ErrorMessage = "La contraseña introducida no es correcta.";
                 return;
             }
 
             bool verifyUser = await _authenticationService.AuthenticateUserAsync(EmailUser, PasswordUser);
 
-            if(!verifyUser) {
+            if (!verifyUser) {
                 ErrorMessage = "Datos introducidos incorrectos.";
                 return;
 
             }
-            bool success = await _databaseService.DeleteAppUser(EditableUser);
+            bool success = await _databaseService.DeleteUserAsync(EditableUser);
 
             if (!success) {
                 ErrorMessage = "Error al intentar eliminar el usuario";
                 return;
             }
-
+            _user?.Dispose();
+            _task?.Dispose();
+            _container?.Dispose();
             _navigationService.NavigateTo("LogIn", _databaseService, _authenticationService);
         }
 

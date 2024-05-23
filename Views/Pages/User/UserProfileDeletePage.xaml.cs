@@ -20,13 +20,10 @@ using TFG.ViewModels;
 using TFG.ViewModels.User;
 
 namespace TFG.Views.Pages.User {
-    /// <summary>
-    /// Interaction logic for UserProfileDeletePage.xaml
-    /// </summary>
     public partial class UserProfileDeletePage : Page {
-        public UserProfileDeletePage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
+        public UserProfileDeletePage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) {
             InitializeComponent();
-            DataContext = new UserProfileDeleteViewModel(user, nav, db, auth);
+            DataContext = new UserProfileDeleteViewModel(user, nav, db, auth, task, container);
         }
     }
 }

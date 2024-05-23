@@ -71,7 +71,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="27"
-                    Text="{Binding EditableUser.AliasUsuario, Mode=TwoWay}"
+                    Text="{Binding EditableUser.AppUserUsername, Mode=TwoWay}"
                     ToolTip="{StaticResource Max27CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -91,7 +91,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="80"
-                    Text="{Binding EditableUser.EmailUsuario, Mode=TwoWay}"
+                    Text="{Binding EditableUser.AppUserEmail, Mode=TwoWay}"
                     ToolTip="{StaticResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -111,7 +111,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="50"
-                    Text="{Binding EditableUser.NombreUsuario, Mode=TwoWay}"
+                    Text="{Binding EditableUser.AppUserName, Mode=TwoWay}"
                     ToolTip="{StaticResource Max50CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -131,7 +131,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="80"
-                    Text="{Binding EditableUser.Apellido1Usuario, Mode=TwoWay}"
+                    Text="{Binding EditableUser.AppUserSurname1, Mode=TwoWay}"
                     ToolTip="{StaticResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -150,7 +150,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="80"
-                    Text="{Binding EditableUser.Apellido2Usuario, Mode=TwoWay}"
+                    Text="{Binding EditableUser.AppUserSurname2, Mode=TwoWay}"
                     ToolTip="{StaticResource Max80CharStr}" />
 
 

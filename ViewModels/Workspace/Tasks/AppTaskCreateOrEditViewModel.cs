@@ -30,7 +30,7 @@ namespace TFG.ViewModels.Workspace.Tasks {
         }
 
         private bool CheckFieldName() {
-            return string.IsNullOrEmpty(EditableTask.NombreTarea);
+            return string.IsNullOrEmpty(EditableTask.AppTaskTitle);
         }
 
         protected override async Task SaveTaskAsyncWrapper() {
@@ -43,22 +43,22 @@ namespace TFG.ViewModels.Workspace.Tasks {
             }
 
             // Verificar si alguna etiqueta excede los 16 caracteres
-            var invalidTags = EditableTask.EtiquetasTarea.Where(tag => tag.Length > 16).ToList();
+            var invalidTags = EditableTask.AppTaskTags.Where(tag => tag.Length > 16).ToList();
             if (invalidTags.Count != 0) {
                 ErrorMessage = $"La etiqueta '{invalidTags[0]}' excede los 16 caracteres.";
                 return;
             }
 
 
-            if (EditableTask.EtiquetasTarea.Count() > 3) {
+            if (EditableTask.AppTaskTags.Count() > 3) {
                 ErrorMessage = $"Has introducido más de 3 etiquetas.";
                 return;
             }
 
             if (_isCreate) {
-                EditableTask.ContenedorID = _appContainer.IdContenedor;
-                EditableTask.FechaCreacionTarea = DateTime.Now;
-                EditableTask.EstadoTarea = _status;
+                EditableTask.AppContainerID = _appContainer.AppContainerID;
+                EditableTask.AppTaskCreateDate = DateTime.Now;
+                EditableTask.AppTaskStatus = _status;
                 await SaveAddContainerAsync();
                 return;
             }

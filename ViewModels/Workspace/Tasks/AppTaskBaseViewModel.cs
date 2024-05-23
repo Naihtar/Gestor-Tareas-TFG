@@ -8,7 +8,6 @@ using TFG.ViewModels.Base;
 namespace TFG.ViewModels.Workspace.Tasks {
     public abstract class AppTaskBaseViewModel : BaseViewModel {
         public CommandViewModel GoBackCommand { get; }
-        public CommandViewModel SetStateCommand { get; }
         protected AppContainer _appContainer;
         protected AppTask? _appTask;
         protected AppUser _user;
@@ -44,14 +43,13 @@ namespace TFG.ViewModels.Workspace.Tasks {
             _appTask = task;
             _user = user;
             GoBackCommand = new CommandViewModel(GoBack);
-            //SetStateCommand = new CommandViewModel(OnButtonPressed);
             EditableTask = _appTask ?? new AppTask() {
-                NombreTarea = string.Empty,
-                DescripcionTarea = string.Empty,
-                FechaCreacionTarea = DateTime.Now,
-                EstadoTarea = _statusTask,
-                ContenedorID = _appContainer.IdContenedor,
-                EtiquetasTarea = Array.Empty<string>(), // Initialize as empty array
+                AppTaskTitle = string.Empty,
+                AppTaskDescription = string.Empty,
+                AppTaskCreateDate = DateTime.Now,
+                AppTaskStatus = _statusTask,
+                AppContainerID = _appContainer.AppContainerID,
+                AppTaskTags = Array.Empty<string>(), // Initialize as empty array
             };
 
             _tagsTask = string.Empty;
@@ -64,17 +62,22 @@ namespace TFG.ViewModels.Workspace.Tasks {
             }
 
             // Initialize TagsTask from EditableTask
-            TagsTask = string.Join(", ", EditableTask.EtiquetasTarea);
+            TagsTask = string.Join(", ", EditableTask.AppTaskTags);
         }
 
         protected async void AppTaskData() {
-            AppTask task = await _databaseService.GetTastkByIdAsync(_appTask.IdTarea);
+            AppTask task = await _databaseService.GetTastkByIdAsync(_appTask.AppTaskID);
+            if (task == null) {
+                ErrorMessage = "Ha ocurrido un error al obtener la tarea";
+                return;
+            }
+
             TaskProperties = new Dictionary<string, string>
             {
-            { "Nombre:", task.NombreTarea },
-            { "Descripcion:", task.DescripcionTarea },
-            { "Fecha:", task.FechaCreacionTarea.ToString() },
-            { "Tags:", string.Join(", ", task.EtiquetasTarea.Select(etiqueta => $"#{etiqueta}")) }
+            { "Nombre:", task.AppTaskTitle },
+            { "Descripcion:", task.AppTaskDescription },
+            { "Fecha:", task.AppTaskCreateDate.ToString() },
+            { "Tags:", string.Join(", ", task.AppTaskTags.Select(etiqueta => $"#{etiqueta}")) }
         };
         }
 
@@ -90,14 +93,15 @@ namespace TFG.ViewModels.Workspace.Tasks {
         }
 
         protected async Task SaveAddContainerAsync() {
-            await _databaseService.AddTask(EditableTask, _appContainer.IdContenedor);
+          bool success =  await _databaseService.AddTaskAsync(EditableTask, _appContainer.AppContainerID);
+            if (!success) {
+                ErrorMessage = "Ha ocurrido un error inesperado";
+                return;
+            }
             _navigationService.NavigateTo("Workspace", _appContainer, _user, _navigationService, _databaseService, _authenticationService);
         }
 
-        //private void OnButtonPressed(object obj) {
-        //    string? buttonNumber = obj.ToString();
-        //    _statusTask = buttonNumber;
-        //}
+
 
         protected abstract Task SaveTaskAsyncWrapper();
 
@@ -110,7 +114,7 @@ namespace TFG.ViewModels.Workspace.Tasks {
                                .Select(tag => tag.Trim().Replace("#", "").Replace(" ", "_"))
                                .ToArray();
 
-            EditableTask.EtiquetasTarea = tags;
+            EditableTask.AppTaskTags = tags;
             TagsTask = string.Join(", ", tags);
         }
     }

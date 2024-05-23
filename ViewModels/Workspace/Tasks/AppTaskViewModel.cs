@@ -23,7 +23,7 @@ namespace TFG.ViewModels.Workspace.Tasks {
 
         }
         private async Task DeleteTask() {
-            await _databaseService.DeleteTask(EditableTask.IdTarea);
+            await _databaseService.DeleteTaskAsync(EditableTask.AppTaskID);
             _navigationService.NavigateTo("Workspace", _appContainer, _user, _navigationService, _databaseService, _authenticationService);
         }
         protected override Task SaveTaskAsyncWrapper() {

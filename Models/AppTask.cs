@@ -1,55 +1,84 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFG.Models {
-    public class AppTask {
-        private ObjectId _idTarea;
+    public class AppTask : IDisposable {
+        private bool disposed = false;
+
+        // Atributos
+        private ObjectId _appTaskID;
         [BsonId]
-        public ObjectId IdTarea {
-            get { return _idTarea; }
-            set { _idTarea = value; }
+        public ObjectId AppTaskID {
+            get { return _appTaskID; }
+            set { _appTaskID = value; }
         }
 
-        private string _nombreTarea;
+        private string? _appTaskTitle;
         [BsonElement("nombre")]
-        public required string NombreTarea {
-            get { return _nombreTarea; }
-            set { _nombreTarea = value; }
+        public string? AppTaskTitle {
+            get { return _appTaskTitle; }
+            set { _appTaskTitle = value; }
         }
 
+        private string? _appTaskDescription;
         [BsonElement("descripcion")]
-        private string? _descriptionTarea;
-        public string? DescripcionTarea {
-            get { return _descriptionTarea; }
-            set { _descriptionTarea = value; }
+        public string? AppTaskDescription {
+            get { return _appTaskDescription; }
+            set { _appTaskDescription = value; }
         }
 
-        private DateTime _fechaCreacionTarea;
+        private DateTime _appTaskCreateDate;
         [BsonElement("fechaCreacion")]
         [BsonRepresentation(BsonType.DateTime)]
-        public DateTime FechaCreacionTarea {
-            get { return _fechaCreacionTarea; }
-            set { _fechaCreacionTarea = value; }
+        public DateTime AppTaskCreateDate {
+            get { return _appTaskCreateDate; }
+            set { _appTaskCreateDate = value; }
         }
 
-        private string _estadoTarea;
+        private string? _appTaskStatus;
         [BsonElement("estado")]
-        public required string EstadoTarea {
-            get { return _estadoTarea; }
-            set { _estadoTarea = value; }
+        public string? AppTaskStatus {
+            get { return _appTaskStatus; }
+            set { _appTaskStatus = value; }
         }
 
-        private string[] _etiquetasTarea = new string[3];
+        private string[] _appTaskTags = new string[3];
         [BsonElement("etiquetas")]
-        public string[] EtiquetasTarea {
-            get { return _etiquetasTarea; }
-            set { _etiquetasTarea = value; }
+        public string[] AppTaskTags {
+            get { return _appTaskTags; }
+            set { _appTaskTags = value; }
         }
-        private ObjectId _contenedorID;
+
+        private ObjectId _appContainerID;
         [BsonElement("contenedor_id")]
-        public ObjectId ContenedorID {
-            get { return _contenedorID; }
-            set { _contenedorID = value; }
+        public ObjectId AppContainerID {
+            get { return _appContainerID; }
+            set { _appContainerID = value; }
+        }
+
+        // Implementación del método Dispose, nos permite eliminar los datos en memoria.
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        // Destructor
+        ~AppTask() {
+            Dispose(false);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposed) {
+                if (disposing) {
+                    _appTaskTitle = string.Empty;
+                    _appTaskDescription = string.Empty;
+                    _appTaskStatus = string.Empty;
+                    _appTaskTags = new string[3];
+                    _appContainerID = ObjectId.Empty;
+                }
+                disposed = true;
+            }
         }
     }
 }

@@ -67,13 +67,13 @@ namespace TFG.ViewModels.Access {
             _userCheckPassword = string.Empty;
 
             CreateUser = new AppUser {
-                NombreUsuario = string.Empty,
-                Apellido1Usuario = string.Empty,
-                Apellido2Usuario = string.Empty,
-                AliasUsuario = string.Empty,
-                EmailUsuario = string.Empty,
-                PasswordUsuario = string.Empty,
-                ListaContenedoresUsuario = []
+                AppUserName = string.Empty,
+                AppUserSurname1 = string.Empty,
+                AppUserSurname2 = string.Empty,
+                AppUserUsername = string.Empty,
+                AppUserEmail = string.Empty,
+                AppUserPassword = string.Empty,
+                AppUserAppContainerList = []
             };
         }
 
@@ -96,14 +96,14 @@ namespace TFG.ViewModels.Access {
                 ErrorMessage = "Las contraseñas no coinciden.";
                 return;
             }
-            CreateUser.EmailUsuario = _userEmail;
-            CreateUser.PasswordUsuario = _authenticationService.HashPassword(_userPassword);
+            CreateUser.AppUserEmail = _userEmail;
+            CreateUser.AppUserPassword = _authenticationService.HashPassword(_userPassword);
             if (AreAnyFieldsEmpty()) {
                 ErrorMessage = "Complete los campos vacios.";
                 return;
             }
-            bool username = await CheckUsername(CreateUser.AliasUsuario);
-            bool email = await CheckEmail(CreateUser.EmailUsuario);
+            bool username = await CheckUsername(CreateUser.AppUserUsername);
+            bool email = await CheckEmail(CreateUser.AppUserEmail);
 
             if (username) {
                 ErrorMessage = "El usuario ya esta en uso.";
@@ -116,7 +116,7 @@ namespace TFG.ViewModels.Access {
             }
 
 
-            bool success = await _databaseService.CreateAppUser(CreateUser);
+            bool success = await _databaseService.CreateUserAsync(CreateUser);
 
             if (success) {
                 MessageBox.Show("Usuario creado correctamente, regresando a la pantalla de inicio");
@@ -127,20 +127,20 @@ namespace TFG.ViewModels.Access {
         }
 
         private bool AreAnyFieldsEmpty() {
-            return string.IsNullOrEmpty(CreateUser.AliasUsuario) ||
-                   string.IsNullOrEmpty(CreateUser.EmailUsuario) ||
-                   string.IsNullOrEmpty(CreateUser.NombreUsuario) ||
-                   string.IsNullOrEmpty(CreateUser.Apellido1Usuario);
+            return string.IsNullOrEmpty(CreateUser.AppUserUsername) ||
+                   string.IsNullOrEmpty(CreateUser.AppUserEmail) ||
+                   string.IsNullOrEmpty(CreateUser.AppUserName) ||
+                   string.IsNullOrEmpty(CreateUser.AppUserSurname1);
         }
 
         private async Task<bool> CheckUsername(string userName) {
 
-            return await _databaseService.CheckUsernameAsync(userName);
+            return await _databaseService.CheckUserByUsernameAsync(userName);
 
         }
         private async Task<bool> CheckEmail(string userEmail) {
 
-            return await _databaseService.CheckEmailAsync(userEmail);
+            return await _databaseService.CheckUserByEmailAsync(userEmail);
 
         }
     }

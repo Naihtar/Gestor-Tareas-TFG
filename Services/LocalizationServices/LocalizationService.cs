@@ -4,6 +4,8 @@ using System.Windows;
 namespace TFG.Services {
     public class LocalizationService {
         public void SetLang(string lang) {
+
+            //TODO - Ver como implementar esta parte.
             Thread.CurrentThread.CurrentCulture = new CultureInfo(lang);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(lang);
 

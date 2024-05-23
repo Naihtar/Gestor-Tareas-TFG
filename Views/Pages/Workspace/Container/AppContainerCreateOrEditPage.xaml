@@ -74,7 +74,7 @@
                                          Filled=True}"
                     MaxLength="27"
                     PlaceholderText="{StaticResource TitleStr}"
-                    Text="{Binding EditableContainer.NombreContenedor, Mode=TwoWay}"
+                    Text="{Binding Name, Mode=TwoWay}"
                     ToolTip="{StaticResource Max27CharStr}" />
 
                 <!--  Container: Description  -->
@@ -101,7 +101,7 @@
                     MaxLength="255"
                     PlaceholderText="{StaticResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    Text="{Binding EditableContainer.DescripcionContenedor, Mode=TwoWay}"
+                    Text="{Binding EditableContainer.AppContainerDescription, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     ToolTip="{StaticResource Max255CharStr}" />
                 <ui:Button

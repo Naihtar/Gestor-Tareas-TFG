@@ -33,17 +33,9 @@ namespace TFG.Services.NavigationServices {
                 case "Workspace":
                     _frame.Navigate(new WorkSpacePage(user, this, db, auth, null));
                     break;
-                case "ProfileEdit":
-                    _frame.Navigate(new UserProfileEditPage(user, this, db, auth));
-                    break;
-                case "Profile":
-                    _frame.Navigate(new UserProfilePage(user, this, db, auth));
-                    break;
+
                 case "ProfilePassword":
                     _frame.Navigate(new UserProfileEditPasswordPage(user, this, db, auth));
-                    break;
-                case "DeleteProfile":
-                    _frame.Navigate(new UserProfileDeletePage(user, this, db, auth));
                     break;
             }
 
@@ -74,7 +66,7 @@ namespace TFG.Services.NavigationServices {
         }
 
 
-        public void NavigateTo(string route, AppContainer container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask? task) {
+        public void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask? task) {
             switch (route) {
                 case "Task":
                     _frame.Navigate(new AppTaskPage(container, user, this, db, auth, task));
@@ -82,9 +74,18 @@ namespace TFG.Services.NavigationServices {
                 case "EditTask":
                     _frame.Navigate(new AppTaskCreateOrEditPage(container, user, this, db, auth, task));
                     break;
+                case "Profile":
+                    _frame.Navigate(new UserProfilePage(user, this, db, auth, task, container));
+                    break;
+                case "DeleteProfile":
+                    _frame.Navigate(new UserProfileDeletePage(user, this, db, auth, task, container));
+                    break;
+                case "ProfileEdit":
+                    _frame.Navigate(new UserProfileEditPage(user, this, db, auth, task, container));
+                    break;
             }
         }
-        public void NavigateTo(string route, AppContainer container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask? task, string status) {
+        public void NavigateTo(string route, AppContainer? container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask? task, string status) {
             switch (route) {
                 case "AddTask":
                     _frame.Navigate(new AppTaskCreateOrEditPage(container, user, this, db, auth, null, status));

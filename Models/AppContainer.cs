@@ -1,67 +1,81 @@
-﻿using MongoDB.Bson;
+﻿using System;
+using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace TFG.Models {
-    public class AppContainer {
+    public class AppContainer : IDisposable {
+        private bool disposed = false;
+
+        // Constructor
         public AppContainer() { }
 
-        private ObjectId _idContenedor;
+        // Atributos
+        private ObjectId _appContainerID;
         [BsonId]
-        public ObjectId IdContenedor {
-            get { return _idContenedor; }
-
-            set { _idContenedor = value; }
+        public ObjectId AppContainerID {
+            get { return _appContainerID; }
+            set { _appContainerID = value; }
         }
-        private string _nombreContenedor;
 
+        private string _appContainerTitle;
         [BsonElement("nombre")]
-        public required string NombreContenedor {
-            get { return _nombreContenedor; }
-            set { _nombreContenedor = value; }
+        public string AppContainerTitle {
+            get { return _appContainerTitle; }
+            set { _appContainerTitle = value; }
         }
-        private string? _descripcionContenedor;
+
+        private string? _appContainerDescription;
         [BsonElement("descripcion")]
-        public string? DescripcionContenedor {
-            get { return _descripcionContenedor; }
-            set { _descripcionContenedor = value; }
+        public string? AppContainerDescription {
+            get { return _appContainerDescription; }
+            set { _appContainerDescription = value; }
         }
 
-        private ObjectId _usuarioID;
+        private ObjectId _appUserID;
         [BsonElement("usuario_id")]
-        public ObjectId UsuarioID {
-            get { return _usuarioID; }
-            set { _usuarioID = value; }
+        public ObjectId AppUserID {
+            get { return _appUserID; }
+            set { _appUserID = value; }
         }
 
-        private List<ObjectId>? _listaTareas;
+        private List<ObjectId>? _appContainerAppTasksList;
         [BsonElement("tareas")]
-        public List<ObjectId>? ListaTareas {
-            get { return _listaTareas; }
-            set { _listaTareas = value; }
+        public List<ObjectId>? AppContainerAppTasksList {
+            get { return _appContainerAppTasksList; }
+            set { _appContainerAppTasksList = value; }
         }
 
-        private DateTime _fechaCreacionContenedor;
+        private DateTime _appContainerCreateDate;
         [BsonElement("fechaCreacion")]
         [BsonRepresentation(BsonType.DateTime)]
-        public DateTime FechaCreacionContenedor {
-            get { return _fechaCreacionContenedor; }
-            set { _fechaCreacionContenedor = value; }
+        public DateTime AppContainerCreateDate {
+            get { return _appContainerCreateDate; }
+            set { _appContainerCreateDate = value; }
         }
 
-        //private DateTime _fechaAccesoContenedor;
-        //[BsonElement("fechaAcceso")]
-        //[BsonRepresentation(BsonType.DateTime)]
-        //public DateTime FechaAccesoContenedor {
-        //    get { return _fechaAccesoContenedor; }
-        //    set { _fechaAccesoContenedor = value; }
-        //}
+        // Implementación del método Dispose, nos permite eliminar los datos en memoria.
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-        //private List<string> _listaEstadosTareas;
-        //[BsonElement("estados")]
-        //public required List<string> ListaEstadosTareas {
-        //    get { return _listaEstadosTareas; }
-        //    set { _listaEstadosTareas = value; }
-        //}
+        // Destructor
+        ~AppContainer() {
+            Dispose(false);
+        }
 
+        protected virtual void Dispose(bool disposing) {
+            if (!disposed) {
+                if (disposing) {
+                    _appContainerTitle = string.Empty;
+                    _appContainerDescription = string.Empty;
+                    _appContainerAppTasksList = [];
+                    _appContainerCreateDate = DateTime.MinValue;
+                    _appUserID = ObjectId.Empty;
+                }
+                disposed = true;
+            }
+        }
     }
 }

@@ -75,7 +75,7 @@
                                          Filled=True}"
                     MaxLength="27"
                     PlaceholderText="{StaticResource TitleStr}"
-                    Text="{Binding EditableTask.NombreTarea, Mode=TwoWay}"
+                    Text="{Binding EditableTask.AppTaskTitle, Mode=TwoWay}"
                     ToolTip="{StaticResource Max27CharStr}" />
 
                 <!--  Container: Description  -->
@@ -102,7 +102,7 @@
                     MaxLength="255"
                     PlaceholderText="{StaticResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    Text="{Binding EditableTask.DescripcionTarea, Mode=TwoWay}"
+                    Text="{Binding EditableTask.AppTaskDescription, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     ToolTip="{StaticResource Max255CharStr}" />
 
