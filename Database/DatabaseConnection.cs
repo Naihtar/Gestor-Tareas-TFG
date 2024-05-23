@@ -11,19 +11,22 @@ namespace TFG.Database {
         public DatabaseConnection(IConnectionManager connectionManager) {
             _connectionManager = connectionManager;
             try {
-                var connectionString = _connectionManager.GetConnectionString();
-                var client = new MongoClient(connectionString);
-                var databaseName = new MongoUrl(connectionString).DatabaseName;
-                _database = client.GetDatabase(databaseName);
+                var connectionString = _connectionManager.GetConnectionString(); // Obtener la clave de conexión.
+                var client = new MongoClient(connectionString); // Crear un cliente de MongoDB.
+                var databaseName = new MongoUrl(connectionString).DatabaseName; // Extraer el nombre de la base de datos.
+                _database = client.GetDatabase(databaseName); // Obtener una referencia a la base de datos especificada.
             } catch (Exception ex) {
-                MessageBox.Show($"Error al conectar con la base de datos: {ex.Message}");
-                Application.Current.Shutdown();
+                MessageBox.Show($"Error al conectar con la base de datos: {ex.Message}"); // Mostrar mensaje de error.
+                Application.Current.Shutdown(); // Cerrar la aplicación en caso de fallo.
             }
         }
 
-        // Método - Obtener una colección de forma genérica.
+        // Obtener una colección de forma genérica.
         public IMongoCollection<T> GetCollection<T>(string collectionName) {
-            return _database.GetCollection<T>(collectionName);
+            if (_database == null) {
+                throw new InvalidOperationException("Database connection is not initialized.");
+            }
+            return _database.GetCollection<T>(collectionName); // Devolver una colección de la base de datos.
         }
     }
 }

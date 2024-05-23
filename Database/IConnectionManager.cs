@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 namespace TFG.Database {
     public interface IConnectionManager {
 
+        // Obtener la clave de acceso.
          string GetConnectionString();
 
-        // Método - Encriptar la clave de acceso.
+        // Encriptar la clave de acceso.
          void ProtectConnectionString();
 
-        // Método - Desencriptar la contraseña
+        // Desencriptar la contraseña
          void UnprotectConnectionString();
     }
 }
