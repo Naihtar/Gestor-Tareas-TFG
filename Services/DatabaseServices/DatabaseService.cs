@@ -21,8 +21,7 @@ namespace TFG.Services.DatabaseServices {
             try {
                 var users = await GetCollectionAsync<AppUser>("usuarios"); //Colección de usuarios
                 return await users.Find(appUserSearchByID => appUserSearchByID.AppUserID == appUserID).FirstOrDefaultAsync(); //Operación en la base de datos
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return null;
             }
         }
@@ -33,8 +32,7 @@ namespace TFG.Services.DatabaseServices {
             try {
                 var users = await GetCollectionAsync<AppUser>("usuarios"); //Colección de usuarios
                 return await users.Find(appUserSearchByEmail => appUserSearchByEmail.AppUserEmail == appUserEmail).FirstOrDefaultAsync(); //Operación en la base de datos
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return null;
             }
         }
@@ -46,8 +44,7 @@ namespace TFG.Services.DatabaseServices {
                 var filter = Builders<AppUser>.Filter.Eq(appUserSearchUpdate => appUserSearchUpdate.AppUserID, appUserUpdate.AppUserID); //Filtro de búsqueda por ID
                 var result = await users.ReplaceOneAsync(filter, appUserUpdate); //Operación en la base de datos
                 return result.IsAcknowledged; //Confirmación de los cambios
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return false;
             }
         }
@@ -58,8 +55,7 @@ namespace TFG.Services.DatabaseServices {
                 var users = await GetCollectionAsync<AppUser>("usuarios"); //Colección de usuarios
                 var filter = Builders<AppUser>.Filter.Eq("aliasUsuario", appUserUsernameCheck); //Filtro de búsqueda por username
                 return await users.Find(filter).AnyAsync(); //Resultados de la búsqueda
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return true;
             }
         }
@@ -74,8 +70,7 @@ namespace TFG.Services.DatabaseServices {
                     Builders<AppUser>.Filter.Ne("_id", appUserID) // Usamos el Not Equal (NE) para evitar que coja el ID de nuestro usuario.
                 );
                 return await collection.Find(filter).AnyAsync(); //Resultados de la búsqueda
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return true;
             }
         }
@@ -86,8 +81,7 @@ namespace TFG.Services.DatabaseServices {
                 var users = await GetCollectionAsync<AppUser>("usuarios"); //Colección de usuarios
                 var filter = Builders<AppUser>.Filter.Eq("email", appUserEmailCheck); //Filtro de búsqueda por email
                 return await users.Find(filter).AnyAsync(); //Resultados de la búsqueda
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return true;
             }
         }
@@ -102,8 +96,7 @@ namespace TFG.Services.DatabaseServices {
                     Builders<AppUser>.Filter.Ne("_id", appUserID) // Usamos el Not Equal (NE) para evitar que coja el ID de nuestro usuario.
                 );
                 return await users.Find(filter).AnyAsync(); //Resultados de la búsqueda
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return true;
             }
         }
@@ -115,9 +108,7 @@ namespace TFG.Services.DatabaseServices {
                 var user = await users.Find(appUserCheck => appUserCheck.AppUserID == appUserID).FirstOrDefaultAsync(); //Busqueda del usuario por ID
                 // Resultado de la busqueda, comprobando que el usuario exista y la contraseña coincida.
                 return user != null && BCrypt.Net.BCrypt.Verify(appUserPasswordCheck, user.AppUserPassword);
-            } catch (Exception ex) {
-
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return false;
 
             }
@@ -130,8 +121,7 @@ namespace TFG.Services.DatabaseServices {
                 var user = await collection.Find(appUserCheck => appUserCheck.AppUserID == appUserID).FirstOrDefaultAsync();  //Busqueda del usuario por ID,
                 return user?.AppUserAppContainerList ?? []; //Resultados de la búsqueda, en caso de ser null retorna una lista vácia
 
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return [];
             }
         }
@@ -142,8 +132,7 @@ namespace TFG.Services.DatabaseServices {
             try {
                 await collection.InsertOneAsync(appUserCreate); //Guardar en la base de datos el nuevo usuario
                 return true; //Resultado de la operación
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return false;
             }
         }
@@ -178,8 +167,7 @@ namespace TFG.Services.DatabaseServices {
                 var userFilter = Builders<AppUser>.Filter.Eq(appUserDelete => appUserDelete.AppUserID, appUserDelete.AppUserID);
                 var userResult = await userCollection.DeleteOneAsync(userFilter); //Operación de borrado
                 return userResult.DeletedCount > 0; //Resultado de la operación.
-            } catch (Exception ex) {
-                //TODO - Implementar excepción
+            } catch (Exception) {
                 return false;
             }
         }
@@ -193,7 +181,6 @@ namespace TFG.Services.DatabaseServices {
                 var filter = Builders<AppContainer>.Filter.Eq(appContainerFilter => appContainerFilter.AppContainerID, appContainerID); //Filtro de búsqueda usando el ID
                 return await collection.Find(filter).FirstOrDefaultAsync(); //Resultados de la busqueda.
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return null;
             }
         }
@@ -206,7 +193,6 @@ namespace TFG.Services.DatabaseServices {
                 var result = await collection.ReplaceOneAsync(filter, appContainerUpdate); // Resultado de la búsqueda
                 return result.IsAcknowledged; //Confirmando la búsqueda
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
@@ -224,7 +210,6 @@ namespace TFG.Services.DatabaseServices {
                 );
                 return await collection.Find(filter).AnyAsync(); //Resultados de la búsqueda
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return true;
             }
         }
@@ -236,7 +221,6 @@ namespace TFG.Services.DatabaseServices {
                 var container = await collection.Find(filter).FirstOrDefaultAsync(); //Resultado de la búsqueda
                 return container != null && container.AppContainerAppTasksList.Count > 0; //Valor devuelto
             } catch (Exception ex) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
@@ -265,7 +249,6 @@ namespace TFG.Services.DatabaseServices {
                 }
                 return false; //Ante cualquier incidente retornara falso.
             } catch (Exception ex) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
@@ -284,11 +267,8 @@ namespace TFG.Services.DatabaseServices {
                     var result = await userCollection.UpdateOneAsync(u => u.AppUserID == appUserID, update); //Realizamos la opreación
                     return result.IsAcknowledged; // Confirmación de la operación.
                 }
-
                 return false; //Ante cualquier incidente retornara falso.
             } catch (Exception ex) {
-                //TODO - Implementar excepción
-
                 return false;
             }
         }
@@ -304,7 +284,6 @@ namespace TFG.Services.DatabaseServices {
                 var filter = Builders<AppTask>.Filter.Eq(appTaskFilter => appTaskFilter.AppTaskID, appTaskID); //Filtro de búsqueda por ID
                 return await collection.Find(filter).FirstOrDefaultAsync(); //Resultado de la búsqueda
             } catch (Exception) {
-                // TODO - Implementar excepción
                 return null;
             }
         }
@@ -316,7 +295,6 @@ namespace TFG.Services.DatabaseServices {
                 var filter = Builders<AppTask>.Filter.Eq(appTaskFilter => appTaskFilter.AppContainerID, appContainerID); //Filtro de búsqueda por ID
                 return await collection.Find(filter).ToListAsync(); //Resultado de la búsqueda
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return [];
             }
         }
@@ -330,7 +308,6 @@ namespace TFG.Services.DatabaseServices {
                 var result = await tasks.ReplaceOneAsync(filter, appTaskUpdate); //Resultado de la operación
                 return result.IsAcknowledged; //Confirmación de la búsqueda
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
@@ -355,7 +332,6 @@ namespace TFG.Services.DatabaseServices {
                 }
                 return false;
             } catch (Exception ex) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
@@ -375,14 +351,10 @@ namespace TFG.Services.DatabaseServices {
                     var result = await containerCollection.UpdateOneAsync(appContainerUpdate => appContainerUpdate.AppContainerID == appContainerID, update);  //Resultado de la operación
                     return result.IsAcknowledged; // Confirmación de la opereación 
                 }
-
                 return false;
             } catch (Exception ex) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
-
-
     }
 }

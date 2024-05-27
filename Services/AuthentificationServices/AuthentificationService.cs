@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using BCrypt.Net;
-using MongoDB.Driver;
-using TFG.Database;
+﻿using MongoDB.Driver;
 using TFG.Services.DatabaseServices;
 using TFG.Models;
 
@@ -29,7 +25,6 @@ namespace TFG.Services.AuthentificationServices {
 
                 return user; //Devolvemos el usuario encontrado.
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return null;
             }
         }
@@ -42,8 +37,8 @@ namespace TFG.Services.AuthentificationServices {
 
                 // Crear un filtro de búsqueda, para buscar al usuario por email o username
                 var filter = Builders<AppUser>.Filter.Or(
-                    Builders<AppUser>.Filter.Eq(u => u.AppUserEmail, input),
-                    Builders<AppUser>.Filter.Eq(u => u.AppUserUsername, input)
+                    Builders<AppUser>.Filter.Eq(appUserFilter => appUserFilter.AppUserEmail, input),
+                    Builders<AppUser>.Filter.Eq(appUserFilter => appUserFilter.AppUserUsername, input)
                 );
 
                 // Busca al usuario en la colección usando el filtro.
@@ -57,7 +52,6 @@ namespace TFG.Services.AuthentificationServices {
                 // Verifica si la contraseña introducida coincide con la del usuario (usando bcrypt)
                 return BCrypt.Net.BCrypt.Verify(password, user.AppUserPassword);
             } catch (Exception) {
-                //TODO - Implementar excepción
                 return false;
             }
         }
