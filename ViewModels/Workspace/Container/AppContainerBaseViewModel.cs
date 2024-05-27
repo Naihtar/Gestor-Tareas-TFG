@@ -6,16 +6,18 @@ using TFG.ViewModels.Base;
 
 namespace TFG.ViewModels.Workspace.Container {
     public abstract class AppContainerBaseViewModel : BaseViewModel {
-        public CommandViewModel GoBackCommand { get; }
 
+        //Dependencias
+        protected readonly IDatabaseService _databaseService; //Dependencia de los servicios de la gestión de la base de datos
+        protected readonly INavigationService _navigationService; //Dependencia de los servicios navegación
+
+        //Atributos
         protected AppContainer? _appContainer;
-        protected AppUser _user;
-        protected readonly IDatabaseService _databaseService;
-        protected readonly INavigationService _navigationService;
-        protected readonly IAuthenticationService _authenticationService;
+        protected AppUser _appUser;
 
-        public AppContainer EditableContainer { get; set; }
+        public AppContainer AppContainerEditable { get; set; } //Espacio de datos modificable
 
+        //Diccionario para mostrar los datos del espacio de trabajo
         private Dictionary<string, string>? _containerProperties;
         public Dictionary<string, string>? ContainerProperties {
             get { return _containerProperties; }
@@ -24,75 +26,100 @@ namespace TFG.ViewModels.Workspace.Container {
                 OnPropertyChanged(nameof(ContainerProperties));
             }
         }
-        protected AppContainerBaseViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) {
-            _appContainer = container;
-            _user = user;
 
-            GoBackCommand = new CommandViewModel(GoBack);
-            EditableContainer = _appContainer ?? new AppContainer() {
+        //Comandos
+        public CommandViewModel GoBackCommand { get; }
+
+        //Constructor
+        protected AppContainerBaseViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser user, AppContainer? appContainer) {
+            _navigationService = navigationService;
+            _databaseService = databaseService;
+            _appContainer = appContainer;
+            _appUser = user;
+
+            //Asignamos el espacio de trabajo parametrizado, en caso de ser null se asigna uno predefinido
+            AppContainerEditable = _appContainer ?? new AppContainer() {
                 AppContainerTitle = string.Empty,
                 AppContainerDescription = string.Empty,
-                AppUserID = _user.AppUserID,
+                AppUserID = _appUser.AppUserID,
                 AppContainerAppTasksList = [],
                 AppContainerCreateDate = DateTime.Now
             };
 
-            _navigationService = navigationService;
-            _databaseService = db;
-            _authenticationService = auth;
-            if (container != null) {
+            GoBackCommand = new CommandViewModel(GoBack);
+            //Cargar los datos en caso de que no sea null
+            if (appContainer != null) {
                 AppContainerData();
             }
         }
 
+        //Cargar los datos del espacio de trabajo
         protected async void AppContainerData() {
-            AppContainer? container = await _databaseService.GetContainerByContainerIDAsync(_appContainer.AppContainerID);
+            try {
+                //Buscar el espacio de trabajo en la DB por ID
+                AppContainer? appContainerData = await _databaseService.GetContainerByContainerIDAsync(_appContainer.AppContainerID);
 
-            if (container == null) {
-                ErrorMessage = "Ha ocurrido un error al obtener el espacio de traabajo";
-                return;
-            }
+                if (appContainerData == null) {
+                    SuccessOpen = false;
+                    ErrorOpen = true;
+                    ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                    StartTimer();
+                    return;
+                }
 
-            ContainerProperties = new Dictionary<string, string> {
-                {"ContainerName", container.AppContainerTitle },
-                {"Descripcion", container.AppContainerDescription ??= string.Empty},
-                {"Fecha", container.AppContainerCreateDate.ToString() },
+                ContainerProperties = new Dictionary<string, string> {
+                {"ContainerName", appContainerData.AppContainerTitle },
+                {"Descripcion", appContainerData.AppContainerDescription ??= string.Empty},
+                {"Fecha", appContainerData.AppContainerCreateDate.ToString() },
             };
-        }
-
-        private void GoBack(object obj) {
-            _navigationService.GoBack();
+            } catch (Exception) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
+            }
         }
 
         protected async Task SaveEditChangesAsync() {
             // Actualiza el usuario en la base de datos
-            bool success = await _databaseService.UpdateContainerAsync(EditableContainer);
+            bool success = await _databaseService.UpdateContainerAsync(AppContainerEditable);
 
             if (!success) {
-                ErrorMessage = "Ha ocurrido un error al guardar la edición del Workspace.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
                 return;
             }
 
             // Actualiza las propiedades del perfil de usuario
             AppContainerData();
 
-            //// Navega hacia atrás
-            _navigationService.NavigateTo("Workspace", EditableContainer, _user, _navigationService, _databaseService, _authenticationService);
-            //_navigationService.GoBack();
+            //Volver a la vista de espacio de trabajo, con los datos cargados
+            string? msgChanges = ResourceDictionary["SuccessContainerChangeInfoBarStr"] as string; //Mensaje de modificación exitosa
+            _navigationService.NavigateTo(appUser: _appUser, appContainer: AppContainerEditable, msgChanges);
         }
 
         protected async Task SaveAddContainerAsync() {
-
-            bool success = await _databaseService.AddContainerAsync(EditableContainer, _user.AppUserID);
+            //Agrega el nuevo contenedor a la base de datos
+            bool success = await _databaseService.AddContainerAsync(AppContainerEditable, _appUser.AppUserID);
 
             if (!success) {
-                ErrorMessage = "Ha ocurrido un error al crear el nuevo Workspace.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
                 return;
             }
 
-            _navigationService.NavigateTo("Workspace", EditableContainer, _user, _navigationService, _databaseService, _authenticationService);
+            //Volver a la vista de espacio de trabajo, con los datos cargados
+            string? msgChanges = ResourceDictionary["SuccessContainerAddInfoBarStr"] as string; //Mensaje de agregación exitosa
+            _navigationService.NavigateTo(appUser: _appUser, appContainer: AppContainerEditable, msgChanges);
         }
-        protected abstract Task SaveContainerAsyncWrapper();
-
+        protected abstract Task SaveContainerAsyncWrapper(); //Guardar los cambios en la base de datos
+        private void GoBack(object obj) {
+            //Volver atrás
+            _navigationService.GoBack();
+        }
     }
 }

@@ -8,9 +8,10 @@ using TFG.ViewModels.Base;
 namespace TFG.ViewModels.Workspace.Container {
     class AppContainerCreateOrEditViewModel : AppContainerBaseViewModel {
 
-        public CommandViewModel SaveContainerCommand { get; }
-        private readonly bool _isCreate;
+        //Atributos
+        private readonly bool _isCreate; //Comparar si estamo sen creación o edición
 
+        //Nombre del espacio de trabajo.
         private string? _name;
         public string? Name {
             get { return _name; }
@@ -19,44 +20,60 @@ namespace TFG.ViewModels.Workspace.Container {
                 OnPropertyChanged(nameof(Name));
             }
         }
+        public CommandViewModel SaveContainerCommand { get; } //Guardar los cambios
 
-        public AppContainerCreateOrEditViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(container, user, navigationService, db, auth) {
-            _isCreate = container == null;
+        //Constructor
+        public AppContainerCreateOrEditViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer? appContainer) : base(databaseService, navigationService, appUser, appContainer) {
+            _isCreate = appContainer == null;
             SaveContainerCommand = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
-            Name = EditableContainer.AppContainerTitle;
+            Name = AppContainerEditable.AppContainerTitle;
         }
 
+        //
+        protected override async Task SaveContainerAsyncWrapper() {
+
+            //Comprueba que el campo del nombre no este vacío
+            bool fieldNameEmpty = CheckFieldName();
+            if (fieldNameEmpty) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["CheckTitleStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
+            }
+
+            //Comprueba que el campo del nombre no este en uso
+            bool nameExists = await CheckNameDBB(_appUser.AppUserID);
+            if (Name != AppContainerEditable.AppContainerTitle && nameExists) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["CheckTitleContainerDBStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
+            }
+
+            //Si estamos en "modo creación" asigna los atributo de forma predefinida.
+            AppContainerEditable.AppContainerTitle = Name;
+            if (_isCreate) {
+                AppContainerEditable.AppUserID = _appUser.AppUserID;
+                AppContainerEditable.AppContainerAppTasksList = [];
+                AppContainerEditable.AppContainerCreateDate = DateTime.Now;
+                await SaveAddContainerAsync();
+                return;
+            }
+
+            //Guardar los cambios
+            await SaveEditChangesAsync();
+        }
+
+        //Comprobar que el título no este vacio
         private bool CheckFieldName() {
             return string.IsNullOrEmpty(Name);
         }
 
-        private async Task<bool> CheckNameDBB(ObjectId id) {
-            return await _databaseService.CheckContainerByTitleAndUserIDAsync(Name, id);
-        }
-
-        protected override async Task SaveContainerAsyncWrapper() {
-            bool nameExists = await CheckNameDBB(_user.AppUserID);
-            bool fieldNameEmpty = CheckFieldName();
-
-            if (fieldNameEmpty) {
-                ErrorMessage = "Rellene el campo del nombre.";
-                return;
-            }
-
-            if (Name != EditableContainer.AppContainerTitle && nameExists) {
-                ErrorMessage = "El nombre introducido ya esta en uso.";
-                return;
-            }
-
-            EditableContainer.AppContainerTitle = Name;
-            if (_isCreate) {
-                EditableContainer.AppUserID = _user.AppUserID;
-                EditableContainer.AppContainerAppTasksList = [];
-                EditableContainer.AppContainerCreateDate = DateTime.Now;
-                await SaveAddContainerAsync();
-            } else {
-                await SaveEditChangesAsync();
-            }
+        //Revisar que no existe ningún título igual en los contenedores de ese usuario.
+        private async Task<bool> CheckNameDBB(ObjectId appUserID) {
+            return await _databaseService.CheckContainerByTitleAndUserIDAsync(Name, appUserID);
         }
 
     }
