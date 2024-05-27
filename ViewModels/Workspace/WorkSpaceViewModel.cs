@@ -1,24 +1,23 @@
 ﻿using MongoDB.Bson;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using TFG.Models;
-using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TFG.ViewModels {
     public class WorkSpaceViewModel : BaseViewModel {
 
         //Objetos
-        private readonly AppUser _user; //Usuario
+        private readonly AppUser _appUser; //Usuario
         private AppContainer? _appContainer; //Contenedor actual
 
-        //Servicioes
-        private readonly INavigationService _navigationService;
-        private readonly IDatabaseService _databaseService;
-        private readonly IAuthenticationService _authenticationService;
+        //Dependencias
+        private readonly INavigationService _navigationService; //Dependencia de los servicios navegación
+        private readonly IDatabaseService _databaseService; //Dependencia de los servicios de la base de datos
 
         //Listas de datos
         private List<AppContainer> _userContainers; // Contenedores del usuario
@@ -27,7 +26,6 @@ namespace TFG.ViewModels {
                 return _userContainers.Select(container => container.AppContainerTitle).ToList();
             }
         }
-
 
         //Comandos
         public CommandViewModel UserProfileCommand { get; private set; } //Acceder al profile
@@ -45,13 +43,12 @@ namespace TFG.ViewModels {
         public ObservableCollection<AppTask> InProgressTasks { get; private set; } //In Progress List 
         public ObservableCollection<AppTask> DoneTasks { get; private set; } //DONE List
         public ObservableCollection<AppTask> OnHoldTasks { get; private set; } //On Hold List
-        private readonly ResourceDictionary _resourceDictionary = new ResourceDictionary(); // Referencia al diccionario de recursos
 
         //Atributos: View
         private string? _selectedContainerName; // Nombre del contenedor.
         public string SelectedContainerName {
             get {
-                return $"{_resourceDictionary["WorkspaceStr"]}: {_selectedContainerName}";
+                return $"{ResourceDictionary["WorkspaceStr"]}: {_selectedContainerName}";
             }
             set {
                 if (_selectedContainerName != value) {
@@ -95,16 +92,14 @@ namespace TFG.ViewModels {
         }
 
         // Constructor principal.
-        private WorkSpaceViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
-            _resourceDictionary = Application.Current.Resources; //TODO pasarlo ya inicializado desde MainWindowViewModel.
+        private WorkSpaceViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, string? successMessage) {
             //Objetos
-            _user = user;
+            _appUser = appUser;
             _appContainer = null; //Es null, para controlar ContainerAccess
             _selectedTask = null;
             //Servicios
-            _navigationService = nav; //Servicio encargado de la navegación entre ventanas.
-            _databaseService = db; // Servicio encargado de la obtención de información desde la BDD.
-            _authenticationService = auth; //Servicio de authentificación.
+            _navigationService = navigationService; //Servicio encargado de la navegación entre ventanas.
+            _databaseService = databaseService; // Servicio encargado de la obtención de información desde la BDD.
 
             //Comandos
             UserProfileCommand = new CommandViewModel(UserProfileAccess); // Acceder al perfil de usuario
@@ -128,23 +123,27 @@ namespace TFG.ViewModels {
             InProgressTasks = [];
             DoneTasks = [];
             OnHoldTasks = [];
+
+            Message = successMessage;
+            if (Message != null) {
+                ShowSuccessMessage(Message);
+            }
         }
 
         // Constructor adicional para cargar tareas cuando se regresa a la página del espacio de trabajo
-        public WorkSpaceViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppContainer container) : this(user, nav, db, auth) {
+        public WorkSpaceViewModel(IDatabaseService db, INavigationService nav, AppUser user, AppContainer container, string? successMessage) : this(db, nav, user, successMessage) {
             _appContainer = container;
             SelectedContainerName = container.AppContainerTitle; // Actualizar el nombre del contenedor seleccionado
 
             // Cargar las tareas del contenedor seleccionado
             LoadTasksForContainer();
-
         }
 
         //Método para inicializar el workspace de forma asincrona
-        public static async Task<WorkSpaceViewModel> CreateAsync(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppContainer container) {
+        public static async Task<WorkSpaceViewModel> CreateAsync(IDatabaseService db, INavigationService nav, AppUser user, AppContainer container, string? successMessage) {
             WorkSpaceViewModel viewModel = container != null
-                ? new WorkSpaceViewModel(user, nav, db, auth, container) // Si hay contenedor, crea una instancia del ViewModel con el contenedor.
-                : new WorkSpaceViewModel(user, nav, db, auth); // Si no hay contenedor, crea una instancia del ViewModel sin contenedor.
+                ? new WorkSpaceViewModel(db, nav, user, container, successMessage) // Si hay contenedor, crea una instancia del ViewModel con el contenedor.
+                : new WorkSpaceViewModel(db, nav, user, successMessage); // Si no hay contenedor, crea una instancia del ViewModel sin contenedor.
 
             await viewModel.InitializeAsync(); //Ejecutamos el método para obtener la información de los contenedores y otros atributos.
             return viewModel; //Devolvemos el viewModel.
@@ -157,14 +156,17 @@ namespace TFG.ViewModels {
                 OnPropertyChanged(nameof(ContainerNames));
                 HasContainers(_userContainers);
                 MaxContainers(_userContainers);
-            } catch (Exception ex) {
-                ErrorMessage = $"Error al iniciar los contenedores: {ex.Message}";
+            } catch (Exception) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = (ResourceDictionary["ExDB"] as string);
+                StartTimer();
             }
         }
 
         private async Task<List<AppContainer>> ObtainContainerDB() {
             try {
-                List<ObjectId> containerIds = await _databaseService.GetContainerListByUserIDAsync(_user.AppUserID).ConfigureAwait(false);
+                List<ObjectId> containerIds = await _databaseService.GetContainerListByUserIDAsync(_appUser.AppUserID).ConfigureAwait(false);
                 List<AppContainer> containers = [];
                 if (containerIds != null && containerIds.Count > 0) {
                     foreach (var id in containerIds) {
@@ -177,9 +179,11 @@ namespace TFG.ViewModels {
                 HasContainers(containers);
                 MaxContainers(containers);
                 return containers;
-            } catch (Exception ex) {
-                // Maneja la excepción apropiadamente
-                ErrorMessage = $"Error al obtener los contenedores de la DB: {ex.Message}";
+            } catch (Exception) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = (ResourceDictionary["ExDB"] as string);
+                StartTimer();
                 return [];
             }
         }
@@ -190,17 +194,16 @@ namespace TFG.ViewModels {
         private async void LoadTasksForContainer() {
             try {
                 if (_appContainer != null) {
-                    // Limpiar colecciones
 
-
+                    //Comprbar que el contenedor tiene tareas
                     bool hasTask = await _databaseService.VerifyTaskInContainerAsync(_appContainer.AppContainerID);
-
+                    // Limpiar colecciones
                     ClearTasks();
+                    List<AppTask> tasks = [];
 
                     if (hasTask) {
                         // Obtener desde la base de datos las tareas del contenedor seleccionado
-                        List<AppTask> tasks = await _databaseService.GetTasksByContainerIdAsync(_appContainer.AppContainerID);
-                        Console.WriteLine(tasks.Count());
+                        tasks = await _databaseService.GetTasksByContainerIdAsync(_appContainer.AppContainerID);
                         // Iterarlas y asignarlas a la colección correspondiente.
                         foreach (var task in tasks) {
                             switch (task.AppTaskStatus) {
@@ -217,14 +220,20 @@ namespace TFG.ViewModels {
                                     DoneTasks.Add(task);
                                     break;
                                 default:
-                                    MessageBox.Show($"Hay un error con la tarea: {task.AppTaskTitle}");
+                                    SuccessOpen = false;
+                                    ErrorOpen = true;
+                                    ErrorMessage = (ResourceDictionary["LoadWorkspaceTaskStr"] as string) + $": {task.AppTaskTitle}";
+                                    StartTimer();
                                     break;
                             }
                         }
                     }
                 }
-            } catch (Exception ex) {
-                ErrorMessage = $"Error al obtener los contenedores de la DB: {ex.Message}";
+            } catch (Exception) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = (ResourceDictionary["ExDB"] as string);
+                StartTimer();
             }
 
         }
@@ -248,7 +257,7 @@ namespace TFG.ViewModels {
 
         //Método para acceder al perfil de usuario
         private void UserProfileAccess(object obj) {
-            _navigationService.NavigateTo("Profile", _appContainer, _user, _navigationService, _databaseService, _authenticationService, _selectedTask); //Ir a la vista del perfil
+            _navigationService.NavigateTo("Profile", appUser: _appUser, appContainer: _appContainer, appTask: SelectedTask, null); //Ir a la vista del perfil
         }
 
         //Método para acceder a la información del contenedor
@@ -256,76 +265,103 @@ namespace TFG.ViewModels {
 
             // Indicar al usuario que no ha seleccionado nada.
             if (_appContainer == null) {
-                MessageBox.Show($"No has seleccionado ningún contenedor");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["NoSelectWorkspaceContainerStr"] as string;
+                StartTimer();
                 return;
             }
-            _navigationService.NavigateTo("Container", _appContainer, _user, _navigationService, _databaseService, _authenticationService); //Ir a la vista del container
+            _navigationService.NavigateTo("Container", _appUser, _appContainer); //Ir a la vista del container
         }
 
         private void ContainerEdit(object obj) {
 
             if (_appContainer == null) {
-                MessageBox.Show($"No has seleccionado ningún contenedor");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["NoSelectWorkspaceContainerStr"] as string;
+                StartTimer();
                 return;
             }
-            _navigationService.NavigateTo("ContainerEdit", _appContainer, _user, _navigationService, _databaseService, _authenticationService); //Ir a la vista del container
+            _navigationService.NavigateTo("ContainerEdit", appUser: _appUser, appContainer: _appContainer); //Ir a la vista del container
         }
 
         //Delete container
         private async Task DeleteContainer() {
-            if (_appContainer != null) {
-                // Llama al método correspondiente en IDatabaseService para realizar el borrado en cascada
-                bool success = await _databaseService.DeleteContainerRecursiveAsync(_appContainer.AppContainerID, _user.AppUserID);
 
-                if (success) {
-                    // Elimina el contenedor de la lista de contenedores del usuario
-                    _userContainers.Remove(_appContainer);
-
-                    // Limpia las colecciones de tareas
-                    ClearTasks();
-
-                    // Actualiza la interfaz de usuario
-                    OnPropertyChanged(nameof(ContainerNames));
-                    SelectedContainerName = string.Empty;
-                    MaxContainers(_userContainers);
-
-                    // Muestra un mensaje de confirmación
-                    MessageBox.Show("El contenedor y sus elementos asociados se han eliminado correctamente.");
-                    _appContainer?.Dispose();
-                    _navigationService.NavigateTo("Workspace", _user, _navigationService, _databaseService, _authenticationService);
-                }
+            if (_appContainer == null) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["NoSelectWorkspaceContainerStr"] as string;
+                StartTimer();
+                return;
             }
+
+            // Llama al método correspondiente en IDatabaseService para realizar el borrado en cascada
+            bool success = await _databaseService.DeleteContainerRecursiveAsync(_appContainer.AppContainerID, _appUser.AppUserID);
+
+            if (!success) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string;
+                StartTimer();
+                return;
+            }
+            // Elimina el contenedor de la lista de contenedores del usuario
+            _userContainers.Remove(_appContainer);
+
+            // Limpia las colecciones de tareas
+            ClearTasks();
+
+            // Actualiza la interfaz de usuario
+            OnPropertyChanged(nameof(ContainerNames));
+            SelectedContainerName = string.Empty;
+            MaxContainers(_userContainers);
+
+            // Muestra un mensaje de confirmación
+            string? msg = ResourceDictionary["SuccessDeleteContainerInfoBarStr"] as string;
+            _appContainer?.Dispose();
+            _navigationService.NavigateTo(appUser: _appUser, appContainer: null, successMessage: msg);
+
         }
 
         private void AddContainer(object obj) {
             if (MaxContainer) {
-                MessageBox.Show("Alcanzado el máximo de contenedores.");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["MaxCapWorkspaceContainerStr"] as string;
+                StartTimer();
                 return;
             }
-
-            _navigationService.NavigateTo("ContainerAdd", null, _user, _navigationService, _databaseService, _authenticationService); //Ir a la vista del container
+            _navigationService.NavigateTo("ContainerAdd", appUser: _appUser, appContainer: null); //Ir a la vista del container
         }
 
         //Tasks
 
         private void TaskAccess(object obj) {
             if (obj is not AppTask task) {
-                MessageBox.Show("No se pudo seleccionar la tarea.");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["WorkspaceTaskStr"] as string;
+                StartTimer();
                 return;
             }
             SelectedTask = task;
-            _navigationService.NavigateTo("Task", _appContainer, _user, _navigationService, _databaseService, _authenticationService, SelectedTask); //Ir a la vista del container
+            _navigationService.NavigateTo("Task", appUser: _appUser, appContainer: _appContainer, appTask: SelectedTask, null); //Ir a la vista del container
             SelectedTask = null;
         }
         private void CreateTask(object obj) {
             HasContainer = _userContainers.Count > 0;
 
             if (_appContainer == null) {
-                MessageBox.Show($"No has seleccionado ningún contenedor");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["NoSelectWorkspaceContainerStr"] as string;
+                StartTimer();
                 return;
             }
             string? status = obj.ToString(); // TODO Editar
-            _navigationService.NavigateTo("AddTask", _appContainer, _user, _navigationService, _databaseService, _authenticationService, null, status); //Ir a la vista del container
+            _navigationService.NavigateTo("TaskAdd", _appUser, _appContainer, null, status); //Ir a la vista del container
             SelectedTask = null;
             LoadTasksForContainer();
         }
@@ -333,7 +369,10 @@ namespace TFG.ViewModels {
         // Método que realiza el movimiento de la tarea
         private async void MoveTaskToNextList(object obj) {
             if (_selectedTask == null) {
-                MessageBox.Show("No has seleccionado ninguna tarea.");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["NoSelectWorkspaceTaskStr"] as string;
+                StartTimer();
                 return;
             }
 
@@ -345,8 +384,10 @@ namespace TFG.ViewModels {
             bool isUpdated = await _databaseService.UpdateTaskAsync(_selectedTask);
 
             if (!isUpdated) {
-                // Reload tasks to reflect the updated status
-                MessageBox.Show("No se pudo mover la tarea. Por favor, inténtalo de nuevo.");
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string;
+                StartTimer();
                 return;
             }
             LoadTasksForContainer();
@@ -360,15 +401,11 @@ namespace TFG.ViewModels {
         }
 
         private void HasContainers(List<AppContainer> containers) {
-
             HasContainer = containers.Count > 0;
-
         }
         private void MaxContainers(List<AppContainer> containers) {
-
             MaxContainer = containers.Count >= 5;
         }
-
     }
 }
 
