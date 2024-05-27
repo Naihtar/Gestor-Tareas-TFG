@@ -8,38 +8,56 @@ using TFG.Models;
 
 namespace TFG.ViewModels {
     public class UserProfileEditViewModel : UserProfileBaseViewModel {
+
+        //Comandos
         public CommandViewModel SaveCommand { get; }
         public CommandViewModel PasswordEditCommand { get; }
 
-        public UserProfileEditViewModel(AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth, AppTask? task, AppContainer? container) : base(user, navigationService, db, auth) {
+        //Constructor
+        public UserProfileEditViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser) : base(databaseService, navigationService, appUser) {
             SaveCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper());
             PasswordEditCommand = new CommandViewModel(EditPassword);
         }
 
-
-
+        //Métodos
         protected override async Task SaveChangesAsyncWrapper() {
-            ObjectId idUser = EditableUser.AppUserID;
-            bool email = await _databaseService.CheckUserByEmailAsync(idUser, EditableUser.AppUserEmail);
-            bool alias = await _databaseService.CheckUserByUsernameAsync(idUser, EditableUser.AppUserUsername);
+            //Comprueba que no quede ningún campo vacío
             bool fields = AreAnyFieldsEmpty();
-
-            if (!IsValidEmail(EditableUser.AppUserEmail)) {
-                ErrorMessage = "El email introducido no es válido.";
-                return;
-            }
-
             if (fields) {
-                ErrorMessage = "Rellene los campos vacios.";
-                return;
-            }
-            if (email) {
-                ErrorMessage = "El email introducido ya esta en uso.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmptyFielStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
+            ObjectId idUser = AppUserEditable.AppUserID;
+            //Comprueba que el email tenga una estructura válida
+            if (!IsValidEmail(AppUserEditable.AppUserEmail)) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ErrorEmailValidStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
+            }
+
+            //Comprobamos que el correo electrónico no existe en la base de datos
+            bool email = await _databaseService.CheckUserByEmailAsync(idUser, AppUserEditable.AppUserEmail);
+            if (email) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmailFieldMatchStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
+            }
+
+            //Comprobamos que el nombre de usuario no existe en la base de datos
+            bool alias = await _databaseService.CheckUserByUsernameAsync(idUser, AppUserEditable.AppUserUsername);
             if (alias) {
-                ErrorMessage = "El usuario introducido ya esta en uso.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["UserFieldMatchStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
@@ -47,15 +65,16 @@ namespace TFG.ViewModels {
             await SaveChangesAsync();
         }
 
+        //Métodos auxiliares
         private bool AreAnyFieldsEmpty() {
-            return string.IsNullOrEmpty(EditableUser.AppUserUsername) ||
-                   string.IsNullOrEmpty(EditableUser.AppUserEmail) ||
-                   string.IsNullOrEmpty(EditableUser.AppUserName) ||
-                   string.IsNullOrEmpty(EditableUser.AppUserSurname1);
+            return string.IsNullOrEmpty(AppUserEditable.AppUserUsername) ||
+                   string.IsNullOrEmpty(AppUserEditable.AppUserEmail) ||
+                   string.IsNullOrEmpty(AppUserEditable.AppUserName) ||
+                   string.IsNullOrEmpty(AppUserEditable.AppUserSurname1);
         }
 
         private void EditPassword(object obj) {
-            _navigationService.NavigateTo("ProfilePassword", EditableUser, _navigationService, _databaseService, _authenticationService);
+            _navigationService.NavigateTo("ProfilePassword", AppUserEditable);
         }
     }
 }

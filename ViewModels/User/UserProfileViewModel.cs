@@ -8,37 +8,52 @@ using System.Windows;
 namespace TFG.ViewModels {
     class UserProfileViewModel : UserProfileBaseViewModel {
 
-        private readonly AppTask _task;
-        private readonly AppContainer _container;
+        //Atributos
 
-        public CommandViewModel LogOutCommand { get; }
-        public CommandViewModel EditCommand { get; }
-        public CommandViewModel DeleteCommand { get; }
+        private readonly AppTask _appTask;
+        private readonly AppContainer _appContainer;
 
-        public UserProfileViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) : base(user, nav, db, auth) {
+        public CommandViewModel LogOutCommand { get; } //Cerrar sesión
+        public CommandViewModel EditCommand { get; } //Editar el perfil
+        public CommandViewModel DeleteCommand { get; } //Ir a la vista para eliminar la cuenta
+
+
+        //Constructor
+        public UserProfileViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer appContainer, AppTask appTask, string? successMessage) : base(databaseService, navigationService, appUser) {
+            _appTask = appTask;
+            _appContainer = appContainer;
+            Message = successMessage;
+
             LogOutCommand = new CommandViewModel(LogOut);
             EditCommand = new CommandViewModel(EditProfile);
             DeleteCommand = new CommandViewModel(DeleteProfile);
-            _task = task;
-            _container = container;
 
+            if (Message != null) {
+                ShowSuccessMessage(Message); //Cargar el mensaje de success
+            }
         }
         private void LogOut(object obj) {
-            _user?.Dispose();
-            _task?.Dispose();
-            _container?.Dispose();
-            _navigationService.NavigateTo("LogIn", _databaseService, _authenticationService);
-        }
-        private void EditProfile(object obj) {
-            _navigationService.NavigateTo("ProfileEdit", null, _user, _navigationService, _databaseService, _authenticationService, null);
+            _appUser?.Dispose(); //Vaciar de la memoria los datos del usuario
+            _appContainer?.Dispose(); //Vaciar de la memoria los datos del espacio de trabajo
+            _appTask?.Dispose(); //Vaciar de la memoria los de la tarea
+
+            //Mensaje de éxito
+            string? message = ResourceDictionary["SuccessLogOutInfoBarStr"] as string;
+            _navigationService.NavigateTo(message);
         }
 
+        //Ir a la edición del perfil
+        private void EditProfile(object obj) {
+            _navigationService.NavigateTo("ProfileEdit", _appUser);
+        }
+
+        //Ir a la vista para eliminar el perfil
         private void DeleteProfile(object obj) {
-            _navigationService.NavigateTo("DeleteProfile", _container, EditableUser, _navigationService, _databaseService, _authenticationService, _task);
+            _navigationService.NavigateTo(appUser: AppUserEditable, appContainer: _appContainer, appTask: _appTask);
         }
 
         protected override Task SaveChangesAsyncWrapper() {
-            return Task.CompletedTask;
+            return Task.CompletedTask; //Tarea completada correctamente
         }
     }
 }

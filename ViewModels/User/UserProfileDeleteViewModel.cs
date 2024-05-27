@@ -12,9 +12,12 @@ using TFG.ViewModels.Base;
 namespace TFG.ViewModels.User {
     internal class UserProfileDeleteViewModel : UserProfileBaseViewModel {
 
-        private readonly AppTask _task;
-        private readonly AppContainer _container;
-        public CommandViewModel DeleteProfileCommand { get; }
+        //Dependencias
+        private readonly IAuthenticationService _authenticationService; //Dependencia de los servicios de autentificación
+
+        //Atributos
+        private readonly AppContainer _appContainer;
+        private readonly AppTask _appTask;
 
         private string? _emailUser;
         public string? EmailUser {
@@ -35,57 +38,78 @@ namespace TFG.ViewModels.User {
             }
         }
 
-        public UserProfileDeleteViewModel(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) : base(user, nav, db, auth) {
+        //Comandos
+        public CommandViewModel DeleteProfileCommand { get; }
+
+        //Constructores
+        public UserProfileDeleteViewModel(IDatabaseService databaseService, IAuthenticationService authenticationService, INavigationService navigationService, AppUser appUser, AppContainer container, AppTask task) : base(databaseService, navigationService, appUser) {
+            _authenticationService = authenticationService;
 
             EmailUser = string.Empty;
             PasswordUser = string.Empty;
-            _task = task;
-            _container = container;
-            DeleteProfileCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper(), CanDelete);
+            _appTask = task;
+            _appContainer = container;
 
+            DeleteProfileCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper(), CanDelete);
         }
 
+        //Métodos
         protected override async Task SaveChangesAsyncWrapper() {
+
+            //Comprueba si el usuario existe en la base de datos
             AppUser? checkUser = await _databaseService.GetUserByEmailAsync(EmailUser);
-
-            // Comprueba si checkUser es null
             if (checkUser == null) {
-                ErrorMessage = "No se encontró ningún usuario con el email proporcionado.";
-                return;
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
             }
 
-            bool email = checkUser.AppUserEmail.Equals(EditableUser.AppUserEmail, StringComparison.CurrentCultureIgnoreCase);
-
+            //Comprueba que ambos correos coinciden
+            bool email = checkUser.AppUserEmail.Equals(AppUserEditable.AppUserEmail, StringComparison.CurrentCultureIgnoreCase);
             if (!email) {
-                ErrorMessage = "El email introducido no es correcto.";
-                return;
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["CheckEmailFieldStr"] as string; //Mensaje de error
+                StartTimer();
             }
 
-            if (!await _databaseService.VerifyPasswordByUserIDAsync(_user.AppUserID, PasswordUser)) {
-                ErrorMessage = "La contraseña introducida no es correcta.";
-                return;
+            //Comprueba que ambas contraseñas coinciden, la introducida con la del usuario
+            bool password = await _databaseService.VerifyPasswordByUserIDAsync(_appUser.AppUserID, PasswordUser);
+            if (!password) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["CheckPasswordFieldStr"] as string;
+                StartTimer();
             }
 
+            //Verifica que los datos sean correctos
             bool verifyUser = await _authenticationService.AuthenticateUserAsync(EmailUser, PasswordUser);
-
             if (!verifyUser) {
-                ErrorMessage = "Datos introducidos incorrectos.";
-                return;
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["AuthenticationDataStr"] as string; //Mensaje de error
+                StartTimer();
 
             }
-            bool success = await _databaseService.DeleteUserAsync(EditableUser);
+            bool success = await _databaseService.DeleteUserAsync(AppUserEditable);
 
             if (!success) {
-                ErrorMessage = "Error al intentar eliminar el usuario";
-                return;
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
             }
-            _user?.Dispose();
-            _task?.Dispose();
-            _container?.Dispose();
-            _navigationService.NavigateTo("LogIn", _databaseService, _authenticationService);
+
+            _appUser?.Dispose(); //Elimina los datos en memoria del usuario
+            _appTask?.Dispose(); //Elimina los datos en memoria del contenedor, en caso de tener uno seleccionado
+            _appContainer?.Dispose(); //Elimina los datos de la tarea, en caso de tener una seleccionada
+            string? message = ResourceDictionary["SuccessDeleteAccountInfoBarStr"] as string; //Mensaje de éxito
+            _navigationService.NavigateTo(message); //Retornamos a la pantalla de Log Ing
         }
 
         private bool CanDelete(object obj) {
+            //Comprueba que ambos campos en la vista no esten vacíos
             return !string.IsNullOrEmpty(EmailUser) && !string.IsNullOrEmpty(PasswordUser);
         }
 

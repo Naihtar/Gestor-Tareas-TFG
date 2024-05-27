@@ -9,9 +9,9 @@ namespace TFG.ViewModels {
 
     public class UserProfileEditPasswordViewModel : UserProfileBaseViewModel {
 
-        public CommandViewModel PasswordSaveCommand { get; }
+        private readonly IAuthenticationService _authenticationService; //Dependencia de los servicios de autentificación
 
-
+        //Atributos
         private string? _oldPassword;
         public string? OldPassword {
             get { return _oldPassword; }
@@ -37,37 +37,48 @@ namespace TFG.ViewModels {
             }
         }
 
+        //Comandos
+        public CommandViewModel PasswordSaveCommand { get; } //Guardar cambios
 
-        public UserProfileEditPasswordViewModel(AppUser? user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth) : base(user, navigationService, db, auth) {
+        public UserProfileEditPasswordViewModel(IDatabaseService databaseService, IAuthenticationService authenticationService, INavigationService navigationService, AppUser? appUser) : base(databaseService, navigationService, appUser) {
+            _authenticationService = authenticationService;
 
             OldPassword = string.Empty;
             NewPassword = string.Empty;
             NewPasswordCheck = string.Empty;
-            _authenticationService = auth;
+
             PasswordSaveCommand = new CommandViewModel(async (obj) => await SaveChangesAsyncWrapper());
         }
 
+        //Método para guardar los cambios en la base de datos
         protected override async Task SaveChangesAsyncWrapper() {
 
-
             if (string.IsNullOrEmpty(OldPassword) || string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(NewPasswordCheck)) {
-                ErrorMessage = "Rellene los campos vacios.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmptyFielStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
-            //TODO
-            if (!await _databaseService.VerifyPasswordByUserIDAsync(EditableUser.AppUserID, OldPassword)) {
-                ErrorMessage = "La contraseña antigua es incorrecta.";
+            bool password = await _databaseService.VerifyPasswordByUserIDAsync(AppUserEditable.AppUserID, OldPassword);
+            if (!password) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["CheckPasswordFieldStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
             if (NewPassword != NewPasswordCheck) {
-                ErrorMessage = "Las nuevas contraseñas no coinciden.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["PasswordMatchStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
-            EditableUser.AppUserPassword = _authenticationService.HashPassword(NewPassword);
-
+            AppUserEditable.AppUserPassword = _authenticationService.HashPassword(NewPassword);
             await SaveChangesAsync();
         }
 
