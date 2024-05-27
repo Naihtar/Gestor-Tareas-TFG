@@ -71,7 +71,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="27"
-                    Text="{Binding EditableUser.AppUserUsername, Mode=TwoWay}"
+                    Text="{Binding AppUserEditable.AppUserUsername, Mode=TwoWay}"
                     ToolTip="{StaticResource Max27CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -91,7 +91,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="80"
-                    Text="{Binding EditableUser.AppUserEmail, Mode=TwoWay}"
+                    Text="{Binding AppUserEditable.AppUserEmail, Mode=TwoWay}"
                     ToolTip="{StaticResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -111,7 +111,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="50"
-                    Text="{Binding EditableUser.AppUserName, Mode=TwoWay}"
+                    Text="{Binding AppUserEditable.AppUserName, Mode=TwoWay}"
                     ToolTip="{StaticResource Max50CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -131,7 +131,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="80"
-                    Text="{Binding EditableUser.AppUserSurname1, Mode=TwoWay}"
+                    Text="{Binding AppUserEditable.AppUserSurname1, Mode=TwoWay}"
                     ToolTip="{StaticResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
@@ -150,7 +150,7 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="80"
-                    Text="{Binding EditableUser.AppUserSurname2, Mode=TwoWay}"
+                    Text="{Binding AppUserEditable.AppUserSurname2, Mode=TwoWay}"
                     ToolTip="{StaticResource Max80CharStr}" />
 
 
@@ -184,20 +184,24 @@
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
                     ToolTip="{StaticResource ChangePasswordButtonInfoStr}" />
-
-                <!--  Error Message  -->
-                <ui:TextBlock
-                    Width="auto"
-                    Height="32"
-                    Margin="0,16,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Top"
-                    FontFamily="Fira Code"
-                    FontSize="16"
-                    Foreground="Red"
-                    Text="{Binding ErrorMessage}" />
             </StackPanel>
+            <Grid
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
+                Width="auto"
+                MinWidth="320"
+                MinHeight="48"
+                Margin="8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top">
+                <ui:InfoBar
+                    x:Name="infoBarError"
+                    Title="Error:"
+                    IsOpen="{Binding ErrorOpen}"
+                    Message="{Binding ErrorMessage}"
+                    Severity="Error" />
+            </Grid>
         </Grid>
-
     </Border>
 </Page>

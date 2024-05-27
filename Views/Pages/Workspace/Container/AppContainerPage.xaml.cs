@@ -10,10 +10,10 @@ namespace TFG.Views.Pages.Workspace.Container {
     /// Interaction logic for ContainerPage.xaml
     /// </summary>
     public partial class AppContainerPage : Page {
-        public AppContainerPage(AppContainer container, INavigationService nav, AppUser user, IDatabaseService db, IAuthenticationService auth) {
+        public AppContainerPage(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer appContainer) {
             InitializeComponent();
 
-            DataContext = new AppContainerViewModel(container, user, nav, db, auth);
+            DataContext = new AppContainerViewModel(databaseService, navigationService, appUser, appContainer);
         }
     }
 }

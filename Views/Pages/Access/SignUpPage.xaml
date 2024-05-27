@@ -34,7 +34,7 @@
             FontSize="16"
             FontWeight="Bold">
             <ui:MenuItem
-                Command="{Binding WorkspaceCommand}"
+                Command="{Binding GoBackCommand}"
                 Icon="{ui:SymbolIcon ArrowLeft20,
                                      Filled=True}"
                 ToolTip="Workspace" />
@@ -288,19 +288,14 @@
             Grid.ColumnSpan="2"
             Width="auto"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Top">
-            <Label
-                Name="ErrorMessage"
-                Margin="4"
-                HorizontalContentAlignment="Center"
-                FontFamily="Fira Code"
-                FontSize="32"
-                Foreground="Red">
-                <TextBlock
-                    Text="{Binding ErrorMessage}"
-                    TextAlignment="Center"
-                    TextWrapping="WrapWithOverflow" />
-            </Label>
+            VerticalAlignment="Center">
+            <ui:InfoBar
+                x:Name="infoBarError"
+                Title="{StaticResource ErrorInfoBarStr}"
+                IsOpen="{Binding ErrorOpen}"
+                Message="{Binding ErrorMessage}"
+                Severity="Error"
+                ToolTip="{StaticResource ErrorInfoStr}" />
         </Grid>
     </Grid>
 </Page>

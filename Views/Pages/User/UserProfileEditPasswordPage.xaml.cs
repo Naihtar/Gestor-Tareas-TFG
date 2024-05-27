@@ -6,16 +6,10 @@ using TFG.ViewModels;
 using TFG.Models;
 
 namespace TFG.Views.Pages {
-    /// <summary>
-    /// Interaction logic for UserProfileEditPasswordPage.xaml
-    /// </summary>
-    public partial class UserProfileEditPasswordPage : Page
-    {
-        public UserProfileEditPasswordPage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth)
-        {
+    public partial class UserProfileEditPasswordPage : Page {
+        public UserProfileEditPasswordPage(IDatabaseService databaseService, IAuthenticationService authenticationService, INavigationService navigationService, AppUser appUser) {
             InitializeComponent();
-
-            DataContext = new UserProfileEditPasswordViewModel(user, nav, db, auth);
+            DataContext = new UserProfileEditPasswordViewModel(databaseService, authenticationService, navigationService, appUser);
         }
     }
 }

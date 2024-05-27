@@ -10,9 +10,9 @@ namespace TFG.Views.Pages.Workspace.Task {
     /// Interaction logic for AppTaskPage.xaml
     /// </summary>
     public partial class AppTaskPage : Page {
-        public AppTaskPage(AppContainer container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task) {
+        public AppTaskPage(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer appContainer, AppTask appTask) {
             InitializeComponent();
-            DataContext = new AppTaskViewModel(container, user, nav, db, auth, task);
+            DataContext = new AppTaskViewModel(databaseService, navigationService, appUser, appContainer, appTask);
         }
     }
 }

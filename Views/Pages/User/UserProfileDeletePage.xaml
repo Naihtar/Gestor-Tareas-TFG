@@ -106,23 +106,24 @@
                     Icon="{ui:SymbolIcon Warning28}"
                     ToolTip="{StaticResource DeleteButtonInfoStr}" />
             </StackPanel>
-            <Label
+            <Grid
                 Name="ErrorMessage"
                 Grid.Row="3"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                Margin="0,0,0,32"
-                VerticalAlignment="Top"
-                HorizontalContentAlignment="Center"
-                FontFamily="Fira Code"
-                FontSize="32"
-                Foreground="Red">
-                <TextBlock
-                    Text="{Binding ErrorMessage, UpdateSourceTrigger=PropertyChanged}"
-                    TextAlignment="Center"
-                    TextWrapping="WrapWithOverflow" />
-            </Label>
+                Grid.Column="0"
+                Grid.ColumnSpan="4"
+                Width="auto"
+                MinWidth="320"
+                MinHeight="48"
+                Margin="8"
+                VerticalAlignment="Top">
+                <ui:InfoBar
+                    x:Name="infoBarError"
+                    Title="{StaticResource ErrorInfoBarStr}"
+                    IsOpen="{Binding ErrorOpen}"
+                    Message="{Binding ErrorMessage}"
+                    Severity="Error"
+                    ToolTip="{StaticResource ErrorInfoStr}" />
+            </Grid>
         </Grid>
-
     </Border>
 </Page>

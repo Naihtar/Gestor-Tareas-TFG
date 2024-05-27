@@ -6,14 +6,10 @@ using TFG.ViewModels;
 using TFG.Models;
 
 namespace TFG.Views.Pages {
-    /// <summary>
-    /// Interaction logic for UserProfilePage.xaml
-    /// </summary>
-    public partial class UserProfilePage : Page
-    {
-        public UserProfilePage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) {
+    public partial class UserProfilePage : Page {
+        public UserProfilePage(IDatabaseService databaseService, INavigationService navigationService, AppUser? appUser, AppContainer? appContainer, AppTask? appTask, string? successMessage) {
             InitializeComponent();
-            DataContext = new UserProfileViewModel(user, nav, db, auth, task, container);
+            DataContext = new UserProfileViewModel(databaseService, navigationService, appUser: appUser, appContainer: appContainer, appTask: appTask, successMessage);
         }
     }
 }

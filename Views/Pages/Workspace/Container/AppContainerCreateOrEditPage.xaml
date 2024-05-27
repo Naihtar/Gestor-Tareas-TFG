@@ -101,7 +101,7 @@
                     MaxLength="255"
                     PlaceholderText="{StaticResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    Text="{Binding EditableContainer.AppContainerDescription, Mode=TwoWay}"
+                    Text="{Binding AppContainerEditable.AppContainerDescription, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     ToolTip="{StaticResource Max255CharStr}" />
                 <ui:Button
@@ -120,19 +120,23 @@
                     ToolTip="{StaticResource SaveButtonInfoStr}" />
                 <!--  Error Message  -->
             </StackPanel>
-            <ui:TextBlock
+            <Grid
                 Grid.Row="2"
+                Grid.Column="0"
                 Grid.ColumnSpan="4"
-                Width="320"
-                Height="64"
-                Margin="0,16,0,0"
+                Width="auto"
+                MinWidth="320"
+                MinHeight="48"
+                Margin="8"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                FontFamily="Fira Code"
-                FontSize="16"
-                Foreground="Red"
-                Text="{Binding ErrorMessage}"
-                TextWrapping="Wrap" />
+                VerticalAlignment="Top">
+                <ui:InfoBar
+                    x:Name="infoBarError"
+                    Title="Error:"
+                    IsOpen="{Binding ErrorOpen}"
+                    Message="{Binding ErrorMessage}"
+                    Severity="Error" />
+            </Grid>
         </Grid>
     </Border>
 

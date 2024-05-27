@@ -12,10 +12,10 @@ namespace TFG {
             InitializeComponent();
             IConnectionManager connectionManager = new ConnectionManager();
             IDatabaseConnection databaseConnection = new DatabaseConnection(connectionManager);
-            INavigationService navigationService = new NavigationService(MainFrame);
             IDatabaseService databaseService = new DatabaseService(databaseConnection);
             IAuthenticationService authenticationService = new AuthenticationService(databaseService);
-            DataContext = new MainWindowViewModel(navigationService, databaseService, authenticationService);
+            INavigationService navigationService = new NavigationService(MainFrame, databaseService, authenticationService);
+            DataContext = new MainWindowViewModel(navigationService);
 
             //Fijar tamaño pantalla al iniciar.
             WindowState = WindowState.Normal;

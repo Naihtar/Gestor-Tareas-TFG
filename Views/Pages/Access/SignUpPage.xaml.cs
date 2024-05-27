@@ -9,9 +9,9 @@ namespace TFG.Views.Pages.Access {
     /// Interaction logic for SignUpPage.xaml
     /// </summary>
     public partial class SignUpPage : Page {
-        public SignUpPage(IDatabaseService db, INavigationService nav, IAuthenticationService auth) {
+        public SignUpPage(IDatabaseService databaseService, IAuthenticationService authenticationService, INavigationService navigationService) {
             InitializeComponent();
-            DataContext = new SignUpViewModel(db, nav, auth);
+            DataContext = new SignUpViewModel(databaseService, authenticationService, navigationService);
         }
     }
 }

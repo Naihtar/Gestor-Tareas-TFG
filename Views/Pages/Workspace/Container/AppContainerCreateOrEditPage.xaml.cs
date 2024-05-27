@@ -9,12 +9,10 @@ namespace TFG.Views.Pages.Workspace.Container {
     /// <summary>
     /// Interaction logic for ContainerEditPage.xaml
     /// </summary>
-    public partial class AppContainerCreateOrEditPage : Page
-    {
-        public AppContainerCreateOrEditPage(AppContainer container, AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth)
-        {
+    public partial class AppContainerCreateOrEditPage : Page {
+        public AppContainerCreateOrEditPage(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer? appContainer) {
             InitializeComponent();
-            DataContext = new AppContainerCreateOrEditViewModel(container, user, nav, db, auth);
+            DataContext = new AppContainerCreateOrEditViewModel(databaseService, navigationService, appUser, appContainer);
         }
     }
 }

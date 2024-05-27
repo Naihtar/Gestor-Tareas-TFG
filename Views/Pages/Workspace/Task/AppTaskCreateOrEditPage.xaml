@@ -27,7 +27,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
 
             <Menu
@@ -75,7 +75,7 @@
                                          Filled=True}"
                     MaxLength="27"
                     PlaceholderText="{StaticResource TitleStr}"
-                    Text="{Binding EditableTask.AppTaskTitle, Mode=TwoWay}"
+                    Text="{Binding AppTaskEditable.AppTaskTitle, Mode=TwoWay}"
                     ToolTip="{StaticResource Max27CharStr}" />
 
                 <!--  Container: Description  -->
@@ -102,7 +102,7 @@
                     MaxLength="255"
                     PlaceholderText="{StaticResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    Text="{Binding EditableTask.AppTaskDescription, Mode=TwoWay}"
+                    Text="{Binding AppTaskEditable.AppTaskDescription, Mode=TwoWay}"
                     TextWrapping="Wrap"
                     ToolTip="{StaticResource Max255CharStr}" />
 
@@ -148,20 +148,23 @@
 
             </StackPanel>
             <!--  Error Message  -->
-            <ui:TextBlock
+            <Grid
                 Grid.Row="2"
+                Grid.Column="0"
                 Grid.ColumnSpan="4"
-                Width="480"
-                Height="64"
-                Margin="0,16,0,16"
+                Width="auto"
+                MinWidth="320"
+                MinHeight="48"
+                Margin="8"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontFamily="Fira Code"
-                FontSize="16"
-                Foreground="Red"
-                Text="{Binding ErrorMessage}"
-                TextAlignment="Center"
-                TextWrapping="Wrap" />
+                VerticalAlignment="Top">
+                <ui:InfoBar
+                    x:Name="infoBarError"
+                    Title="Error:"
+                    IsOpen="{Binding ErrorOpen}"
+                    Message="{Binding ErrorMessage}"
+                    Severity="Error" />
+            </Grid>
         </Grid>
     </Border>
 </Page>

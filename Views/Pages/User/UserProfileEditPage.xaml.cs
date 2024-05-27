@@ -6,13 +6,10 @@ using TFG.ViewModels;
 using TFG.Models;
 
 namespace TFG.Views.Pages {
-    /// <summary>
-    /// Interaction logic for UserProfileEditPage.xaml
-    /// </summary>
     public partial class UserProfileEditPage : Page {
-        public UserProfileEditPage(AppUser user, INavigationService nav, IDatabaseService db, IAuthenticationService auth, AppTask task, AppContainer container) {
+        public UserProfileEditPage(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser) {
             InitializeComponent();
-            DataContext = new UserProfileEditViewModel(user, nav, db, auth, task, container);
+            DataContext = new UserProfileEditViewModel(databaseService, navigationService, appUser);
         }
 
     }

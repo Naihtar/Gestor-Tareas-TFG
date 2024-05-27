@@ -21,9 +21,9 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <StackPanel
@@ -84,48 +84,43 @@
                 Content="{StaticResource LogInButtonStr}"
                 FontFamily="Fira Code"
                 FontSize="16"
-                FontWeight="Bold" />
-
-        </StackPanel>
-        <Grid
-            Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="2"
-            Width="auto"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="37*" />
-            </Grid.ColumnDefinitions>
-            <Label
-                Name="ErrorMessage"
-                Grid.ColumnSpan="2"
-                Margin="4,4,4,4"
-                HorizontalContentAlignment="Center"
-                FontFamily="Fira Code"
-                FontSize="32"
-                Foreground="Red">
-                <TextBlock
-                    Text="{Binding ErrorMessage}"
-                    TextAlignment="Center"
-                    TextWrapping="WrapWithOverflow" />
-            </Label>
-        </Grid>
-        <Grid
-            Grid.Row="3"
-            Grid.Column="3"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Bottom">
+                FontWeight="Bold"
+                ToolTip="{StaticResource LogInInfoStr}" />
             <TextBlock
-                Margin="0,0,8,8"
+                Margin="0,0,0,8"
+                HorizontalAlignment="Center"
                 FontFamily="Fira Code"
                 FontSize="16"
-                Opacity="0.5">
+                Opacity="0.30">
                 <Hyperlink Command="{Binding SignUpCommand}" Foreground="White">
                     <TextBlock Text="{StaticResource SignUpButtonStr}" ToolTip="{StaticResource SignUpInfoStr}" />
                 </Hyperlink>
             </TextBlock>
+        </StackPanel>
+        <Grid
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="4"
+            Width="auto"
+            MinWidth="320"
+            MinHeight="48"
+            Margin="8"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top">
+            <ui:InfoBar
+                x:Name="infoBarError"
+                Title="{StaticResource ErrorInfoBarStr}"
+                IsOpen="{Binding ErrorOpen}"
+                Message="{Binding ErrorMessage}"
+                Severity="Error"
+                ToolTip="{StaticResource ErrorInfoStr}" />
+            <ui:InfoBar
+                x:Name="InfoBarSuccess"
+                Title="{StaticResource SuccessInfoBarStr}"
+                IsOpen="{Binding SuccessOpen}"
+                Message="{Binding SuccessMessage}"
+                Severity="Success"
+                ToolTip="{StaticResource SuccessInfoStr}" />
         </Grid>
     </Grid>
 </Page>

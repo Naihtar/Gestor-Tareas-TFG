@@ -8,9 +8,9 @@ using TFG.ViewModels;
 namespace TFG.Views.Pages {
     public partial class LogInPage : Page {
 
-        public LogInPage(INavigationService nav, IDatabaseService db, IAuthenticationService auth) {
+        public LogInPage(IAuthenticationService authenticationService, INavigationService navigationService, string? hasSuccessMessage) {
             InitializeComponent();
-            DataContext = new LogInViewModel(nav, db, auth);
+            DataContext = new LogInViewModel(authenticationService, navigationService, hasSuccessMessage);
         }
 
     }
