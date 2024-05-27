@@ -1,6 +1,4 @@
-﻿using System.Net.Mail;
-using System.Windows;
-using TFG.Models;
+﻿using TFG.Models;
 using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
@@ -8,14 +6,14 @@ using TFG.ViewModels.Base;
 
 namespace TFG.ViewModels.Access {
     class SignUpViewModel : BaseViewModel {
-        public CommandViewModel WorkspaceCommand { get; }
-        public CommandViewModel CreateUserCommand { get; }
-        private readonly IDatabaseService _databaseService;
-        private readonly INavigationService _navigationService;
-        private readonly IAuthenticationService _authenticationService;
 
+        //Dependencias
+        private readonly IDatabaseService _databaseService; //Dependencia de los servicios de la gestión de la base de datos
+        private readonly IAuthenticationService _authenticationService; //Dependencia de los servicios de autentificación
+        private readonly INavigationService _navigationService; //Dependencia de los servicios navegación
+
+        //Atributos
         public AppUser CreateUser { get; set; }
-
         private string _userEmail;
         public string UserEmail {
             get { return _userEmail; }
@@ -33,10 +31,7 @@ namespace TFG.ViewModels.Access {
             }
         }
 
-
         private string _userPassword;
-        private string _userCheckPassword;
-
         public string UserPassword {
             get { return _userPassword; }
             set {
@@ -44,6 +39,8 @@ namespace TFG.ViewModels.Access {
                 OnPropertyChanged(UserPassword);
             }
         }
+
+        private string _userCheckPassword;
         public string UserCheckPassword {
             get { return _userCheckPassword; }
             set {
@@ -52,20 +49,23 @@ namespace TFG.ViewModels.Access {
             }
         }
 
-        public SignUpViewModel(IDatabaseService db, INavigationService nav, IAuthenticationService auth) {
+        //Comandos
+        public CommandViewModel GoBackCommand { get; } //Volver atrás
+        public CommandViewModel CreateUserCommand { get; } //Crear cuenta
 
-            _databaseService = db;
-            _navigationService = nav;
-            _authenticationService = auth;
+        //Constructor
+        public SignUpViewModel(IDatabaseService databaseService, IAuthenticationService authenticationService, INavigationService navigationService) {
 
-            WorkspaceCommand = new CommandViewModel(WorkspaceBack);
-            CreateUserCommand = new CommandViewModel(async (obj) => await CreateUserAsync());
+            _databaseService = databaseService;
+            _navigationService = navigationService;
+            _authenticationService = authenticationService;
 
             _userEmail = string.Empty;
             _userCheckEmail = string.Empty;
             _userPassword = string.Empty;
             _userCheckPassword = string.Empty;
 
+            //Usuario por defecto
             CreateUser = new AppUser {
                 AppUserName = string.Empty,
                 AppUserSurname1 = string.Empty,
@@ -75,57 +75,93 @@ namespace TFG.ViewModels.Access {
                 AppUserPassword = string.Empty,
                 AppUserAppContainerList = []
             };
+
+            GoBackCommand = new CommandViewModel(GoBack);
+            CreateUserCommand = new CommandViewModel(async (obj) => await CreateUserAsync());
         }
 
-        private void WorkspaceBack(object obj) {
+        //Métodos
+
+        //Método para volver para atrás
+        private void GoBack(object obj) {
             _navigationService.GoBack();
         }
 
+        //Método para crear un usuario.
         private async Task CreateUserAsync() {
+
+            //Comprueba que ambos correos sean iguales 
             if (UserEmail != UserCheckEmail) {
-                ErrorMessage = "Los Emails no coinciden.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ErrorEmailsMatchStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
+            //Comprueba que el email tenga una estructura válida
             if (!IsValidEmail(UserEmail)) {
-                ErrorMessage = "El email introducido no es válido.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ErrorEmailValidStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
+            //Comprueba que ambas contraseñas coincidan
             if (_userPassword != _userCheckPassword) {
-                ErrorMessage = "Las contraseñas no coinciden.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ErrorPasswordMatchStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
-            CreateUser.AppUserEmail = _userEmail;
-            CreateUser.AppUserPassword = _authenticationService.HashPassword(_userPassword);
-            if (AreAnyFieldsEmpty()) {
-                ErrorMessage = "Complete los campos vacios.";
-                return;
-            }
+
+            //Comprobamos que el nombre de usuario no existe en la base de datos
             bool username = await CheckUsername(CreateUser.AppUserUsername);
-            bool email = await CheckEmail(CreateUser.AppUserEmail);
-
             if (username) {
-                ErrorMessage = "El usuario ya esta en uso.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["UserFieldMatchStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
+            //Comprobamos que el correo electrónico no existe en la base de datos
+            bool email = await CheckEmail(_userEmail);
             if (email) {
-                ErrorMessage = "El correo ya esta en uso.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmailFieldMatchStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
+            CreateUser.AppUserEmail = _userEmail; //Asignamos el email al usuario
+            CreateUser.AppUserPassword = _authenticationService.HashPassword(_userPassword); //Asignamos la contraseña al usuario
 
-            bool success = await _databaseService.CreateUserAsync(CreateUser);
-
-            if (success) {
-                MessageBox.Show("Usuario creado correctamente, regresando a la pantalla de inicio");
-                _navigationService.NavigateTo("LogIn", _databaseService, _authenticationService);
+            //Comprueba que no quede ningún campo vacío
+            if (AreAnyFieldsEmpty()) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmptyFielStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
             }
 
-
+            //Creamos el usuario
+            bool success = await _databaseService.CreateUserAsync(CreateUser);
+            if (!success) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
+            }
+            string? message = ResourceDictionary["SuccessCreateAccountInfoBarStr"] as string; //Mensaje de éxito
+            _navigationService.NavigateTo(message); //Retornamos a la pantalla de Log In
         }
 
+        //Metodos auxiliares
         private bool AreAnyFieldsEmpty() {
             return string.IsNullOrEmpty(CreateUser.AppUserUsername) ||
                    string.IsNullOrEmpty(CreateUser.AppUserEmail) ||
@@ -134,12 +170,12 @@ namespace TFG.ViewModels.Access {
         }
 
         private async Task<bool> CheckUsername(string userName) {
-
+            //Comprueba si el nombre de usuario existe en la base de datos
             return await _databaseService.CheckUserByUsernameAsync(userName);
 
         }
         private async Task<bool> CheckEmail(string userEmail) {
-
+            //Comprueba si el correo electrónico existe en la base de datos
             return await _databaseService.CheckUserByEmailAsync(userEmail);
 
         }

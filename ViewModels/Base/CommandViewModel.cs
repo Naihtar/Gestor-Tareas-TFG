@@ -3,6 +3,8 @@
 namespace TFG.ViewModels.Base {
     public class CommandViewModel : ICommand {
 
+        /*Referncia: https://www.c-sharpcorner.com/article/icommand-interface-in-mvvm/ */
+
         //Atributos
         private readonly Action<object> _executeAction;
         private readonly Predicate<object>? _canExecuteAction;
@@ -24,7 +26,7 @@ namespace TFG.ViewModels.Base {
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        //Methods
+        //Métodos
         public bool CanExecute(object? parameter) {
             return _canExecuteAction == null ? true : _canExecuteAction(parameter);
         }
@@ -33,10 +35,6 @@ namespace TFG.ViewModels.Base {
 
             _executeAction(parameter);
 
-        }
-
-        public void RaiseCanExecuteChanged() {
-            CommandManager.InvalidateRequerySuggested();
         }
     }
 }
