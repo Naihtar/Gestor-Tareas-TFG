@@ -6,65 +6,72 @@ using TFG.ViewModels.Base;
 
 namespace TFG.ViewModels.Workspace.Tasks {
     public class AppTaskCreateOrEditViewModel : AppTaskBaseViewModel {
-        public CommandViewModel SaveTaskCommand { get; }
-        private readonly bool _isCreate;
-        private readonly string? _status;
 
-        //public AppTaskCreateOrEditViewModel(AppTask task, AppContainer container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth)
-        //    : base(task, container, user, navigationService, db, auth) {
-        //    SaveTaskCommand = new CommandViewModel(async (obj) => await SaveTaskAsyncWrapper());
-        //    _isCreate = false;
-        //}
-        //public AppTaskCreateOrEditViewModel(AppTask? task, AppContainer container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth, string status)
-        //    : base(task, container, user, navigationService, db, auth) {
-        //    SaveTaskCommand = new CommandViewModel(async (obj) => await SaveTaskAsyncWrapper());
-        //    _status = status;
-        //    _isCreate = _appTask == null;
-        //}
+        //Atributos
+        private readonly bool _isCreate; //Comparar si estamo sen creación o edición
+        private readonly string? _status; //Estado obtenido de la vista
 
-        public AppTaskCreateOrEditViewModel(AppTask? task, AppContainer container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth, string status = null)
-            : base(task, container, user, navigationService, db, auth) {
-            SaveTaskCommand = new CommandViewModel(async (obj) => await SaveTaskAsyncWrapper());
+        //Comandos
+        public CommandViewModel SaveTaskCommand { get; } //Guardar los cambios
+
+        //Constructor
+        public AppTaskCreateOrEditViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer appContainer, AppTask? appTask, string? status)
+            : base(databaseService, navigationService, appUser, appContainer, appTask) {
+
             _status = status;
             _isCreate = _appTask == null;
+
+            SaveTaskCommand = new CommandViewModel(async (obj) => await SaveTaskAsyncWrapper());
         }
 
-        private bool CheckFieldName() {
-            return string.IsNullOrEmpty(EditableTask.AppTaskTitle);
-        }
+
 
         protected override async Task SaveTaskAsyncWrapper() {
             // Verificar que el campo de nombre no esté vacío
             bool fieldName = CheckFieldName();
 
             if (fieldName) {
-                ErrorMessage = "Rellene el campo del nombre.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["CheckTitleStr"] as string; //Mensaje de error
+                StartTimer();
                 return;
             }
 
             // Verificar si alguna etiqueta excede los 16 caracteres
-            var invalidTags = EditableTask.AppTaskTags.Where(tag => tag.Length > 16).ToList();
+            var invalidTags = AppTaskEditable.AppTaskTags.Where(tag => tag.Length > 16).ToList();
             if (invalidTags.Count != 0) {
-                ErrorMessage = $"La etiqueta '{invalidTags[0]}' excede los 16 caracteres.";
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = (ResourceDictionary["CheckLenghtTagsStr"] as string) + $" '{invalidTags[0]}'";
+                StartTimer();
                 return;
             }
 
 
-            if (EditableTask.AppTaskTags.Count() > 3) {
-                ErrorMessage = $"Has introducido más de 3 etiquetas.";
+            if (AppTaskEditable.AppTaskTags.Count() > 3) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = (ResourceDictionary["MaxCapTagsStr"] as string);
+                StartTimer();
                 return;
             }
 
+            //Si estamos en "modo creación" asigna los atributo de forma predefinida.
             if (_isCreate) {
-                EditableTask.AppContainerID = _appContainer.AppContainerID;
-                EditableTask.AppTaskCreateDate = DateTime.Now;
-                EditableTask.AppTaskStatus = _status;
+                AppTaskEditable.AppContainerID = _appContainer.AppContainerID;
+                AppTaskEditable.AppTaskCreateDate = DateTime.Now;
+                AppTaskEditable.AppTaskStatus = _status;
                 await SaveAddContainerAsync();
                 return;
             }
 
             // Guardar los cambios
             await SaveEditChangesAsync();
+        }
+
+        private bool CheckFieldName() {
+            return string.IsNullOrEmpty(AppTaskEditable.AppTaskTitle);
         }
     }
 }

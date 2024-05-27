@@ -8,26 +8,41 @@ using TFG.ViewModels.Workspace.Container;
 namespace TFG.ViewModels.Workspace.Tasks {
     public class AppTaskViewModel : AppTaskBaseViewModel {
 
-        public CommandViewModel EditTaskAccessCommand { get; }
-        public CommandViewModel DeleteTaskCommand { get; }
+        //Comandos
+        public CommandViewModel EditTaskAccessCommand { get; } //Editar tarea
+        public CommandViewModel DeleteTaskCommand { get; } //Borrar tarea
 
 
-        public AppTaskViewModel(AppContainer? container, AppUser user, INavigationService navigationService, IDatabaseService db, IAuthenticationService auth, AppTask task) : base(task, container, user, navigationService, db, auth) {
+        //Constructor
+        public AppTaskViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer appContainer, AppTask appTask) : base(databaseService, navigationService, appUser, appContainer, appTask) {
             EditTaskAccessCommand = new CommandViewModel(EditTaskAccess);
             DeleteTaskCommand = new CommandViewModel(async (obj) => await DeleteTask());
-
         }
 
+        //Ir la edición de la tarea
         private void EditTaskAccess(object obj) {
-            _navigationService.NavigateTo("EditTask", _appContainer, _user, _navigationService, _databaseService, _authenticationService, EditableTask);
+            _navigationService.NavigateTo("TaskEdit", appUser: _appUser, appContainer: _appContainer, appTask: AppTaskEditable, null);
 
         }
+
+        //Eliminar tarea
         private async Task DeleteTask() {
-            await _databaseService.DeleteTaskAsync(EditableTask.AppTaskID);
-            _navigationService.NavigateTo("Workspace", _appContainer, _user, _navigationService, _databaseService, _authenticationService);
+         bool success = await _databaseService.DeleteTaskAsync(AppTaskEditable.AppTaskID);
+            if (!success) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
+                StartTimer();
+                return;
+            }
+
+            //Ir al espacio de trabajo, y mostrar el mensaje de éxito
+            string? message = ResourceDictionary["SuccessTaskDeleteInfoBarStr"] as string;
+            _navigationService.NavigateTo(appUser: _appUser, appContainer: _appContainer, successMessage: message);
         }
+
         protected override Task SaveTaskAsyncWrapper() {
-            return Task.CompletedTask;
+            return Task.CompletedTask; //Marcar tarea como completada
         }
     }
 }
