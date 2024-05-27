@@ -9,7 +9,6 @@
     <System:String x:Key="LogInButtonStr">Iniciar Sesión</System:String>
     <System:String x:Key="LogInTextStr">Iniciar Sesión</System:String>
 
-
     <!--  Información de Registro  -->
     <System:String x:Key="SignUpButtonStr">Crear Cuenta</System:String>
     <System:String x:Key="SignUpTextStr">Registrarse</System:String>
@@ -36,7 +35,7 @@
     <System:String x:Key="INPROGRESSStr">EN PROGRESO</System:String>
     <System:String x:Key="DONEStr">COMPLETADO</System:String>
     <System:String x:Key="AddTaskButtonStr">Añadir Tarea</System:String>
-    <System:String x:Key="TitleStr">Titulo</System:String>
+    <System:String x:Key="TitleStr">Título</System:String>
     <System:String x:Key="DescriptionStr">Descripción</System:String>
     <System:String x:Key="TagsStr">Etiquetas</System:String>
     <System:String x:Key="SaveButtonStr">Guardar</System:String>
@@ -55,6 +54,7 @@
     <System:String x:Key="EditProfileButtonStr">Editar Cuenta</System:String>
 
     <!--  Mensajes de ToolTip  -->
+    <System:String x:Key="LogInInfoStr">Presione el botón para iniciar sesión</System:String>
     <System:String x:Key="Max27CharStr">27 letras máximo</System:String>
     <System:String x:Key="Max80CharStr">80 letras máximo</System:String>
     <System:String x:Key="Max50CharStr">50 letras máximo</System:String>
@@ -72,5 +72,51 @@
     <System:String x:Key="WorkspaceBackButtonStr">Volver al espacio de trabajo</System:String>
     <System:String x:Key="LogInEmailOrUserInfoStr">Introduzca su Usuario o Correo Electrónico para iniciar sesión</System:String>
     <System:String x:Key="LogInPasswordInfoStr">Introduzca su contraseña para iniciar sesión</System:String>
+    <System:String x:Key="ErrorInfoStr">Mensaje de error</System:String>
+    <System:String x:Key="SuccessInfoStr">Mensaje de acción completada correctamente</System:String>
+
+
+    <!--  InfoBar  -->
+    <System:String x:Key="SuccessInfoBarStr">Completado:</System:String>
+    <System:String x:Key="ErrorInfoBarStr">Error:</System:String>
+
+    <!--  Alerts:  -->
+    <System:String x:Key="AuthenticationDataStr">Correo electrónico o contraseña incorrecto/a</System:String>
+    <System:String x:Key="NoSelectWorkspaceContainerStr">No ha seleccionado ningún espacio de trabajo</System:String>
+    <System:String x:Key="MaxCapWorkspaceContainerStr">Alcanzado el máximo de espacios de trabajo disponibles</System:String>
+    <System:String x:Key="WorkspaceTaskStr">No se pudo seleccionar la tarea</System:String>
+    <System:String x:Key="NoSelectWorkspaceTaskStr">No se ha seleecionado ninguna tarea</System:String>
+    <System:String x:Key="LoadWorkspaceTaskStr">Problema con la tarea</System:String>
+    <System:String x:Key="EmailsMatchStr">Los correos electrónicos no coinciden</System:String>
+    <System:String x:Key="EmailValidStr">El correo electrónico introducido no es válido</System:String>
+    <System:String x:Key="PasswordMatchStr">Las contraseñas introducidas no coinciden</System:String>
+    <System:String x:Key="EmptyFielStr">Rellene los campos vácios</System:String>
+    <System:String x:Key="UserFieldMatchStr">El usuario introducido ya esta en uso</System:String>
+    <System:String x:Key="EmailFieldMatchStr">El correo electrónico introducido ya esta en uso</System:String>
+    <System:String x:Key="CheckEmailFieldStr">El correo electrónico introducido no es correcto</System:String>
+    <System:String x:Key="CheckPasswordFieldStr">La contraseña introducida no es correcta</System:String>
+    <System:String x:Key="CheckTitleStr">Rellene el campo del título</System:String>
+    <System:String x:Key="CheckTitleContainerDBStr">El título del espacio de trabajo ya esta en uso</System:String>
+    <System:String x:Key="CheckLenghtTagsStr">La etiqueta introducida excede los 16 caracteres:</System:String>
+    <System:String x:Key="MaxCapTagsStr">Has introducido más de 3 etiquetas</System:String>
+
+
+    <!--  Excepciones:  -->
+    <System:String x:Key="ExDB">Error interno del servidor. Intente nuevamente más tarde.</System:String>
+
+
+    <!--  Success:  -->
+
+    <System:String x:Key="SuccessCreateAccountInfoBarStr">Cuenta creada correctamente, regresando a la pantalla de inicio</System:String>
+    <System:String x:Key="SuccessAccessInfoBarStr">Sesión iniciada correctamente</System:String>
+    <System:String x:Key="SuccessLogOutInfoBarStr">Sesión cerrada correctamente</System:String>
+    <System:String x:Key="SuccessDeleteAccountInfoBarStr">Cuenta eliminada correctamente</System:String>
+    <System:String x:Key="SuccessDeleteContainerInfoBarStr">El espacio de trabajo y sus tareas asociadas se han eliminado correctamente</System:String>
+    <System:String x:Key="SuccessProfileChangeInfoBarStr">Cambios en el perfil realizados correctamente</System:String>
+    <System:String x:Key="SuccessContainerChangeInfoBarStr">Cambios en el espacio de trabajo realizados correctamente</System:String>
+    <System:String x:Key="SuccessContainerAddInfoBarStr">Nuevo espacio de trabajo agregado correctamente</System:String>
+    <System:String x:Key="SuccessTaskChangeInfoBarStr">Cambios en la tarea realizados correctamente</System:String>
+    <System:String x:Key="SuccessTaskAddInfoBarStr">Nueva tarea agregada correctamente</System:String>
+    <System:String x:Key="SuccessTaskDeleteInfoBarStr">Tarea eliminada correctamente</System:String>
 
 </ResourceDictionary>
