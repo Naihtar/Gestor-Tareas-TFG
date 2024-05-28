@@ -50,23 +50,45 @@
                 HorizontalAlignment="Center"
                 FontSize="20"
                 FontWeight="Bold">
-                <MenuItem Header="{DynamicResource LanguageStr}">
-                    <MenuItem
+                <ui:MenuItem Header="{DynamicResource LanguageStr}" Icon="{ui:SymbolIcon Translate24, Filled=True}">
+                    <ui:MenuItem
                         Command="{Binding ChangeLanguageCommand}"
                         CommandParameter="es-ES"
                         Header="{DynamicResource SpanishLanguageStr}"
-                        IsEnabled="{Binding IsSpanishEnabled, UpdateSourceTrigger=PropertyChanged}" />
-                    <MenuItem
+                        IsEnabled="{Binding IsSpanishEnabled, UpdateSourceTrigger=PropertyChanged}">
+                        <ui:MenuItem.Icon>
+                            <ui:ImageIcon
+                                Width="20"
+                                VerticalAlignment="Center"
+                                Source="/Resources/Images/Espania.png" />
+                        </ui:MenuItem.Icon>
+                    </ui:MenuItem>
+
+                    <ui:MenuItem
                         Command="{Binding ChangeLanguageCommand}"
                         CommandParameter="en-US"
                         Header="{DynamicResource EnglishLanguageStr}"
-                        IsEnabled="{Binding IsEnglishEnabled, UpdateSourceTrigger=PropertyChanged}" />
-                    <MenuItem
+                        IsEnabled="{Binding IsEnglishEnabled, UpdateSourceTrigger=PropertyChanged}">
+                        <ui:MenuItem.Icon>
+                            <ui:ImageIcon
+                                Width="20"
+                                VerticalAlignment="Center"
+                                Source="/Resources/Images/UK.png" />
+                        </ui:MenuItem.Icon>
+                    </ui:MenuItem>
+                    <ui:MenuItem
                         Command="{Binding ChangeLanguageCommand}"
                         CommandParameter="fr-FR"
                         Header="{DynamicResource FrançaisLanguageStr}"
-                        IsEnabled="{Binding IsFrenchEnabled, UpdateSourceTrigger=PropertyChanged}" />
-                </MenuItem>
+                        IsEnabled="{Binding IsFrenchEnabled, UpdateSourceTrigger=PropertyChanged}">
+                        <ui:MenuItem.Icon>
+                            <ui:ImageIcon
+                                Width="20"
+                                VerticalAlignment="Center"
+                                Source="/Resources/Images/Francia.png" />
+                        </ui:MenuItem.Icon>
+                    </ui:MenuItem>
+                </ui:MenuItem>
             </Menu>
             <StackPanel
                 Grid.RowSpan="2"
