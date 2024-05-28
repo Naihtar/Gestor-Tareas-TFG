@@ -307,8 +307,10 @@ namespace TFG.ViewModels {
                 StartTimer();
                 return;
             }
+
             // Elimina el contenedor de la lista de contenedores del usuario
             _userContainers.Remove(_appContainer);
+            _appContainer?.Dispose();
 
             // Limpia las colecciones de tareas
             ClearTasks();
@@ -320,7 +322,6 @@ namespace TFG.ViewModels {
 
             // Muestra un mensaje de confirmación
             string? msg = ResourceDictionary["SuccessDeleteContainerInfoBarStr"] as string;
-            _appContainer?.Dispose();
             _navigationService.NavigateTo(appUser: _appUser, appContainer: null, successMessage: msg);
 
         }
@@ -360,7 +361,10 @@ namespace TFG.ViewModels {
                 StartTimer();
                 return;
             }
-            string? status = obj.ToString(); // TODO Editar
+            string? status = obj.ToString();
+
+            status ??= "Pendiente"; //En caso de que status sea "null" se agregara automáticamente a "Pendiente"
+
             _navigationService.NavigateTo("TaskAdd", _appUser, _appContainer, null, status); //Ir a la vista del container
             SelectedTask = null;
             LoadTasksForContainer();
