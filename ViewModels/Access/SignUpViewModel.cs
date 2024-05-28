@@ -16,17 +16,17 @@ namespace TFG.ViewModels.Access {
         public AppUser CreateUser { get; set; }
         private string _userEmail;
         public string UserEmail {
-            get { return _userEmail; }
+            get { return _userEmail.ToLower(); }
             set {
-                _userEmail = value;
+                _userEmail = value.ToLower();
                 OnPropertyChanged(UserEmail);
             }
         }
         private string _userCheckEmail;
         public string UserCheckEmail {
-            get { return _userCheckEmail; }
+            get { return _userCheckEmail.ToLower(); }
             set {
-                _userCheckEmail = value;
+                _userCheckEmail = value.ToLower();
                 OnPropertyChanged(UserCheckEmail);
             }
         }
@@ -90,29 +90,11 @@ namespace TFG.ViewModels.Access {
         //Método para crear un usuario.
         private async Task CreateUserAsync() {
 
-            //Comprueba que ambos correos sean iguales 
-            if (UserEmail != UserCheckEmail) {
+            //Comprueba que no quede ningún campo vacío
+            if (AreAnyFieldsEmpty()) {
                 SuccessOpen = false;
                 ErrorOpen = true;
-                ErrorMessage = ResourceDictionary["ErrorEmailsMatchStr"] as string; //Mensaje de error
-                StartTimer();
-                return;
-            }
-
-            //Comprueba que el email tenga una estructura válida
-            if (!IsValidEmail(UserEmail)) {
-                SuccessOpen = false;
-                ErrorOpen = true;
-                ErrorMessage = ResourceDictionary["ErrorEmailValidStr"] as string; //Mensaje de error
-                StartTimer();
-                return;
-            }
-
-            //Comprueba que ambas contraseñas coincidan
-            if (_userPassword != _userCheckPassword) {
-                SuccessOpen = false;
-                ErrorOpen = true;
-                ErrorMessage = ResourceDictionary["ErrorPasswordMatchStr"] as string; //Mensaje de error
+                ErrorMessage = ResourceDictionary["EmptyFielStr"] as string; //Mensaje de error
                 StartTimer();
                 return;
             }
@@ -127,8 +109,27 @@ namespace TFG.ViewModels.Access {
                 return;
             }
 
+
+            //Comprueba que el email tenga una estructura válida
+            if (!IsValidEmail(UserEmail)) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmailValidStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
+            }
+
+            //Comprueba que ambos correos sean iguales 
+            if (!UserEmail.Equals(UserCheckEmail, StringComparison.CurrentCultureIgnoreCase)) {
+                SuccessOpen = false;
+                ErrorOpen = true;
+                ErrorMessage = ResourceDictionary["EmailsMatchStr"] as string; //Mensaje de error
+                StartTimer();
+                return;
+            }
+
             //Comprobamos que el correo electrónico no existe en la base de datos
-            bool email = await CheckEmail(_userEmail);
+            bool email = await CheckEmail(UserEmail);
             if (email) {
                 SuccessOpen = false;
                 ErrorOpen = true;
@@ -137,17 +138,17 @@ namespace TFG.ViewModels.Access {
                 return;
             }
 
-            CreateUser.AppUserEmail = _userEmail; //Asignamos el email al usuario
-            CreateUser.AppUserPassword = _authenticationService.HashPassword(_userPassword); //Asignamos la contraseña al usuario
-
-            //Comprueba que no quede ningún campo vacío
-            if (AreAnyFieldsEmpty()) {
+            //Comprueba que ambas contraseñas coincidan
+            if (_userPassword != _userCheckPassword) {
                 SuccessOpen = false;
                 ErrorOpen = true;
-                ErrorMessage = ResourceDictionary["EmptyFielStr"] as string; //Mensaje de error
+                ErrorMessage = ResourceDictionary["PasswordMatchStr"] as string; //Mensaje de error
                 StartTimer();
                 return;
             }
+
+            CreateUser.AppUserEmail = UserEmail; //Asignamos el email al usuario
+            CreateUser.AppUserPassword = _authenticationService.HashPassword(_userPassword); //Asignamos la contraseña al usuario
 
             //Creamos el usuario
             bool success = await _databaseService.CreateUserAsync(CreateUser);
@@ -164,7 +165,7 @@ namespace TFG.ViewModels.Access {
         //Metodos auxiliares
         private bool AreAnyFieldsEmpty() {
             return string.IsNullOrEmpty(CreateUser.AppUserUsername) ||
-                   string.IsNullOrEmpty(CreateUser.AppUserEmail) ||
+                   string.IsNullOrEmpty(UserEmail) ||
                    string.IsNullOrEmpty(CreateUser.AppUserName) ||
                    string.IsNullOrEmpty(CreateUser.AppUserSurname1);
         }
