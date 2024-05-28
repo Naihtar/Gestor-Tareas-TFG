@@ -11,12 +11,15 @@ namespace TFG.ViewModels.Workspace.Tasks {
         //Comandos
         public CommandViewModel EditTaskAccessCommand { get; } //Editar tarea
         public CommandViewModel DeleteTaskCommand { get; } //Borrar tarea
+        public CommandViewModel WorkspaceBackCommand { get; }
 
 
         //Constructor
         public AppTaskViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer appContainer, AppTask appTask) : base(databaseService, navigationService, appUser, appContainer, appTask) {
             EditTaskAccessCommand = new CommandViewModel(EditTaskAccess);
             DeleteTaskCommand = new CommandViewModel(async (obj) => await DeleteTask());
+            WorkspaceBackCommand = new CommandViewModel(WorkspaceBack);
+
         }
 
         //Ir la edición de la tarea
@@ -27,7 +30,7 @@ namespace TFG.ViewModels.Workspace.Tasks {
 
         //Eliminar tarea
         private async Task DeleteTask() {
-         bool success = await _databaseService.DeleteTaskAsync(AppTaskEditable.AppTaskID);
+            bool success = await _databaseService.DeleteTaskAsync(AppTaskEditable.AppTaskID);
             if (!success) {
                 SuccessOpen = false;
                 ErrorOpen = true;
@@ -36,6 +39,11 @@ namespace TFG.ViewModels.Workspace.Tasks {
                 return;
             }
 
+            AppTaskEditable?.Dispose();
+            _appTask?.Dispose();
+            TaskProperties.Clear();
+
+
             //Ir al espacio de trabajo, y mostrar el mensaje de éxito
             string? message = ResourceDictionary["SuccessTaskDeleteInfoBarStr"] as string;
             _navigationService.NavigateTo(appUser: _appUser, appContainer: _appContainer, successMessage: message);
@@ -43,6 +51,10 @@ namespace TFG.ViewModels.Workspace.Tasks {
 
         protected override Task SaveTaskAsyncWrapper() {
             return Task.CompletedTask; //Marcar tarea como completada
+        }
+
+        private void WorkspaceBack(object obj) {
+            _navigationService.NavigateTo(appUser: _appUser, appContainer: _appContainer, successMessage: null);
         }
     }
 }

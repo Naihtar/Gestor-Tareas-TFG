@@ -22,9 +22,8 @@ namespace TFG.ViewModels.Workspace.Tasks {
             _isCreate = _appTask == null;
 
             SaveTaskCommand = new CommandViewModel(async (obj) => await SaveTaskAsyncWrapper());
+
         }
-
-
 
         protected override async Task SaveTaskAsyncWrapper() {
             // Verificar que el campo de nombre no esté vacío

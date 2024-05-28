@@ -86,7 +86,7 @@ namespace TFG.ViewModels.Workspace.Tasks {
                 TaskProperties = new Dictionary<string, string>{
                     { "Nombre:", appTaskData.AppTaskTitle },
                     { "Descripcion:", appTaskData.AppTaskDescription },
-                    { "Fecha:", appTaskData.AppTaskCreateDate.ToString() },
+                    { "Fecha:", appTaskData.AppTaskCreateDate.ToShortDateString() },
                     { "Tags:", string.Join(", ", appTaskData.AppTaskTags.Select(etiqueta => $"#{etiqueta}")) } //Usamos LINQ para mostrar las etiquetas con el estilo deseado.
                 };
             } catch (Exception) {
