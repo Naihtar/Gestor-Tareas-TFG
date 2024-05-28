@@ -5,6 +5,7 @@ using System.Windows;
 using TFG.Services.DatabaseServices;
 using TFG.Services.AuthentificationServices;
 using TFG.Database;
+using TFG.Services;
 
 namespace TFG {
     public partial class MainWindowView : FluentWindow {
@@ -14,8 +15,9 @@ namespace TFG {
             IDatabaseConnection databaseConnection = new DatabaseConnection(connectionManager);
             IDatabaseService databaseService = new DatabaseService(databaseConnection);
             IAuthenticationService authenticationService = new AuthenticationService(databaseService);
-            INavigationService navigationService = new NavigationService(MainFrame, databaseService, authenticationService);
-            DataContext = new MainWindowViewModel(navigationService);
+            ILocalizationService localizationService = new LocalizationService();
+            INavigationService navigationService = new NavigationService(MainFrame, databaseService, authenticationService, localizationService);
+            DataContext = new MainWindowViewModel(navigationService, localizationService);
 
             //Fijar tamaño pantalla al iniciar.
             WindowState = WindowState.Normal;
