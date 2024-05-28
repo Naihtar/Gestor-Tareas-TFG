@@ -59,6 +59,39 @@ namespace TFG.ViewModels.Base {
             }
         }
 
+        private bool _isSpanishEnabled;
+        public bool IsSpanishEnabled {
+            get => _isSpanishEnabled;
+            set {
+                if (_isSpanishEnabled != value) {
+                    _isSpanishEnabled = value;
+                    OnPropertyChanged(nameof(IsSpanishEnabled));
+                }
+            }
+        }
+
+        private bool _isEnglishEnabled;
+        public bool IsEnglishEnabled {
+            get => _isEnglishEnabled;
+            set {
+                if (_isEnglishEnabled != value) {
+                    _isEnglishEnabled = value;
+                    OnPropertyChanged(nameof(IsEnglishEnabled));
+                }
+            }
+        }
+
+        private bool _isFrenchEnabled;
+        public bool IsFrenchEnabled {
+            get => _isFrenchEnabled;
+            set {
+                if (_isFrenchEnabled != value) {
+                    _isFrenchEnabled = value;
+                    OnPropertyChanged(nameof(IsFrenchEnabled));
+                }
+            }
+        }
+
         //Métodos
 
         //Método para notificar los cambios
@@ -106,6 +139,34 @@ namespace TFG.ViewModels.Base {
             SuccessOpen = true;
             SuccessMessage = message;
             StartTimer();
+        }
+
+        protected void DisableLanguageBtns(string? lang) {
+
+            switch (lang) {
+
+                case "es-ES":
+                    IsFrenchEnabled = true;
+                    IsEnglishEnabled = true;
+                    IsSpanishEnabled = false;
+                    break;
+                case "en-US":
+                    IsFrenchEnabled = true;
+                    IsEnglishEnabled = false;
+                    IsSpanishEnabled = true;
+                    break;
+                case "fr-FR":
+                    IsFrenchEnabled = false;
+                    IsEnglishEnabled = true;
+                    IsSpanishEnabled = true;
+                    break;
+                default:
+                    IsFrenchEnabled = true;
+                    IsEnglishEnabled = true;
+                    IsSpanishEnabled = true;
+                    break;
+            }
+
         }
     }
 }
