@@ -31,7 +31,7 @@ namespace TFG.Services.DatabaseServices {
 
             try {
                 var users = await GetCollectionAsync<AppUser>("usuarios"); //Colección de usuarios
-                return await users.Find(appUserSearchByEmail => appUserSearchByEmail.AppUserEmail == appUserEmail).FirstOrDefaultAsync(); //Operación en la base de datos
+                return await users.Find(appUserSearchByEmail => appUserSearchByEmail.AppUserEmail.Equals(appUserEmail, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefaultAsync(); //Operación en la base de datos
             } catch (Exception) {
                 return null;
             }
@@ -200,19 +200,21 @@ namespace TFG.Services.DatabaseServices {
         //Comprobar si el nombre existe en la base de datos.
         public async Task<bool> CheckContainerByTitleAndUserIDAsync(string appContainerTitle, ObjectId appUserID) {
             try {
-
                 var collection = await GetCollectionAsync<AppContainer>("contenedores"); // Colección de contenedores
 
-                //Filtro de búsqueda por nombre del contenedor y el ID del usuario.
-                var filter = Builders<AppContainer>.Filter.And(
-                    Builders<AppContainer>.Filter.Eq(appContainerFilterTitle => appContainerFilterTitle.AppContainerTitle, appContainerTitle),
-                    Builders<AppContainer>.Filter.Eq(appContainerFilterAppUserID => appContainerFilterAppUserID.AppUserID, appUserID)
-                );
-                return await collection.Find(filter).AnyAsync(); //Resultados de la búsqueda
+                //Filtro de búsqueda por el ID del usuario
+                var filter = Builders<AppContainer>.Filter.Eq(appContainerFilterAppUserID => appContainerFilterAppUserID.AppUserID, appUserID);
+
+                //Obtener todos los contenedores del usuario
+                var userContainers = await collection.Find(filter).ToListAsync();
+
+                //Comprobar si existe algún contenedor con el mismo nombre, sin tener en cuenta las mayúsculas y minúsculas
+                return userContainers.Any(container => container.AppContainerTitle.Equals(appContainerTitle, StringComparison.CurrentCultureIgnoreCase));
             } catch (Exception) {
                 return true;
             }
         }
+
         //Comprobar si un contenedor cuenta con tareas
         public async Task<bool> VerifyTaskInContainerAsync(ObjectId appContainerIDCheck) {
             try {
@@ -220,7 +222,7 @@ namespace TFG.Services.DatabaseServices {
                 var filter = Builders<AppContainer>.Filter.Eq(appContaineFilter => appContaineFilter.AppContainerID, appContainerIDCheck); //Filtro de búsqueda por ID
                 var container = await collection.Find(filter).FirstOrDefaultAsync(); //Resultado de la búsqueda
                 return container != null && container.AppContainerAppTasksList.Count > 0; //Valor devuelto
-            } catch (Exception ex) {
+            } catch (Exception) {
                 return false;
             }
         }
@@ -248,7 +250,7 @@ namespace TFG.Services.DatabaseServices {
                     }
                 }
                 return false; //Ante cualquier incidente retornara falso.
-            } catch (Exception ex) {
+            } catch (Exception) {
                 return false;
             }
         }
@@ -268,7 +270,7 @@ namespace TFG.Services.DatabaseServices {
                     return result.IsAcknowledged; // Confirmación de la operación.
                 }
                 return false; //Ante cualquier incidente retornara falso.
-            } catch (Exception ex) {
+            } catch (Exception) {
                 return false;
             }
         }
@@ -331,7 +333,7 @@ namespace TFG.Services.DatabaseServices {
                     return taskResult.DeletedCount > 0;//Resultado de la operación
                 }
                 return false;
-            } catch (Exception ex) {
+            } catch (Exception) {
                 return false;
             }
         }
@@ -352,7 +354,7 @@ namespace TFG.Services.DatabaseServices {
                     return result.IsAcknowledged; // Confirmación de la opereación 
                 }
                 return false;
-            } catch (Exception ex) {
+            } catch (Exception) {
                 return false;
             }
         }
