@@ -1,40 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TFG.Database {
+﻿namespace TFG.Database {
     class ConnectionManager : IConnectionManager {
         // Método - Obtener el string para conectarse
         public string GetConnectionString() {
-            UnprotectConnectionString();
-            var connectionString = ConfigurationManager.ConnectionStrings["MongoDBConnectionString"].ConnectionString;
-            ProtectConnectionString();
+            var connectionString = "mongodb+srv://abrahamrodriguez:1234@cmtaskmanagerdb.7lckevs.mongodb.net/TFG-BDD?retryWrites=true&w=majority";
             return connectionString;
-        }
-
-        // Método - Encriptar la clave de acceso.
-        public void ProtectConnectionString() {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var section = config.GetSection("connectionStrings") as ConnectionStringsSection;
-            if (!section.SectionInformation.IsProtected) {
-                section.SectionInformation.ProtectSection("DataProtectionConfigurationProvider");
-                section.SectionInformation.ForceSave = true;
-                config.Save(ConfigurationSaveMode.Full);
-            }
-        }
-
-        // Método - Desencriptar la contraseña
-        public void UnprotectConnectionString() {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var section = config.GetSection("connectionStrings") as ConnectionStringsSection;
-            if (section.SectionInformation.IsProtected) {
-                section.SectionInformation.UnprotectSection();
-                section.SectionInformation.ForceSave = true;
-                config.Save(ConfigurationSaveMode.Full);
-            }
         }
     }
 }

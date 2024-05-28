@@ -3,7 +3,8 @@ using System.Windows;
 
 namespace TFG.Database {
     class DatabaseConnection : IDatabaseConnection {
-        // Atributos
+
+        //Dependencias
         private readonly IMongoDatabase? _database;
         private readonly IConnectionManager _connectionManager;
 
