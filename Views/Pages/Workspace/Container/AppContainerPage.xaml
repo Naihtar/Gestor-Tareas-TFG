@@ -41,7 +41,7 @@
                     Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
+                    ToolTip="{DynamicResource GoBackButtonInfoStr}" />
             </Menu>
             <StackPanel
                 Grid.RowSpan="2"
@@ -56,7 +56,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource TitleStr}"
+                    Text="{DynamicResource TitleStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"
@@ -74,7 +74,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource DescriptionStr}"
+                    Text="{DynamicResource DescriptionStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"
@@ -92,7 +92,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource DateCreateStr}"
+                    Text="{DynamicResource DateCreateStr}"
                     TextAlignment="Justify" />
                 <ui:TextBlock
                     Height="Auto"

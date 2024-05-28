@@ -38,25 +38,36 @@
                 FontSize="16"
                 FontWeight="Bold">
                 <ui:MenuItem
-                    Command="{Binding GoBackCommand}"
+                    Command="{Binding WorkspaceBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
+                    ToolTip="{DynamicResource GoBackButtonInfoStr}" />
             </Menu>
             <Menu
                 Grid.Row="0"
                 Grid.Column="4"
                 Margin="0,0,4,0"
-                HorizontalAlignment="Right"
-                FontSize="16"
+                HorizontalAlignment="Center"
+                FontSize="20"
                 FontWeight="Bold">
-                <ui:MenuItem
-                    Command="{Binding GoBackCommand}"
-                    Icon="{ui:SymbolIcon Settings20,
-                                         Filled=True}"
-                    ToolTip="Settings" />
+                <MenuItem Header="{DynamicResource LanguageStr}">
+                    <MenuItem
+                        Command="{Binding ChangeLanguageCommand}"
+                        CommandParameter="es-ES"
+                        Header="{DynamicResource SpanishLanguageStr}"
+                        IsEnabled="{Binding IsSpanishEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                    <MenuItem
+                        Command="{Binding ChangeLanguageCommand}"
+                        CommandParameter="en-US"
+                        Header="{DynamicResource EnglishLanguageStr}"
+                        IsEnabled="{Binding IsEnglishEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                    <MenuItem
+                        Command="{Binding ChangeLanguageCommand}"
+                        CommandParameter="fr-FR"
+                        Header="{DynamicResource FrançaisLanguageStr}"
+                        IsEnabled="{Binding IsFrenchEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                </MenuItem>
             </Menu>
-
             <StackPanel
                 Grid.RowSpan="2"
                 Grid.Column="0"
@@ -80,7 +91,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="{StaticResource UsernameStr}"
+                            Text="{DynamicResource UsernameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -99,7 +110,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="{StaticResource EmailStr}"
+                            Text="{DynamicResource EmailStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -117,7 +128,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="{StaticResource NameStr}"
+                            Text="{DynamicResource NameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -135,7 +146,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="{StaticResource FirstSurnameStr}"
+                            Text="{DynamicResource FirstSurnameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -153,7 +164,7 @@
                             FontFamily="Fira Code"
                             FontSize="16"
                             FontWeight="Bold"
-                            Text="{StaticResource SecondSurnameStr}"
+                            Text="{DynamicResource SecondSurnameStr}"
                             TextAlignment="Justify" />
                         <ui:TextBlock
                             Height="Auto"
@@ -177,14 +188,15 @@
                     </Grid.ColumnDefinitions>
                     <ui:Button
                         Grid.Column="0"
-                        Width="160"
+                        Width="auto"
                         Height="32"
+                        MinWidth="240"
                         Margin="0,0,4,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileViewModel}"
                         Command="{Binding EditCommand}"
-                        Content="{StaticResource EditProfileButtonStr}"
+                        Content="{DynamicResource EditProfileButtonStr}"
                         FontFamily="Fira Code"
                         FontSize="16"
                         Icon="{ui:SymbolIcon Edit20,
@@ -193,14 +205,15 @@
                         ToolTip="Edit Profile" />
                     <ui:Button
                         Grid.Column="1"
-                        Width="160"
+                        Width="auto"
                         Height="32"
+                        MinWidth="240"
                         Margin="4,0,0,0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Appearance="Caution"
                         Command="{Binding LogOutCommand}"
-                        Content="{StaticResource LogOutButtonStr}"
+                        Content="{DynamicResource LogOutButtonStr}"
                         FontFamily="Fira Code"
                         FontSize="16"
                         Icon="{ui:SymbolIcon ArrowExit20,
@@ -220,11 +233,11 @@
                 d:DataContext="{d:DesignInstance Type=viewmodels:UserProfileViewModel}"
                 Appearance="Danger"
                 Command="{Binding DeleteCommand}"
-                Content="{StaticResource DeleteUserButtonStr}"
+                Content="{DynamicResource DeleteUserButtonStr}"
                 FontFamily="Fira Code"
                 FontSize="16"
                 Icon="{ui:SymbolIcon Warning28}"
-                ToolTip="{StaticResource DeleteButtonInfoStr}" />
+                ToolTip="{DynamicResource DeleteButtonInfoStr}" />
             <Grid
                 Grid.Row="2"
                 Grid.Column="0"
@@ -237,18 +250,18 @@
                 VerticalAlignment="Top">
                 <ui:InfoBar
                     x:Name="infoBarError"
-                    Title="{StaticResource ErrorInfoBarStr}"
+                    Title="{DynamicResource ErrorInfoBarStr}"
                     IsOpen="{Binding ErrorOpen}"
                     Message="{Binding ErrorMessage}"
                     Severity="Error"
-                    ToolTip="{StaticResource ErrorInfoStr}" />
+                    ToolTip="{DynamicResource ErrorInfoStr}" />
                 <ui:InfoBar
                     x:Name="InfoBarSuccess"
-                    Title="{StaticResource SuccessInfoBarStr}"
+                    Title="{DynamicResource SuccessInfoBarStr}"
                     IsOpen="{Binding SuccessOpen}"
                     Message="{Binding SuccessMessage}"
                     Severity="Success"
-                    ToolTip="{StaticResource SuccessInfoStr}" />
+                    ToolTip="{DynamicResource SuccessInfoStr}" />
             </Grid>
         </Grid>
     </Border>

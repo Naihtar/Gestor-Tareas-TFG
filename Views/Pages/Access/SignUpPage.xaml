@@ -72,7 +72,7 @@
                 FontFamily="Fira Code"
                 FontSize="24"
                 FontWeight="Bold"
-                Text="{StaticResource SignUpTextStr}"
+                Text="{DynamicResource SignUpTextStr}"
                 TextAlignment="Center" />
 
             <ui:TextBlock
@@ -84,7 +84,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource UsernameStr}" />
+                Text="{DynamicResource UsernameStr}" />
             <ui:TextBox
                 x:Name="UsernameTextBox"
                 Grid.Row="1"
@@ -96,7 +96,7 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource UsernameStr}"
+                PlaceholderText="{DynamicResource UsernameStr}"
                 Text="{Binding CreateUser.AppUserUsername}" />
 
             <ui:TextBlock
@@ -108,7 +108,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource EmailStr}" />
+                Text="{DynamicResource EmailStr}" />
             <ui:TextBox
                 x:Name="EmailTextBox"
                 Grid.Row="2"
@@ -120,7 +120,7 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Mail20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource EmailStr}"
+                PlaceholderText="{DynamicResource EmailStr}"
                 Text="{Binding UserEmail}" />
 
             <ui:TextBlock
@@ -132,7 +132,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource RepeatEmailStr}" />
+                Text="{DynamicResource RepeatEmailStr}" />
             <ui:TextBox
                 x:Name="EmailRepeatTextBox"
                 Grid.Row="3"
@@ -144,7 +144,7 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Mail20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource RepeatEmailStr}"
+                PlaceholderText="{DynamicResource RepeatEmailStr}"
                 Text="{Binding UserCheckEmail}" />
 
             <ui:TextBlock
@@ -156,7 +156,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource PasswordStr}" />
+                Text="{DynamicResource PasswordStr}" />
             <ui:PasswordBox
                 x:Name="PasswordBox"
                 Grid.Row="4"
@@ -168,7 +168,7 @@
                 Icon="{ui:SymbolIcon Key20,
                                      Filled=True}"
                 Password="{Binding UserPassword, Mode=TwoWay}"
-                PlaceholderText="{StaticResource PasswordStr}" />
+                PlaceholderText="{DynamicResource PasswordStr}" />
 
             <ui:TextBlock
                 Grid.Row="5"
@@ -179,7 +179,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource RepeatPasswordStr}" />
+                Text="{DynamicResource RepeatPasswordStr}" />
             <ui:PasswordBox
                 x:Name="PasswordBox2"
                 Grid.Row="5"
@@ -191,7 +191,7 @@
                 Icon="{ui:SymbolIcon Key20,
                                      Filled=True}"
                 Password="{Binding UserCheckPassword, Mode=TwoWay}"
-                PlaceholderText="{StaticResource RepeatPasswordStr}" />
+                PlaceholderText="{DynamicResource RepeatPasswordStr}" />
 
             <ui:TextBlock
                 Grid.Row="6"
@@ -202,7 +202,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource NameStr}" />
+                Text="{DynamicResource NameStr}" />
             <ui:TextBox
                 x:Name="NameTextBox"
                 Grid.Row="6"
@@ -214,7 +214,7 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource NameStr}"
+                PlaceholderText="{DynamicResource NameStr}"
                 Text="{Binding CreateUser.AppUserName}" />
 
             <ui:TextBlock
@@ -226,7 +226,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource FirstSurnameStr}" />
+                Text="{DynamicResource FirstSurnameStr}" />
             <ui:TextBox
                 x:Name="SurnameTextBox1"
                 Grid.Row="7"
@@ -238,7 +238,7 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource FirstSurnameStr}"
+                PlaceholderText="{DynamicResource FirstSurnameStr}"
                 Text="{Binding CreateUser.AppUserSurname1}" />
 
             <ui:TextBlock
@@ -250,7 +250,7 @@
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                Text="{StaticResource SecondSurnameStr}" />
+                Text="{DynamicResource SecondSurnameStr}" />
             <ui:TextBox
                 x:Name="SurnameTextBox2"
                 Grid.Row="8"
@@ -262,7 +262,7 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource SecondSurnameStr}"
+                PlaceholderText="{DynamicResource SecondSurnameStr}"
                 Text="{Binding CreateUser.AppUserSurname2}" />
 
 
@@ -276,7 +276,7 @@
                 VerticalAlignment="Center"
                 Appearance="Primary"
                 Command="{Binding CreateUserCommand}"
-                Content="{StaticResource SignUpButtonStr}"
+                Content="{DynamicResource SignUpButtonStr}"
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
@@ -291,11 +291,11 @@
             VerticalAlignment="Center">
             <ui:InfoBar
                 x:Name="infoBarError"
-                Title="{StaticResource ErrorInfoBarStr}"
+                Title="{DynamicResource ErrorInfoBarStr}"
                 IsOpen="{Binding ErrorOpen}"
                 Message="{Binding ErrorMessage}"
                 Severity="Error"
-                ToolTip="{StaticResource ErrorInfoStr}" />
+                ToolTip="{DynamicResource ErrorInfoStr}" />
         </Grid>
     </Grid>
 </Page>

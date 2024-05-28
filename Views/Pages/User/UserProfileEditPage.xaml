@@ -42,7 +42,7 @@
                     Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
+                    ToolTip="{DynamicResource GoBackButtonInfoStr}" />
             </Menu>
 
             <StackPanel
@@ -61,7 +61,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource UsernameStr}" />
+                    Text="{DynamicResource UsernameStr}" />
                 <ui:TextBox
                     Width="320"
                     Height="36"
@@ -72,7 +72,7 @@
                                          Filled=True}"
                     MaxLength="27"
                     Text="{Binding AppUserEditable.AppUserUsername, Mode=TwoWay}"
-                    ToolTip="{StaticResource Max27CharStr}" />
+                    ToolTip="{DynamicResource Max27CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -80,7 +80,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource EmailStr}" />
+                    Text="{DynamicResource EmailStr}" />
 
                 <ui:TextBox
                     Width="320"
@@ -92,7 +92,7 @@
                                          Filled=True}"
                     MaxLength="80"
                     Text="{Binding AppUserEditable.AppUserEmail, Mode=TwoWay}"
-                    ToolTip="{StaticResource Max80CharStr}" />
+                    ToolTip="{DynamicResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -100,7 +100,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource NameStr}" />
+                    Text="{DynamicResource NameStr}" />
 
                 <ui:TextBox
                     Width="320"
@@ -112,7 +112,7 @@
                                          Filled=True}"
                     MaxLength="50"
                     Text="{Binding AppUserEditable.AppUserName, Mode=TwoWay}"
-                    ToolTip="{StaticResource Max50CharStr}" />
+                    ToolTip="{DynamicResource Max50CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -120,7 +120,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource FirstSurnameStr}" />
+                    Text="{DynamicResource FirstSurnameStr}" />
 
                 <ui:TextBox
                     Width="320"
@@ -132,7 +132,7 @@
                                          Filled=True}"
                     MaxLength="80"
                     Text="{Binding AppUserEditable.AppUserSurname1, Mode=TwoWay}"
-                    ToolTip="{StaticResource Max80CharStr}" />
+                    ToolTip="{DynamicResource Max80CharStr}" />
                 <ui:TextBlock
                     Width="auto"
                     MinWidth="160"
@@ -140,7 +140,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource SecondSurnameStr}" />
+                    Text="{DynamicResource SecondSurnameStr}" />
                 <ui:TextBox
                     Width="320"
                     Height="36"
@@ -151,23 +151,24 @@
                                          Filled=True}"
                     MaxLength="80"
                     Text="{Binding AppUserEditable.AppUserSurname2, Mode=TwoWay}"
-                    ToolTip="{StaticResource Max80CharStr}" />
+                    ToolTip="{DynamicResource Max80CharStr}" />
 
 
                 <ui:Button
-                    Width="320 "
+                    Width="auto"
                     Height="32"
+                    MinWidth="320"
                     Margin="0,16,0,8"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Appearance="Info"
                     Command="{Binding SaveCommand}"
-                    Content="{StaticResource SaveButtonStr}"
+                    Content="{DynamicResource SaveButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    ToolTip="{StaticResource SaveButtonInfoStr}" />
+                    ToolTip="{DynamicResource SaveButtonInfoStr}" />
 
 
                 <ui:Button
@@ -178,12 +179,12 @@
                     VerticalAlignment="Top"
                     Appearance="Secondary"
                     Command="{Binding PasswordEditCommand}"
-                    Content="{StaticResource ChangePasswordButtonStr}"
+                    Content="{DynamicResource ChangePasswordButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    ToolTip="{StaticResource ChangePasswordButtonInfoStr}" />
+                    ToolTip="{DynamicResource ChangePasswordButtonInfoStr}" />
             </StackPanel>
             <Grid
                 Grid.Row="2"

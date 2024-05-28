@@ -41,7 +41,7 @@
                     Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
+                    ToolTip="{DynamicResource GoBackButtonInfoStr}" />
             </Menu>
 
             <StackPanel
@@ -62,7 +62,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource TitleStr}" />
+                    Text="{DynamicResource TitleStr}" />
                 <ui:TextBox
                     Grid.Row="0"
                     Grid.Column="1"
@@ -74,9 +74,9 @@
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
                     MaxLength="27"
-                    PlaceholderText="{StaticResource TitleStr}"
+                    PlaceholderText="{DynamicResource TitleStr}"
                     Text="{Binding AppTaskEditable.AppTaskTitle, Mode=TwoWay}"
-                    ToolTip="{StaticResource Max27CharStr}" />
+                    ToolTip="{DynamicResource Max27CharStr}" />
 
                 <!--  Container: Description  -->
                 <ui:TextBlock
@@ -88,7 +88,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource DescriptionStr}" />
+                    Text="{DynamicResource DescriptionStr}" />
                 <ui:TextBox
                     Grid.Row="1"
                     Grid.Column="1"
@@ -100,11 +100,11 @@
                     FontFamily="Fira Code"
                     FontSize="14"
                     MaxLength="255"
-                    PlaceholderText="{StaticResource DescriptionStr}"
+                    PlaceholderText="{DynamicResource DescriptionStr}"
                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                     Text="{Binding AppTaskEditable.AppTaskDescription, Mode=TwoWay}"
                     TextWrapping="Wrap"
-                    ToolTip="{StaticResource Max255CharStr}" />
+                    ToolTip="{DynamicResource Max255CharStr}" />
 
                 <!--  Container: Tags  -->
                 <ui:TextBlock
@@ -116,7 +116,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource TagsStr}" />
+                    Text="{DynamicResource TagsStr}" />
                 <ui:TextBox
                     Grid.Row="2"
                     Grid.Column="1"
@@ -126,9 +126,9 @@
                     FontFamily="Fira Code"
                     FontSize="14"
                     MaxLength="255"
-                    PlaceholderText="{StaticResource TagsStr}"
+                    PlaceholderText="{DynamicResource TagsStr}"
                     Text="{Binding TagsTask, Mode=TwoWay}"
-                    ToolTip="{StaticResource TagsInstrucctionStr}" />
+                    ToolTip="{DynamicResource TagsInstrucctionStr}" />
 
                 <!--  Container: Save Button  -->
                 <ui:Button
@@ -139,12 +139,12 @@
                     VerticalAlignment="Top"
                     Appearance="Info"
                     Command="{Binding SaveTaskCommand}"
-                    Content="{StaticResource SaveButtonStr}"
+                    Content="{DynamicResource SaveButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Edit20,
                                          Filled=True}"
-                    ToolTip="{StaticResource SaveButtonInfoStr}" />
+                    ToolTip="{DynamicResource SaveButtonInfoStr}" />
 
             </StackPanel>
             <!--  Error Message  -->

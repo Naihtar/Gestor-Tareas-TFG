@@ -42,7 +42,7 @@
                     Command="{Binding GoBackCommand}"
                     Icon="{ui:SymbolIcon ArrowLeft20,
                                          Filled=True}"
-                    ToolTip="{StaticResource GoBackButtonInfoStr}" />
+                    ToolTip="{DynamicResource GoBackButtonInfoStr}" />
             </Menu>
 
             <StackPanel
@@ -60,7 +60,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource EmailStr}" />
+                    Text="{DynamicResource EmailStr}" />
                 <ui:TextBox
                     Width="Auto"
                     MinWidth="240"
@@ -68,9 +68,9 @@
                     FontSize="16"
                     Icon="{ui:SymbolIcon Person20,
                                          Filled=True}"
-                    PlaceholderText="{StaticResource EmailStr}"
+                    PlaceholderText="{DynamicResource EmailStr}"
                     Text="{Binding EmailUser, Mode=TwoWay}"
-                    ToolTip="{StaticResource DeleteUserEmailInfoStr}" />
+                    ToolTip="{DynamicResource DeleteUserEmailInfoStr}" />
                 <!--  User: Password  -->
                 <ui:TextBlock
                     Width="auto"
@@ -79,7 +79,7 @@
                     FontFamily="Fira Code"
                     FontSize="16"
                     FontWeight="Bold"
-                    Text="{StaticResource PasswordStr}" />
+                    Text="{DynamicResource PasswordStr}" />
                 <ui:PasswordBox
                     Width="Auto"
                     MinWidth="240"
@@ -88,23 +88,24 @@
                     Icon="{ui:SymbolIcon PersonKey20,
                                          Filled=True}"
                     Password="{Binding PasswordUser, Mode=TwoWay}"
-                    PlaceholderText="{StaticResource PasswordStr}"
-                    ToolTip="{StaticResource DeleteUserPasswordInfoStr}" />
+                    PlaceholderText="{DynamicResource PasswordStr}"
+                    ToolTip="{DynamicResource DeleteUserPasswordInfoStr}" />
 
                 <!--  User: Delete Account  -->
                 <ui:Button
                     Width="auto "
                     Height="32"
+                    MinWidth="320"
                     Margin="0,16,0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Appearance="Danger"
                     Command="{Binding DeleteProfileCommand}"
-                    Content="{StaticResource DeleteUserButtonStr}"
+                    Content="{DynamicResource DeleteUserButtonStr}"
                     FontFamily="Fira Code"
                     FontSize="16"
                     Icon="{ui:SymbolIcon Warning28}"
-                    ToolTip="{StaticResource DeleteButtonInfoStr}" />
+                    ToolTip="{DynamicResource DeleteButtonInfoStr}" />
             </StackPanel>
             <Grid
                 Name="ErrorMessage"
@@ -118,11 +119,11 @@
                 VerticalAlignment="Top">
                 <ui:InfoBar
                     x:Name="infoBarError"
-                    Title="{StaticResource ErrorInfoBarStr}"
+                    Title="{DynamicResource ErrorInfoBarStr}"
                     IsOpen="{Binding ErrorOpen}"
                     Message="{Binding ErrorMessage}"
                     Severity="Error"
-                    ToolTip="{StaticResource ErrorInfoStr}" />
+                    ToolTip="{DynamicResource ErrorInfoStr}" />
             </Grid>
         </Grid>
     </Border>

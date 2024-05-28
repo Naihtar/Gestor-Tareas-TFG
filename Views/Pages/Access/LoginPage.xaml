@@ -25,7 +25,31 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-
+        <Menu
+            Grid.Row="0"
+            Grid.Column="4"
+            Margin="0,0,4,0"
+            HorizontalAlignment="Center"
+            FontSize="20"
+            FontWeight="Bold">
+            <MenuItem Header="{DynamicResource LanguageStr}">
+                <MenuItem
+                    Command="{Binding ChangeLanguageCommand}"
+                    CommandParameter="es-ES"
+                    Header="{DynamicResource SpanishLanguageStr}"
+                    IsEnabled="{Binding IsSpanishEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                <MenuItem
+                    Command="{Binding ChangeLanguageCommand}"
+                    CommandParameter="en-US"
+                    Header="{DynamicResource EnglishLanguageStr}"
+                    IsEnabled="{Binding IsEnglishEnabled, UpdateSourceTrigger=PropertyChanged}" />
+                <MenuItem
+                    Command="{Binding ChangeLanguageCommand}"
+                    CommandParameter="fr-FR"
+                    Header="{DynamicResource FrançaisLanguageStr}"
+                    IsEnabled="{Binding IsFrenchEnabled, UpdateSourceTrigger=PropertyChanged}" />
+            </MenuItem>
+        </Menu>
         <StackPanel
             Grid.Row="1"
             Grid.Column="1"
@@ -38,7 +62,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Source="/Resources/Images/LogoTFG.png"
-                ToolTip="{StaticResource EasterEggStr}" />
+                ToolTip="{DynamicResource EasterEggStr}" />
 
             <ui:TextBlock
                 x:Name="LogIn"
@@ -47,7 +71,7 @@
                 FontFamily="Fira Code"
                 FontSize="24"
                 FontWeight="Bold"
-                Text="{StaticResource LogInTextStr}"
+                Text="{DynamicResource LogInTextStr}"
                 TextAlignment="Center" />
 
             <ui:TextBox
@@ -59,9 +83,9 @@
                 FontSize="16"
                 Icon="{ui:SymbolIcon Person20,
                                      Filled=True}"
-                PlaceholderText="{StaticResource UserOrEmailStr}"
+                PlaceholderText="{DynamicResource UserOrEmailStr}"
                 Text="{Binding Data}"
-                ToolTip="{StaticResource LogInEmailOrUserInfoStr}" />
+                ToolTip="{DynamicResource LogInEmailOrUserInfoStr}" />
             <ui:PasswordBox
                 x:Name="PasswordBox"
                 Width="360"
@@ -71,8 +95,8 @@
                 Icon="{ui:SymbolIcon PersonKey20,
                                      Filled=True}"
                 Password="{Binding Password, Mode=TwoWay}"
-                PlaceholderText="{StaticResource PasswordStr}"
-                ToolTip="{StaticResource LogInPasswordInfoStr}" />
+                PlaceholderText="{DynamicResource PasswordStr}"
+                ToolTip="{DynamicResource LogInPasswordInfoStr}" />
 
             <ui:Button
                 Name="AccessButton"
@@ -81,11 +105,11 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Command="{Binding LogInCommand}"
-                Content="{StaticResource LogInButtonStr}"
+                Content="{DynamicResource LogInButtonStr}"
                 FontFamily="Fira Code"
                 FontSize="16"
                 FontWeight="Bold"
-                ToolTip="{StaticResource LogInInfoStr}" />
+                ToolTip="{DynamicResource LogInInfoStr}" />
             <TextBlock
                 Margin="0,0,0,8"
                 HorizontalAlignment="Center"
@@ -93,7 +117,7 @@
                 FontSize="16"
                 Opacity="0.30">
                 <Hyperlink Command="{Binding SignUpCommand}" Foreground="White">
-                    <TextBlock Text="{StaticResource SignUpButtonStr}" ToolTip="{StaticResource SignUpInfoStr}" />
+                    <TextBlock Text="{DynamicResource SignUpButtonStr}" ToolTip="{DynamicResource SignUpInfoStr}" />
                 </Hyperlink>
             </TextBlock>
         </StackPanel>
@@ -109,18 +133,18 @@
             VerticalAlignment="Top">
             <ui:InfoBar
                 x:Name="infoBarError"
-                Title="{StaticResource ErrorInfoBarStr}"
+                Title="{DynamicResource ErrorInfoBarStr}"
                 IsOpen="{Binding ErrorOpen}"
                 Message="{Binding ErrorMessage}"
                 Severity="Error"
-                ToolTip="{StaticResource ErrorInfoStr}" />
+                ToolTip="{DynamicResource ErrorInfoStr}" />
             <ui:InfoBar
                 x:Name="InfoBarSuccess"
-                Title="{StaticResource SuccessInfoBarStr}"
+                Title="{DynamicResource SuccessInfoBarStr}"
                 IsOpen="{Binding SuccessOpen}"
                 Message="{Binding SuccessMessage}"
                 Severity="Success"
-                ToolTip="{StaticResource SuccessInfoStr}" />
+                ToolTip="{DynamicResource SuccessInfoStr}" />
         </Grid>
     </Grid>
 </Page>

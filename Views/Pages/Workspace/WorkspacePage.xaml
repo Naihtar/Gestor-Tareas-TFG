@@ -45,28 +45,28 @@
                         FontSize="20"
                         FontWeight="Bold"
                         Foreground="White">
-                        <ui:MenuItem Header="{StaticResource FileStr}">
+                        <ui:MenuItem Header="{DynamicResource FileStr}">
                             <ui:MenuItem
                                 Command="{Binding AddContainerCommand}"
-                                Header="{StaticResource AddWorkspaceStr}"
+                                Header="{DynamicResource AddWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Add12,
                                                      Filled=True}" />
                             <ui:MenuItem
                                 Command="{Binding EditContainerCommand}"
-                                Header="{StaticResource EditWorkspaceStr}"
+                                Header="{DynamicResource EditWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Edit16,
                                                      Filled=True}"
                                 IsEnabled="{Binding HasContainer}" />
                             <ui:MenuItem
                                 Command="{Binding DeleteContainerCommand}"
-                                Header="{StaticResource DeleteWorkspaceStr}"
+                                Header="{DynamicResource DeleteWorkspaceStr}"
                                 Icon="{ui:SymbolIcon Delete16,
                                                      Filled=True}"
                                 IsEnabled="{Binding HasContainer}" />
                         </ui:MenuItem>
                         <ui:MenuItem
                             x:Name="Workspaces"
-                            Header="{StaticResource WorkspacesStr}"
+                            Header="{DynamicResource WorkspacesStr}"
                             IsEnabled="{Binding HasContainer}">
                             <ItemsControl ItemsSource="{Binding ContainerNames}">
                                 <ItemsControl.ItemTemplate>
@@ -110,18 +110,18 @@
                         VerticalAlignment="Center">
                         <ui:InfoBar
                             x:Name="infoBarError"
-                            Title="{StaticResource ErrorInfoBarStr}"
+                            Title="{DynamicResource ErrorInfoBarStr}"
                             IsOpen="{Binding ErrorOpen}"
                             Message="{Binding ErrorMessage}"
                             Severity="Error"
-                            ToolTip="{StaticResource ErrorInfoStr}" />
+                            ToolTip="{DynamicResource ErrorInfoStr}" />
                         <ui:InfoBar
                             x:Name="InfoBarSuccess"
-                            Title="{StaticResource SuccessInfoBarStr}"
+                            Title="{DynamicResource SuccessInfoBarStr}"
                             IsOpen="{Binding SuccessOpen}"
                             Message="{Binding SuccessMessage}"
                             Severity="Success"
-                            ToolTip="{StaticResource SuccessInfoStr}" />
+                            ToolTip="{DynamicResource SuccessInfoStr}" />
                     </Grid>
                 </Grid>
 
@@ -135,7 +135,7 @@
                     Foreground="White">
                     <ui:MenuItem
                         Command="{Binding UserProfileCommand}"
-                        Header="{StaticResource ProfileStr}"
+                        Header="{DynamicResource ProfileStr}"
                         Icon="{ui:SymbolIcon Person20,
                                              Filled=True}" />
                 </Menu>
@@ -177,7 +177,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="{StaticResource TODOStr}" />
+                                Text="{DynamicResource TODOStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -272,7 +272,7 @@
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
                             CommandParameter="Pendiente"
-                            Content="{StaticResource AddTaskButtonStr}"
+                            Content="{DynamicResource AddTaskButtonStr}"
                             IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
@@ -302,7 +302,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="{StaticResource ONHOLDStr}" />
+                                Text="{DynamicResource ONHOLDStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -410,7 +410,7 @@
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
                             CommandParameter="En espera"
-                            Content="{StaticResource AddTaskButtonStr}"
+                            Content="{DynamicResource AddTaskButtonStr}"
                             IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
@@ -440,7 +440,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="{StaticResource INPROGRESSStr}" />
+                                Text="{DynamicResource INPROGRESSStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -546,7 +546,7 @@
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
                             CommandParameter="En progreso"
-                            Content="{StaticResource AddTaskButtonStr}"
+                            Content="{DynamicResource AddTaskButtonStr}"
                             IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
@@ -575,7 +575,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="24"
                                 FontWeight="Bold"
-                                Text="{StaticResource DONEStr}" />
+                                Text="{DynamicResource DONEStr}" />
                         </Grid>
                         <Separator
                             Height="4"
@@ -672,7 +672,7 @@
                             HorizontalAlignment="Stretch"
                             Command="{Binding AddTaskCommand}"
                             CommandParameter="Completado"
-                            Content="{StaticResource AddTaskButtonStr}"
+                            Content="{DynamicResource AddTaskButtonStr}"
                             IsEnabled="{Binding HasContainer}" />
                     </StackPanel>
                 </ui:Card>
