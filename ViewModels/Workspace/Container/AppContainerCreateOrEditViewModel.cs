@@ -25,8 +25,9 @@ namespace TFG.ViewModels.Workspace.Container {
         //Constructor
         public AppContainerCreateOrEditViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser, AppContainer? appContainer) : base(databaseService, navigationService, appUser, appContainer) {
             _isCreate = appContainer == null;
-            SaveContainerCommand = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
             Name = AppContainerEditable.AppContainerTitle;
+
+            SaveContainerCommand = new CommandViewModel(async (obj) => await SaveContainerAsyncWrapper());
         }
 
         //
@@ -44,7 +45,7 @@ namespace TFG.ViewModels.Workspace.Container {
 
             //Comprueba que el campo del nombre no este en uso
             bool nameExists = await CheckNameDBB(_appUser.AppUserID);
-            if (Name != AppContainerEditable.AppContainerTitle && nameExists) {
+            if (Name.ToLower() != AppContainerEditable.AppContainerTitle.ToLower() && nameExists) {
                 SuccessOpen = false;
                 ErrorOpen = true;
                 ErrorMessage = ResourceDictionary["CheckTitleContainerDBStr"] as string; //Mensaje de error
@@ -75,6 +76,6 @@ namespace TFG.ViewModels.Workspace.Container {
         private async Task<bool> CheckNameDBB(ObjectId appUserID) {
             return await _databaseService.CheckContainerByTitleAndUserIDAsync(Name, appUserID);
         }
-
+        
     }
 }

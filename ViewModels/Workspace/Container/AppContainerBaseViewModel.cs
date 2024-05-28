@@ -70,7 +70,7 @@ namespace TFG.ViewModels.Workspace.Container {
                 ContainerProperties = new Dictionary<string, string> {
                 {"ContainerName", appContainerData.AppContainerTitle },
                 {"Descripcion", appContainerData.AppContainerDescription ??= string.Empty},
-                {"Fecha", appContainerData.AppContainerCreateDate.ToString() },
+                {"Fecha", appContainerData.AppContainerCreateDate.ToShortDateString() },
             };
             } catch (Exception) {
                 SuccessOpen = false;
