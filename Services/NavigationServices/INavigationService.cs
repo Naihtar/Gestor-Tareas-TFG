@@ -12,5 +12,5 @@ namespace TFG.Services.NavigationServices {
         void NavigateTo(AppUser appUser, AppContainer? appContainer, string? successMessage);
         void NavigateTo(string route, AppUser appUser, AppContainer? appContainer, AppTask? appTask, string? data);
     }
-
 }
+

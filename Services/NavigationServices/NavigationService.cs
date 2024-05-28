@@ -9,10 +9,11 @@ using TFG.Views.Pages.Workspace.Container;
 using TFG.Views.Pages.Workspace.Task;
 
 namespace TFG.Services.NavigationServices {
-    public class NavigationService(Frame frame, IDatabaseService databaseService, IAuthenticationService authenticationService) : INavigationService {
+    public class NavigationService(Frame frame, IDatabaseService databaseService, IAuthenticationService authenticationService, ILocalizationService localizationService) : INavigationService {
         private readonly Frame _frame = frame; //Marco principal, donde cargaran las vistas.
         private readonly IDatabaseService _databaseService = databaseService; //Dependencia de los servicios de la base de datos
         private readonly IAuthenticationService _authenticationService = authenticationService; //Dependencia de los servicios de autentificación
+        private readonly ILocalizationService _localizationService = localizationService; //Dependencia de los servicios de traducción de la app
 
         public void GoBack() {
             //Volver para atrás
@@ -29,20 +30,23 @@ namespace TFG.Services.NavigationServices {
 
         public void NavigateTo(string? successMessage) {
             //Log In
-            _frame.Navigate(new LogInPage(_authenticationService, this, successMessage));
+            _frame.Navigate(new LogInPage(_authenticationService, this, _localizationService ,successMessage));
         }
 
 
         // Editar Perfil y contraseña
         public void NavigateTo(string route, AppUser appUser) {
             switch (route) {
+                //Editar el perfil del usuario
                 case "ProfileEdit":
                     _frame.Navigate(new UserProfileEditPage(_databaseService, this, appUser: appUser));
                     break;
+                //Editar la contraseña del usuario
                 case "ProfilePassword":
                     _frame.Navigate(new UserProfileEditPasswordPage(_databaseService, _authenticationService, this, appUser: appUser));
                     break;
                 default:
+                    //En caso de error te retorna a la vista de editar el perfil
                     _frame.Navigate(new UserProfileEditPage(_databaseService, this, appUser: appUser));
                     break;
             }
@@ -95,11 +99,11 @@ namespace TFG.Services.NavigationServices {
                     break;
                 //Información sobre el usuario
                 case "Profile":
-                    _frame.Navigate(new UserProfilePage(_databaseService, this, appUser: appUser, appContainer: appContainer, appTask: appTask, data));
+                    _frame.Navigate(new UserProfilePage(_databaseService, this, _localizationService ,appUser: appUser, appContainer: appContainer, appTask: appTask, data));
                     break;
                 default:
                     //En caso de error te retorna al perfil
-                    _frame.Navigate(new UserProfilePage(_databaseService, this, appUser: appUser, appContainer: appContainer, appTask: appTask, data));
+                    _frame.Navigate(new UserProfilePage(_databaseService, this, _localizationService, appUser: appUser, appContainer: appContainer, appTask: appTask, data));
                     break;
 
             }
