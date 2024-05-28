@@ -3,8 +3,123 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:System="clr-namespace:System;assembly=System.Runtime">
 
-    <System:String x:Key="UserStr">Utilisateur</System:String>
+    <!--  Log In Information  -->
+    <System:String x:Key="UserOrEmailStr">Utilisateur ou Email</System:String>
     <System:String x:Key="PasswordStr">Mot de passe</System:String>
-    <System:String x:Key="AccessButtonStr">Se connecter</System:String>
+    <System:String x:Key="LogInButtonStr">Se connecter</System:String>
+    <System:String x:Key="LogInTextStr">Se connecter</System:String>
+
+    <!--  Sign Up Information  -->
+    <System:String x:Key="SignUpButtonStr">Créer un compte</System:String>
+    <System:String x:Key="SignUpTextStr">S'inscrire</System:String>
+    <System:String x:Key="SignUpInfoStr">Si vous souhaitez créer un compte, cliquez</System:String>
+    <System:String x:Key="UsernameStr">Nom d'utilisateur</System:String>
+    <System:String x:Key="EmailStr">Email</System:String>
+    <System:String x:Key="RepeatEmailStr">Répéter l'email</System:String>
+    <System:String x:Key="RepeatPasswordStr">Répéter le mot de passe</System:String>
+    <System:String x:Key="NameStr">Nom</System:String>
+    <System:String x:Key="FirstSurnameStr">Premier nom</System:String>
+    <System:String x:Key="SecondSurnameStr">Deuxième nom</System:String>
+
+    <!--  Workspace Information  -->
+    <System:String x:Key="FileStr">Fichier</System:String>
+    <System:String x:Key="AddWorkspaceStr">Ajouter un espace de travail</System:String>
+    <System:String x:Key="EditWorkspaceStr">Modifier l'espace de travail</System:String>
+    <System:String x:Key="DeleteWorkspaceStr">Supprimer l'espace de travail</System:String>
+    <System:String x:Key="WorkspacesStr">Espaces de travail</System:String>
+    <System:String x:Key="WorkspaceStr">Espace de travail</System:String>
+
+    <!--  Task Information  -->
+    <System:String x:Key="TODOStr">À FAIRE</System:String>
+    <System:String x:Key="ONHOLDStr">EN ATTENTE</System:String>
+    <System:String x:Key="INPROGRESSStr">EN COURS</System:String>
+    <System:String x:Key="DONEStr">TERMINÉ</System:String>
+    <System:String x:Key="AddTaskButtonStr">Ajouter une tâche</System:String>
+    <System:String x:Key="TitleStr">Titre</System:String>
+    <System:String x:Key="DescriptionStr">Description</System:String>
+    <System:String x:Key="TagsStr">Étiquettes</System:String>
+    <System:String x:Key="SaveButtonStr">Enregistrer</System:String>
+    <System:String x:Key="DateCreateStr">Date de création</System:String>
+    <System:String x:Key="EditTaskButtonStr">Modifier la tâche</System:String>
+    <System:String x:Key="DeleteTaskButtonStr">Supprimer la tâche</System:String>
+
+    <!--  Profile Information  -->
+    <System:String x:Key="ProfileStr">Profil</System:String>
+    <System:String x:Key="DeleteUserButtonStr">Supprimer le compte</System:String>
+    <System:String x:Key="ChangePasswordButtonStr">Changer le mot de passe</System:String>
+    <System:String x:Key="OldPasswordStr">Ancien mot de passe</System:String>
+    <System:String x:Key="NewPasswordStr">Nouveau mot de passe</System:String>
+    <System:String x:Key="RepeatNewPasswordStr">Répéter le nouveau mot de passe</System:String>
+    <System:String x:Key="LogOutButtonStr">Se déconnecter</System:String>
+    <System:String x:Key="EditProfileButtonStr">Modifier le compte</System:String>
+
+    <!--  ToolTip Messages  -->
+    <System:String x:Key="LogInInfoStr">Appuyez sur le bouton pour vous connecter</System:String>
+    <System:String x:Key="Max27CharStr">27 caractères maximum</System:String>
+    <System:String x:Key="Max80CharStr">80 caractères maximum</System:String>
+    <System:String x:Key="Max50CharStr">50 caractères maximum</System:String>
+    <System:String x:Key="Max255CharStr">255 caractères maximum</System:String>
+    <System:String x:Key="TagsInstrucctionStr">Entrez les étiquettes séparées par des virgules</System:String>
+    <System:String x:Key="SaveButtonInfoStr">Enregistrer le contenu</System:String>
+    <System:String x:Key="EditTastButtonInfoStr">Retourner à l'espace de travail</System:String>
+    <System:String x:Key="DeleteTastButtonInfoStr">Retourner à l'espace de travail</System:String>
+    <System:String x:Key="DeleteUserEmailInfoStr">Confirmez votre email</System:String>
+    <System:String x:Key="DeleteUserPasswordInfoStr">Confirmez votre email</System:String>
+    <System:String x:Key="DeleteButtonInfoStr">Suppression de votre compte</System:String>
+    <System:String x:Key="ChangePasswordButtonInfoStr">Changer le mot de passe</System:String>
+    <System:String x:Key="GoBackButtonInfoStr">Fenêtre précédente</System:String>
+    <System:String x:Key="EasterEggStr">Code Monke SL - Task Manager</System:String>
+    <System:String x:Key="WorkspaceBackButtonStr">Retourner à l'espace de travail</System:String>
+    <System:String x:Key="LogInEmailOrUserInfoStr">Entrez votre nom d'utilisateur ou email pour vous connecter</System:String>
+    <System:String x:Key="LogInPasswordInfoStr">Entrez votre mot de passe pour vous connecter</System:String>
+    <System:String x:Key="ErrorInfoStr">Message d'erreur</System:String>
+    <System:String x:Key="SuccessInfoStr">Message d'action complétée avec succès</System:String>
+
+    <!--  InfoBar  -->
+    <System:String x:Key="SuccessInfoBarStr">Terminé :</System:String>
+    <System:String x:Key="ErrorInfoBarStr">Erreur :</System:String>
+
+    <!--  Alerts:  -->
+    <System:String x:Key="AuthenticationDataStr">Email ou mot de passe incorrect</System:String>
+    <System:String x:Key="NoSelectWorkspaceContainerStr">Vous n'avez sélectionné aucun espace de travail</System:String>
+    <System:String x:Key="MaxCapWorkspaceContainerStr">Nombre maximal d'espaces de travail disponibles atteint</System:String>
+    <System:String x:Key="WorkspaceTaskStr">La tâche n'a pas pu être sélectionnée</System:String>
+    <System:String x:Key="NoSelectWorkspaceTaskStr">Aucune tâche sélectionnée</System:String>
+    <System:String x:Key="LoadWorkspaceTaskStr">Problème avec la tâche</System:String>
+    <System:String x:Key="EmailsMatchStr">Les emails ne correspondent pas</System:String>
+    <System:String x:Key="EmailValidStr">L'email saisi n'est pas valide</System:String>
+    <System:String x:Key="PasswordMatchStr">Les mots de passe ne correspondent pas</System:String>
+    <System:String x:Key="EmptyFielStr">Remplissez les champs vides</System:String>
+    <System:String x:Key="UserFieldMatchStr">Le nom d'utilisateur saisi est déjà utilisé</System:String>
+    <System:String x:Key="EmailFieldMatchStr">L'email saisi est déjà utilisé</System:String>
+    <System:String x:Key="CheckEmailFieldStr">L'email saisi est incorrect</System:String>
+    <System:String x:Key="CheckPasswordFieldStr">Le mot de passe saisi est incorrect</System:String>
+    <System:String x:Key="CheckTitleStr">Remplissez le champ du titre</System:String>
+    <System:String x:Key="CheckTitleContainerDBStr">Le titre de l'espace de travail est déjà utilisé</System:String>
+    <System:String x:Key="CheckLenghtTagsStr">L'étiquette saisie dépasse 16 caractères :</System:String>
+    <System:String x:Key="MaxCapTagsStr">Vous avez saisi plus de 3 étiquettes</System:String>
+
+    <!--  Exceptions:  -->
+    <System:String x:Key="ExDB">Erreur interne du serveur. Veuillez réessayer plus tard.</System:String>
+
+    <!--  Success:  -->
+    <System:String x:Key="SuccessCreateAccountInfoBarStr">Compte créé avec succès, retour à l'écran d'accueil</System:String>
+    <System:String x:Key="SuccessAccessInfoBarStr">Connexion réussie</System:String>
+    <System:String x:Key="SuccessLogOutInfoBarStr">Déconnexion réussie</System:String>
+    <System:String x:Key="SuccessDeleteAccountInfoBarStr">Compte supprimé avec succès</System:String>
+    <System:String x:Key="SuccessDeleteContainerInfoBarStr">L'espace de travail et les tâches associées ont été supprimés avec succès</System:String>
+    <System:String x:Key="SuccessProfileChangeInfoBarStr">Changements de profil effectués avec succès</System:String>
+    <System:String x:Key="SuccessContainerChangeInfoBarStr">Changements d'espace de travail effectués avec succès</System:String>
+    <System:String x:Key="SuccessContainerAddInfoBarStr">Nouvel espace de travail ajouté avec succès</System:String>
+    <System:String x:Key="SuccessTaskChangeInfoBarStr">Changements de tâche effectués avec succès</System:String>
+    <System:String x:Key="SuccessTaskAddInfoBarStr">Nouvelle tâche ajoutée avec succès</System:String>
+    <System:String x:Key="SuccessTaskDeleteInfoBarStr">Tâche supprimée avec succès</System:String>
+    <System:String x:Key="SuccessLanguageChangeInfoBarStr">Changement de langue réussi</System:String>
+
+    <!--  Languages:  -->
+    <System:String x:Key="LanguageStr">Langues</System:String>
+    <System:String x:Key="SpanishLanguageStr">Espagnol</System:String>
+    <System:String x:Key="EnglishLanguageStr">Anglais</System:String>
+    <System:String x:Key="FrançaisLanguageStr">Français</System:String>
 
 </ResourceDictionary>

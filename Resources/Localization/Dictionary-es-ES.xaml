@@ -68,19 +68,18 @@
     <System:String x:Key="DeleteButtonInfoStr">Eliminación de su cuenta</System:String>
     <System:String x:Key="ChangePasswordButtonInfoStr">Cambiar la contraseña</System:String>
     <System:String x:Key="GoBackButtonInfoStr">Ventana anterior</System:String>
-    <System:String x:Key="EasterEggStr">Code Monke SL</System:String>
+    <System:String x:Key="EasterEggStr">Code Monke SL - Task Manager</System:String>
     <System:String x:Key="WorkspaceBackButtonStr">Volver al espacio de trabajo</System:String>
     <System:String x:Key="LogInEmailOrUserInfoStr">Introduzca su Usuario o Correo Electrónico para iniciar sesión</System:String>
     <System:String x:Key="LogInPasswordInfoStr">Introduzca su contraseña para iniciar sesión</System:String>
     <System:String x:Key="ErrorInfoStr">Mensaje de error</System:String>
     <System:String x:Key="SuccessInfoStr">Mensaje de acción completada correctamente</System:String>
 
-
     <!--  InfoBar  -->
     <System:String x:Key="SuccessInfoBarStr">Completado:</System:String>
     <System:String x:Key="ErrorInfoBarStr">Error:</System:String>
 
-    <!--  Alerts:  -->
+    <!--  Alertas:  -->
     <System:String x:Key="AuthenticationDataStr">Correo electrónico o contraseña incorrecto/a</System:String>
     <System:String x:Key="NoSelectWorkspaceContainerStr">No ha seleccionado ningún espacio de trabajo</System:String>
     <System:String x:Key="MaxCapWorkspaceContainerStr">Alcanzado el máximo de espacios de trabajo disponibles</System:String>
@@ -100,13 +99,10 @@
     <System:String x:Key="CheckLenghtTagsStr">La etiqueta introducida excede los 16 caracteres:</System:String>
     <System:String x:Key="MaxCapTagsStr">Has introducido más de 3 etiquetas</System:String>
 
-
     <!--  Excepciones:  -->
     <System:String x:Key="ExDB">Error interno del servidor. Intente nuevamente más tarde.</System:String>
 
-
-    <!--  Success:  -->
-
+    <!--  Exito:  -->
     <System:String x:Key="SuccessCreateAccountInfoBarStr">Cuenta creada correctamente, regresando a la pantalla de inicio</System:String>
     <System:String x:Key="SuccessAccessInfoBarStr">Sesión iniciada correctamente</System:String>
     <System:String x:Key="SuccessLogOutInfoBarStr">Sesión cerrada correctamente</System:String>
@@ -118,5 +114,12 @@
     <System:String x:Key="SuccessTaskChangeInfoBarStr">Cambios en la tarea realizados correctamente</System:String>
     <System:String x:Key="SuccessTaskAddInfoBarStr">Nueva tarea agregada correctamente</System:String>
     <System:String x:Key="SuccessTaskDeleteInfoBarStr">Tarea eliminada correctamente</System:String>
+    <System:String x:Key="SuccessLanguageChangeInfoBarStr">Cambio de idioma exitoso</System:String>
+
+    <!--  Idiomas:  -->
+    <System:String x:Key="LanguageStr">Idiomas</System:String>
+    <System:String x:Key="SpanishLanguageStr">Español</System:String>
+    <System:String x:Key="EnglishLanguageStr">Inglés</System:String>
+    <System:String x:Key="FrançaisLanguageStr">Francés</System:String>
 
 </ResourceDictionary>
