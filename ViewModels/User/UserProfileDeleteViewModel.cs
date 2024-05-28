@@ -22,9 +22,9 @@ namespace TFG.ViewModels.User {
         private string? _emailUser;
         public string? EmailUser {
 
-            get { return _emailUser; }
+            get { return _emailUser.ToLower(); }
             set {
-                _emailUser = value;
+                _emailUser = value.ToLower();
                 OnPropertyChanged(nameof(EmailUser));
             }
         }
@@ -63,6 +63,7 @@ namespace TFG.ViewModels.User {
                 ErrorOpen = true;
                 ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
                 StartTimer();
+                return;
             }
 
             //Comprueba que ambos correos coinciden
@@ -72,6 +73,7 @@ namespace TFG.ViewModels.User {
                 ErrorOpen = true;
                 ErrorMessage = ResourceDictionary["CheckEmailFieldStr"] as string; //Mensaje de error
                 StartTimer();
+                return;
             }
 
             //Comprueba que ambas contraseñas coinciden, la introducida con la del usuario
@@ -81,6 +83,7 @@ namespace TFG.ViewModels.User {
                 ErrorOpen = true;
                 ErrorMessage = ResourceDictionary["CheckPasswordFieldStr"] as string;
                 StartTimer();
+                return;
             }
 
             //Verifica que los datos sean correctos
@@ -90,7 +93,7 @@ namespace TFG.ViewModels.User {
                 ErrorOpen = true;
                 ErrorMessage = ResourceDictionary["AuthenticationDataStr"] as string; //Mensaje de error
                 StartTimer();
-
+                return;
             }
             bool success = await _databaseService.DeleteUserAsync(AppUserEditable);
 
@@ -99,6 +102,7 @@ namespace TFG.ViewModels.User {
                 ErrorOpen = true;
                 ErrorMessage = ResourceDictionary["ExDB"] as string; //Mensaje de error por parte de la DB
                 StartTimer();
+                return;
             }
 
             _appUser?.Dispose(); //Elimina los datos en memoria del usuario

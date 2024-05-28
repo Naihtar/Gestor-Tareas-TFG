@@ -11,7 +11,7 @@ namespace TFG.ViewModels {
         protected INavigationService _navigationService; //Dependencia de los servicios navegación
 
         //Atributos
-        protected AppUser? _appUser;
+        protected AppUser _appUser;
         public AppUser AppUserEditable { get; set; }
 
         //Diccionario para mostrar los datos del usuario
@@ -28,7 +28,7 @@ namespace TFG.ViewModels {
         public CommandViewModel GoBackCommand { get; }
 
         //Constructor
-        protected UserProfileBaseViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser? appUser) {
+        protected UserProfileBaseViewModel(IDatabaseService databaseService, INavigationService navigationService, AppUser appUser) {
             _navigationService = navigationService;
             _appUser = appUser;
             _databaseService = databaseService;
@@ -80,6 +80,7 @@ namespace TFG.ViewModels {
 
         protected async Task SaveChangesAsync() {
             // Actualiza el usuario en la base de datos
+
             bool success = await _databaseService.UpdateUserAsync(AppUserEditable);
 
             if (!success) {
