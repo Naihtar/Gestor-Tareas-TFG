@@ -71,8 +71,10 @@ namespace TFG.Models {
         protected virtual void Dispose(bool disposing) {
             if (!disposed) {
                 if (disposing) {
+                    _appTaskID = ObjectId.Empty;
                     _appTaskTitle = string.Empty;
                     _appTaskDescription = string.Empty;
+                    _appTaskCreateDate = DateTime.MinValue;
                     _appTaskStatus = string.Empty;
                     _appTaskTags = new string[3];
                     _appContainerID = ObjectId.Empty;

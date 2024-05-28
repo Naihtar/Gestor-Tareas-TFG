@@ -18,14 +18,14 @@ namespace TFG.Models {
         private string _appUserUsername;
         [BsonElement("aliasUsuario")]
         public required string AppUserUsername {
-            get { return _appUserUsername; }
-            set { _appUserUsername = value; }
+            get { return _appUserUsername.ToLower(); }
+            set { _appUserUsername = value.ToLower(); }
         }
         private string _appUserEmail;
         [BsonElement("email")]
         public required string AppUserEmail {
-            get { return _appUserEmail; }
-            set { _appUserEmail = value; }
+            get { return _appUserEmail.ToLower(); }
+            set { _appUserEmail = value.ToLower(); }
         }
 
         private string _appUserPassword;
