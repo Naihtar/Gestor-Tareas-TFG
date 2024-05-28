@@ -1,12 +1,9 @@
 ﻿using MongoDB.Bson;
 using System.Collections.ObjectModel;
-using System.Windows;
-using System.Windows.Threading;
 using TFG.Models;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TFG.ViewModels {
     public class WorkSpaceViewModel : BaseViewModel {

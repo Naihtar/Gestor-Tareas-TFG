@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TFG.Models;
+﻿using TFG.Models;
 
 namespace TFG.Services.AuthentificationServices {
     public interface IAuthenticationService {

@@ -1,5 +1,4 @@
-﻿
-namespace TFG.Services {
+﻿namespace TFG.Services {
     public interface ILocalizationService {
         void SetLanguage(string languageCode);
 

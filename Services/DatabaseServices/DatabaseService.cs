@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Windows;
 using TFG.Database;
 using TFG.Models;
 

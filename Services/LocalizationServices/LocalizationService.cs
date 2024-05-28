@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Windows;
-using System.Configuration;
+﻿using System.Windows;
 
 namespace TFG.Services {
     public class LocalizationService : ILocalizationService {

@@ -1,9 +1,7 @@
-﻿using TFG.Services.AuthentificationServices;
-using TFG.Services.DatabaseServices;
+﻿using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
 using TFG.Models;
-using System.Windows;
 using TFG.Services;
 
 namespace TFG.ViewModels {

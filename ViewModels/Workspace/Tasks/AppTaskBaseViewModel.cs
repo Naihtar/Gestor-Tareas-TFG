@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata;
-using TFG.Models;
-using TFG.Services.AuthentificationServices;
+﻿using TFG.Models;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;

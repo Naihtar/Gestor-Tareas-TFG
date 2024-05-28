@@ -1,9 +1,7 @@
 ﻿using TFG.Models;
-using TFG.Services.AuthentificationServices;
 using TFG.Services.DatabaseServices;
 using TFG.Services.NavigationServices;
 using TFG.ViewModels.Base;
-using TFG.ViewModels.Workspace.Container;
 
 namespace TFG.ViewModels.Workspace.Tasks {
     public class AppTaskViewModel : AppTaskBaseViewModel {
